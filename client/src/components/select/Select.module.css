@@ -1,0 +1,113 @@
+.selectWrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--grey-300);
+  border-radius: var(--border-radius-standard);
+  background-color: white;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.selectWrapper:focus-within {
+  border-color: var(--primary-green);
+  outline: 2px solid var(--primary-green);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--light-green);
+}
+
+.selectWrapper.error {
+  border-color: var(--danger-red);
+}
+
+.selectWrapper.error:focus-within {
+  border-color: var(--danger-red);
+  outline-color: var(--danger-red);
+  box-shadow: 0 0 0 4px var(--danger-light);
+}
+
+.selectWrapper.disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  background-color: var(--grey-50);
+}
+
+.select {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: inherit;
+  font-weight: 400;
+  color: var(--grey-800);
+  flex: 1;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.select:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.select option {
+  background-color: white;
+  color: var(--grey-800);
+  padding: 8px 12px;
+}
+
+.select option:disabled {
+  color: var(--grey-500);
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  color: var(--grey-600);
+  pointer-events: none;
+  transition: transform 0.2s ease-in-out;
+}
+
+.selectWrapper:focus-within .icon {
+  transform: rotate(180deg);
+}
+
+/* Sizes */
+.small {
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: var(--border-radius-standard);
+}
+
+.small .select {
+  padding: 0;
+  padding-right: 8px;
+}
+
+.medium {
+  padding: 12px 16px;
+  font-size: 16px;
+  border-radius: var(--border-radius-standard);
+}
+
+.medium .select {
+  padding: 0;
+  padding-right: 8px;
+}
+
+.large {
+  padding: 16px 20px;
+  font-size: 18px;
+  border-radius: var(--border-radius-standard);
+}
+
+.large .select {
+  padding: 0;
+  padding-right: 8px;
+}
+
+/* Full width */
+.fullWidth {
+  width: 100%;
+} 
