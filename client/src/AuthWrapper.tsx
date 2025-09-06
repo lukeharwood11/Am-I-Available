@@ -15,6 +15,7 @@ const AuthWrapper: React.FC = () => {
         if (!session) {
           navigate('/login');
         }
+        console.log('Session:', session);
       } catch (error) {
         console.error('Error checking auth status:', error);
         navigate('/login');

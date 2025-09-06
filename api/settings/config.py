@@ -2,26 +2,42 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import Field
 
+class GoogleConfig(BaseSettings):
+    model_config = SettingsConfigDict(extra="allow")
+    
+    client_id: str = Field(default="")
+    client_secret: str = Field(default="")
+    scopes: str = "email profile openid https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/calendar"
+
+class OpenAIConfig(BaseSettings):
+    model_config = SettingsConfigDict(extra="allow")
+    
+    api_key: str = Field(default="")
+
+class SupabaseConfig(BaseSettings):
+    model_config = SettingsConfigDict(extra="allow")
+    
+    url: str = Field(default="")
+    anon_key: str = Field(default="")
+    service_role_key: str = Field(default="")
+
+class DatabaseConfig(BaseSettings):
+    model_config = SettingsConfigDict(extra="allow")
+    
+    username: str = Field(default="")
+    password: str = Field(default="")
+
 
 class AppConfig(BaseSettings):
-    model_config = SettingsConfigDict(
-        env_file=".env", env_file_encoding="utf-8", extra="ignore"
-    )
+    model_config = SettingsConfigDict(env_nested_delimiter="__", extra="allow")
 
     # API Keys
-    OPENAI_API_KEY: str = Field(default="")
+    openai: OpenAIConfig = Field(default_factory=OpenAIConfig)
 
-    # Supabase Configuration
-    SUPABASE_URL: str = Field(default="")
-    SUPABASE_ANON_KEY: str = Field(default="")
-    SUPABASE_SERVICE_ROLE_KEY: str = Field(default="")
-
-    # OAuth Configuration
-    GOOGLE_CLIENT_ID: str = Field(default="")
-    GOOGLE_CLIENT_SECRET: str = Field(default="")
-
-    # App Configuration
-    DEBUG: bool = Field(default=False)
+    # Auth Configuration
+    supabase: SupabaseConfig = Field(default_factory=SupabaseConfig)
+    google: GoogleConfig = Field(default_factory=GoogleConfig)
+    database: DatabaseConfig = Field(default_factory=DatabaseConfig)
 
 
 config = AppConfig()

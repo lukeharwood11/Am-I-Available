@@ -1,5 +1,6 @@
 from fastapi import FastAPI, APIRouter, Depends
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.security import OAuth2AuthorizationCodeBearer
 from fastapi.templating import Jinja2Templates
 from fastapi import Request
 from .settings.config import config
@@ -17,52 +18,25 @@ app = FastAPI(
     title="AmIA API",
     description="A comprehensive recipe and meal planning API",
     version="1.0.0",
-    openapi_tags=[
-        {"name": "auth", "description": "Authentication endpoints"},
-        {"name": "recipes", "description": "Recipe management operations"},
-    ],
+    openapi_tags=[],
+    swagger_ui_init_oauth={
+        "clientId": config.google.client_id,
+        "scopes": "email profile openid https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/calendar"
+    }
 )
 
 
-# Configure OpenAPI security scheme
-def custom_openapi():
-    if app.openapi_schema:
-        return app.openapi_schema
-
-    from fastapi.openapi.utils import get_openapi
-
-    openapi_schema = get_openapi(
-        title=app.title,
-        version=app.version,
-        description=app.description,
-        routes=app.routes,
-    )
-
-    # Add security scheme for JWT Bearer token authentication
-    openapi_schema["components"]["securitySchemes"] = {
-        "BearerAuth": {
-            "type": "http",
-            "scheme": "bearer",
-            "bearerFormat": "JWT",
-            "description": "Get your JWT token by signing in with Google at: "
-            + config.SUPABASE_URL
-            + "/auth/v1/authorize?provider=google&redirect_to=http://localhost:8000/docs",
-        }
+outh2_scheme = OAuth2AuthorizationCodeBearer(
+    authorizationUrl=f"{config.supabase.url}/auth/v1/authorize?provider=google",
+    tokenUrl=f"{config.supabase.url}/auth/v1/token",
+    scopes={
+        "openid": "OpenID",
+        "email": "Email",
+        "profile": "Profile",
+        "https://www.googleapis.com/auth/gmail.modify": "Gmail Modify",
+        "https://www.googleapis.com/auth/calendar": "Calendar"
     }
-
-    # Apply BearerAuth security to protected endpoints
-    for path, path_item in openapi_schema["paths"].items():
-        # Check if this is a protected endpoint (starts with /api/v1/ and not auth/health)
-        if path.startswith("/api/v1/") and not any(unprotected in path for unprotected in ["/auth", "/health"]):
-            for method, operation in path_item.items():
-                if isinstance(operation, dict) and "operationId" in operation:
-                    operation["security"] = [{"BearerAuth": []}]
-
-    app.openapi_schema = openapi_schema
-    return app.openapi_schema
-
-
-app.openapi = custom_openapi
+)
 
 # Add CORS middleware
 app.add_middleware(
@@ -87,8 +61,8 @@ async def get_token(request: Request):
         "get_token.html", 
         {
             "request": request,
-            "supabase_url": config.SUPABASE_URL,
-            "supabase_anon_key": config.SUPABASE_ANON_KEY
+            "supabase_url": config.supabase.url,
+            "supabase_anon_key": config.supabase.anon_key
         }
     )
 
