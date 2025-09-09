@@ -1,12 +1,16 @@
 from fastapi import APIRouter, Depends
 from api.settings import auth
-from api.routers.v1 import events
+from api.routers.v1 import events, google_events, relationships, relationship_requests, event_requests
 
 protected_router = APIRouter(
     dependencies=[Depends(auth.verify_jwt)],
     responses={401: {"description": "Unauthorized"}},
 )
 protected_router.include_router(events.router)
+protected_router.include_router(google_events.router)
+protected_router.include_router(relationships.router)
+protected_router.include_router(relationship_requests.router)
+protected_router.include_router(event_requests.router)
 
 unprotected_router = APIRouter()
 

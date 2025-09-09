@@ -8,6 +8,102 @@ from ...proxy.models.google_models import CalendarEvent, CalendarInfo
 # REQUEST MODELS
 # ============================================================================
 
+class EventDataDateTime(BaseModel):
+    """DateTime structure for event start/end times"""
+    date_time: str | None = Field(None, alias="dateTime", description="RFC3339 datetime string")
+    date: str | None = Field(None, description="Date string for all-day events (YYYY-MM-DD)")
+    time_zone: str | None = Field(None, alias="timeZone", description="Time zone (e.g., 'America/New_York')")
+
+    class Config:
+        populate_by_name = True
+
+
+class EventDataAttendee(BaseModel):
+    """Attendee information for events"""
+    email: str = Field(description="Attendee email address")
+    display_name: str | None = Field(None, alias="displayName", description="Attendee display name")
+    response_status: str | None = Field(None, alias="responseStatus", description="Response status: needsAction, declined, tentative, accepted")
+    optional: bool = Field(False, description="Whether attendance is optional")
+    comment: str | None = Field(None, description="Attendee comment")
+    additional_guests: int | None = Field(None, alias="additionalGuests", description="Number of additional guests")
+
+    class Config:
+        populate_by_name = True
+
+
+class EventDataReminder(BaseModel):
+    """Individual reminder for an event"""
+    method: str = Field(description="Reminder method: email or popup")
+    minutes: int = Field(description="Minutes before event to trigger reminder")
+
+
+class EventDataReminders(BaseModel):
+    """Reminder settings for events"""
+    use_default: bool = Field(True, alias="useDefault", description="Use calendar default reminders")
+    overrides: list[EventDataReminder] = Field(default_factory=list, description="Custom reminder overrides")
+
+    class Config:
+        populate_by_name = True
+
+
+class EventDataAttachment(BaseModel):
+    """File attachment for events"""
+    file_id: str = Field(alias="fileId", description="Google Drive file ID")
+    file_url: str = Field(alias="fileUrl", description="File URL")
+    title: str = Field(description="Attachment title")
+    mime_type: str | None = Field(None, alias="mimeType", description="MIME type of the file")
+
+    class Config:
+        populate_by_name = True
+
+
+class EventDataConferenceCreateRequest(BaseModel):
+    """Conference creation request"""
+    request_id: str = Field(alias="requestId", description="Unique request ID")
+    conference_solution_key: dict[str, Any] = Field(alias="conferenceSolutionKey", description="Conference solution details")
+    status: dict[str, Any] | None = Field(None, description="Creation status")
+
+    class Config:
+        populate_by_name = True
+
+
+class EventDataConferenceData(BaseModel):
+    """Conference/meeting data for events"""
+    create_request: EventDataConferenceCreateRequest | None = Field(None, alias="createRequest", description="Request to create conference")
+    entry_points: list[dict[str, Any]] = Field(default_factory=list, alias="entryPoints", description="Conference entry points")
+    conference_solution: dict[str, Any] | None = Field(None, alias="conferenceSolution", description="Conference solution info")
+    conference_id: str | None = Field(None, alias="conferenceId", description="Conference ID")
+    signature: str | None = Field(None, description="Conference signature")
+    notes: str | None = Field(None, description="Conference notes")
+
+    class Config:
+        populate_by_name = True
+
+
+class EventData(BaseModel):
+    """Event data structure for creating and updating calendar events"""
+    summary: str = Field(description="Event title/summary")
+    description: str | None = Field(None, description="Event description")
+    location: str | None = Field(None, description="Event location")
+    start: EventDataDateTime = Field(description="Event start date/time")
+    end: EventDataDateTime = Field(description="Event end date/time")
+    attendees: list[EventDataAttendee] = Field(default_factory=list, description="Event attendees")
+    recurrence: list[str] = Field(default_factory=list, description="Recurrence rules (RRULE format)")
+    reminders: EventDataReminders | None = Field(None, description="Reminder settings")
+    attachments: list[EventDataAttachment] = Field(default_factory=list, description="File attachments")
+    conference_data: EventDataConferenceData | None = Field(None, alias="conferenceData", description="Conference/meeting data")
+    visibility: str | None = Field(None, description="Event visibility: default, public, private, confidential")
+    transparency: str | None = Field(None, description="Event transparency: opaque, transparent")
+    event_type: str | None = Field(None, alias="eventType", description="Event type: default, outOfOffice, focusTime")
+    color_id: str | None = Field(None, alias="colorId", description="Color ID for the event")
+    guests_can_invite_others: bool | None = Field(None, alias="guestsCanInviteOthers", description="Whether guests can invite others")
+    guests_can_modify: bool | None = Field(None, alias="guestsCanModify", description="Whether guests can modify the event")
+    guests_can_see_other_guests: bool | None = Field(None, alias="guestsCanSeeOtherGuests", description="Whether guests can see other guests")
+
+    class Config:
+        populate_by_name = True
+
+
 class EventListRequest(BaseModel):
     """Request model for listing events"""
     calendar_id: str = "primary"
@@ -25,7 +121,7 @@ class EventDetailRequest(BaseModel):
 
 class CreateEventRequest(BaseModel):
     """Request model for creating events"""
-    event_data: dict[str, Any]
+    event_data: EventData
     calendar_id: str = "primary"
     send_notifications: bool = True
 
@@ -33,7 +129,7 @@ class CreateEventRequest(BaseModel):
 class UpdateEventRequest(BaseModel):
     """Request model for updating events"""
     event_id: str
-    event_data: dict[str, Any]
+    event_data: EventData
     calendar_id: str = "primary"
     send_notifications: bool = True
 

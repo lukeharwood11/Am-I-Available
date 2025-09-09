@@ -2,6 +2,7 @@ import logging
 from typing import Any
 from datetime import datetime, timedelta
 from ..databridge.user_token_databridge import UserTokenDatabridge, DBUserTokenResponse
+from ..models.v1.events import EventData
 from ..proxy.google_proxy import (
     get_google_calendar_events,
     list_events,
@@ -22,7 +23,7 @@ from ..proxy.models.google_models import CalendarEvent, CalendarInfo
 logger = logging.getLogger(__name__)
 
 
-class EventsService:
+class GoogleEventsService:
     """Service layer for handling calendar events business logic"""
     
     def __init__(self, user_token_databridge: UserTokenDatabridge):
@@ -158,7 +159,7 @@ class EventsService:
         self,
         *,
         user_id: str,
-        event_data: dict[str, Any],
+        event_data: EventData,
         calendar_id: str = "primary",
         send_notifications: bool = True
     ) -> CalendarEvent:
@@ -167,7 +168,7 @@ class EventsService:
         
         Args:
             user_id: User identifier
-            event_data: Event data dictionary
+            event_data: Event data model
             calendar_id: Calendar ID
             send_notifications: Whether to send notifications to attendees
             
@@ -180,10 +181,13 @@ class EventsService:
         try:
             token_data = await self._get_user_tokens(user_id=user_id)
             
+            # Convert EventData model to dict for Google API
+            event_data_dict = event_data.model_dump(by_alias=True, exclude_none=True)
+            
             created_event = await create_event(
                 access_token=token_data.google_access_token,
                 refresh_token=token_data.google_refresh_token,
-                event_data=event_data,
+                event_data=event_data_dict,
                 calendar_id=calendar_id,
                 send_notifications=send_notifications
             )
@@ -202,7 +206,7 @@ class EventsService:
         *,
         user_id: str,
         event_id: str,
-        event_data: dict[str, Any],
+        event_data: EventData,
         calendar_id: str = "primary",
         send_notifications: bool = True
     ) -> CalendarEvent:
@@ -212,7 +216,7 @@ class EventsService:
         Args:
             user_id: User identifier
             event_id: Event identifier
-            event_data: Updated event data dictionary
+            event_data: Updated event data model
             calendar_id: Calendar ID
             send_notifications: Whether to send notifications to attendees
             
@@ -225,11 +229,14 @@ class EventsService:
         try:
             token_data = await self._get_user_tokens(user_id=user_id)
             
+            # Convert EventData model to dict for Google API
+            event_data_dict = event_data.model_dump(by_alias=True, exclude_none=True)
+            
             updated_event = await update_event(
                 access_token=token_data.google_access_token,
                 refresh_token=token_data.google_refresh_token,
                 event_id=event_id,
-                event_data=event_data,
+                event_data=event_data_dict,
                 calendar_id=calendar_id,
                 send_notifications=send_notifications
             )
