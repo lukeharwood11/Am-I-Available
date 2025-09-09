@@ -36,20 +36,15 @@ async def verify_jwt(
     Verify JWT token using Supabase and cache user data in request state
     """
     try:
-        log.info("=== verify_jwt invoked ===")
         token = credentials.credentials
         cache_key = f"user_data_{token[:20]}"
-        log.info(f"=== cache_key: {cache_key} ===")
         if hasattr(request.state, cache_key):
             return getattr(request.state, cache_key)
 
         # Use Supabase admin client to verify the token
-        log.info("=== Using Supabase admin client to verify the token ===")
         supabase = get_supabase_admin_client()
-        log.info(f"=== supabase: {supabase} ===")
         # Verify the JWT token
         response = supabase.auth.get_user(token)
-        log.info(f"=== response: {response} ===")
         if not response.user:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,

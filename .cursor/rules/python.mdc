@@ -3,4 +3,21 @@ description:
 globs: 
 alwaysApply: true
 ---
-When writing python, use `list`, `dict` and | types instead of using the `typing` module with optionals if possible.
+- When writing python, use `list`, `dict` and | types instead of using the `typing` module with optionals.
+- When implementing a route, you should have a service that interacts with the databridge layer for you. The service layer houses all application logic, while the router layer should only worry about request handling and raising HTTPExceptions for misconfigured requests. Use the /api/services folder for services and /api/databridge folder for databridges. All requests/responses from routes should have a corresponding BaseModel in /api/models/v[version number]/[router name].py.
+- service/databridge functions should take in keyword arguments instead of data classes as parameters and should be passed in by keyword args instead of positional arguments when more than 1 parameter is needed. If more than one argument is needed, functions should use the following syntax to enforce this:
+
+```python
+def my_func(*, keyword_arg1: str, keyword_arg2: str) -> str:...
+```
+
+- Strongly type everything
+- When importing modules, prefer to use the following syntax
+
+```python
+import api.models.v1.events as events
+# instead of 
+from api.models.v1.events import __, __, __, __
+```
+
+An exception to this rule is if you only need to import one resource.

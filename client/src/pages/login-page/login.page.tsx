@@ -3,11 +3,10 @@ import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabaseClient';
 import Button from '../../components/button/Button';
 import { ErrorMessage } from '../../components/error-message';
-import { GoogleIcon, Icon, Logo } from '../../components/icons';
+import { GoogleIcon, Icon } from '../../components/icons';
 import styles from './login.page.module.css';
 
 const LoginPage = () => {
-    const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
     const handleGoogleLogin = async () => {
@@ -15,8 +14,13 @@ const LoginPage = () => {
             const { error } = await supabase.auth.signInWithOAuth({
                 provider: 'google',
                 options: {
-                    scopes: 'email profile openid https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/calendar'
-                }
+                    scopes: 'email profile openid https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/calendar',
+                    queryParams: {
+                        access_type: 'offline',
+                        prompt: 'consent',
+                    },
+                    redirectTo: `${window.location.origin}/auth/callback`,
+                },
             });
             if (error) throw error;
         } catch (err) {
@@ -37,7 +41,6 @@ const LoginPage = () => {
                     onClick={handleGoogleLogin}
                     variant="secondary-subtle"
                     fullWidth
-                    disabled={loading}
                     leftIcon={<GoogleIcon size={18} />}
                 >
                     Sign in with Google

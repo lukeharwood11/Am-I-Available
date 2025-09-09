@@ -2,9 +2,11 @@ import { useNavigate } from 'react-router-dom';
 import styles from './home.page.module.css';
 import Card from '../../components/card/Card';
 import { MdOutlineCalendarMonth, MdOutlineNewspaper } from 'react-icons/md';
+import { useAuth } from '../../hooks/useAuth';
 
 const HomePage = () => {
     const navigate = useNavigate();
+    const { user } = useAuth();
     
     const menuOptions = [
         {

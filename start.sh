@@ -1,1 +1,1 @@
-uv run --env-file .env uvicorn api.main:app --reload
+uv run --env-file .env uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
