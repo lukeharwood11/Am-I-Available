@@ -273,7 +273,7 @@ export const ProductCard: Story = {
           Brief product description goes here.
         </p>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span style={{ fontSize: '18px', fontWeight: 'bold', color: 'var(--primary-green)' }}>
+          <span style={{ fontSize: '18px', fontWeight: 'bold', color: 'var(--primary)' }}>
             $29.99
           </span>
           <Button variant="primary" size="small">

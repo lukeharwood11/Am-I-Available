@@ -49,7 +49,7 @@
 }
 
 .outlined:hover {
-  border-color: var(--primary-green);
+  border-color: var(--primary);
 }
 
 .subtle {
@@ -115,7 +115,7 @@
 
 /* Remove default button styles for interactive cards */
 .card.interactive:focus {
-  outline: 2px solid var(--primary-green);
+  outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
 

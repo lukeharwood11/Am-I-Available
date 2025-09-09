@@ -76,7 +76,7 @@
 
 .stepNumber {
   font-weight: 600;
-  color: var(--primary-green);
+  color: var(--primary);
   font-size: 0.875rem;
 }
 
@@ -98,7 +98,7 @@
 
 .typeSelect:focus {
   outline: none;
-  border-color: var(--primary-green);
+  border-color: var(--primary);
 }
 
 .error {

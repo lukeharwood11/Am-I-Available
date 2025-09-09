@@ -15,9 +15,9 @@
 }
 
 .button:focus-visible {
-  outline: 2px solid var(--primary-green);
+  outline: 2px solid var(--primary);
   outline-offset: 2px;
-  box-shadow: 0 0 0 4px var(--light-green);
+  box-shadow: 0 0 0 4px var(--primary-bg);
 }
 
 .button:disabled {
@@ -28,24 +28,24 @@
 
 /* Variants */
 .primary {
-  background-color: var(--primary-green);
+  background-color: var(--primary);
   color: white;
   box-shadow: 0 2px 4px rgba(74, 154, 74, 0.2);
 }
 
 .primary:hover:not(:disabled) {
-  background-color: var(--dark-green);
+  background-color: var(--primary-dark);
 }
 
 .primary-subtle {
   background-color: white;
-  color: var(--primary-green);
-  border: 1px solid var(--primary-green);
+  color: var(--primary);
+  border: 1px solid var(--primary);
   box-shadow: none;
 }
 
 .primary-subtle:hover:not(:disabled) {
-  background-color: var(--light-green);
+  background-color: var(--primary-bg);
 }
 
 .secondary {
@@ -70,24 +70,24 @@
 }
 
 .alternate {
-  background-color: var(--primary-pink);
+  background-color: var(--secondary);
   color: white;
   box-shadow: 0 2px 4px rgba(255, 192, 203, 0.2);
 }
 
 .alternate:hover:not(:disabled) {
-  background-color: var(--dark-pink);
+  background-color: var(--secondary-dark);
 }
 
 .alternate-subtle {
   background-color: white;
-  color: var(--primary-pink);
-  border: 1px solid var(--primary-pink);
+  color: var(--secondary);
+  border: 1px solid var(--secondary);
   box-shadow: none;
 }
 
 .alternate-subtle:hover:not(:disabled) {
-  background-color: var(--light-pink);
+  background-color: var(--secondary-bg);
 }
 
 .danger {

@@ -10,10 +10,10 @@
 }
 
 .selectWrapper:focus-within {
-  border-color: var(--primary-green);
-  outline: 2px solid var(--primary-green);
+  border-color: var(--primary);
+  outline: 2px solid var(--primary);
   outline-offset: 2px;
-  box-shadow: 0 0 0 4px var(--light-green);
+  box-shadow: 0 0 0 4px var(--primary-bg);
 }
 
 .selectWrapper.error {

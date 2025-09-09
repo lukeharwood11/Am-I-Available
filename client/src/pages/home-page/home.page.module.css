@@ -1,6 +1,6 @@
 .homePage {
   flex: 1;
-  background: linear-gradient(135deg, var(--light-green) 0%, var(--light-pink) 100%);
+  background: linear-gradient(135deg, var(--primary-bg) 0%, var(--secondary-bg) 100%);
   padding: 1rem;
   display: flex;
   flex-direction: column;
@@ -19,7 +19,7 @@
 .title {
   font-size: 3rem;
   font-weight: 700;
-  color: var(--dark-green);
+  color: var(--primary-dark);
   margin: 0.5rem 0;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -55,19 +55,19 @@
 }
 
 .menuCard.green {
-  border-top: 4px solid var(--primary-green);
+  border-top: 4px solid var(--primary);
 }
 
 .menuCard.green:hover {
-  background: var(--subtle-green);
+  background: var(--subtle-primary);
 }
 
 .menuCard.pink {
-  border-top: 4px solid var(--primary-pink);
+  border-top: 4px solid var(--secondary);
 }
 
 .menuCard.pink:hover {
-  background: var(--subtle-pink);
+  background: var(--subtle-secondary);
 }
 
 .cardContent {
@@ -90,13 +90,13 @@
 }
 
 .green .iconContainer {
-  background: var(--accent-green);
-  color: var(--dark-green);
+  background: var(--primary-accent);
+  color: var(--primary-dark);
 }
 
 .pink .iconContainer {
-  background: var(--accent-pink);
-  color: var(--dark-pink);
+  background: var(--secondary-accent);
+  color: var(--secondary-dark);
 }
 
 .menuCard:hover .iconContainer {

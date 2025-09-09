@@ -80,7 +80,7 @@
 }
 
 .carouselButton {
-  background: var(--primary-green);
+  background: var(--primary);
   color: white;
   border: none;
   border-radius: var(--border-radius-full);
@@ -96,7 +96,7 @@
 }
 
 .carouselButton:hover:not(:disabled) {
-  background: var(--dark-green);
+  background: var(--primary-dark);
   transform: scale(1.05);
 }
 
@@ -123,7 +123,7 @@
 
 .dot:hover,
 .activeDot {
-  background: var(--primary-green);
+  background: var(--primary);
 }
 
 /* Stack variant */

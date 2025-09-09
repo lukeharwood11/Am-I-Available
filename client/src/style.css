@@ -1,15 +1,15 @@
 :root {
-  /* theme is pastel green and pastel pink */
-  --primary-green: #4a9a4a;
-  --primary-pink: #ffc0cb;
-  --secondary-green: #98d698;
-  --secondary-pink: #ffdbdb;
-  --accent-green: #c8e6c8;
-  --accent-pink: #ffe6e6;
-  --dark-green: #2d5f2d;
-  --dark-pink: #ff9aab;
-  --light-green: #e8f5e8;
-  --light-pink: #fff0f3;
+  /* theme is modern blue and purple */
+  --primary: #4a90e2;
+  --secondary: #8e44ad;
+  --primary-light: #74a9f7;
+  --secondary-light: #b47ece;
+  --primary-accent: #a8cbf0;
+  --secondary-accent: #d1a3e8;
+  --primary-dark: #2c5aa0;
+  --secondary-dark: #6a1b9a;
+  --primary-bg: #e3f2fd;
+  --secondary-bg: #f3e5f5;
 
   /* danger colors */
   --danger-red: #ff6b6b;
@@ -25,15 +25,15 @@
   --grey-800: #262626;
 
   /* subtle variants */
-  --subtle-green: rgba(74, 154, 74, 0.1);
-  --subtle-pink: rgba(255, 192, 203, 0.1);
+  --subtle-primary: rgba(74, 144, 226, 0.1);
+  --subtle-secondary: rgba(142, 68, 173, 0.1);
   --subtle-danger: rgba(255, 107, 107, 0.1);
-  --subtle-green-hover: rgba(74, 154, 74, 0.15);
-  --subtle-pink-hover: rgba(255, 192, 203, 0.15);
+  --subtle-primary-hover: rgba(74, 144, 226, 0.15);
+  --subtle-secondary-hover: rgba(142, 68, 173, 0.15);
   --subtle-danger-hover: rgba(255, 107, 107, 0.15);
 
   /* border radius */
-  --border-radius-standard: 12px;
+  --border-radius-standard: 6px;
   --border-radius-full: 9999px;
 
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
