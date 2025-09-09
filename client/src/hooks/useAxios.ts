@@ -2,6 +2,8 @@ import { useState, useCallback } from 'react';
 import axiosInstance from '../lib/axios';
 import { useAuth } from './useAuth';
 
+// @deprecated Use Redux thunks and API hubs instead. This hook will be removed in a future version.
+
 interface UseAxiosResponse<T> {
   data: T | null;
   loading: boolean;

@@ -1,34 +1,28 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { supabase } from './lib/supabaseClient';
+import { useAppDispatch, useAppSelector } from './redux/hooks';
+import { initializeAuth } from './redux/thunks/auth.thunk';
+import { selectAuthLoading, selectIsAuthenticated } from './redux/selectors/auth.selectors';
+import { onAuthStateChange } from './redux/hubs/auth.hub';
+import { authActions } from './redux/slices/auth.slice';
 import LoadingIcon from './components/icons/LoadingIcon';
 
 const AuthWrapper: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const isLoading = useAppSelector(selectAuthLoading);
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
 
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        
-        if (!session) {
-          navigate('/login');
-        }
-        console.log('Session:', session);
-      } catch (error) {
-        console.error('Error checking auth status:', error);
-        navigate('/login');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    checkAuth();
+    // Initialize auth state from Supabase
+    dispatch(initializeAuth());
 
     // Subscribe to auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (!session) {
+    const { data: { subscription } } = onAuthStateChange((_event, session) => {
+      if (session) {
+        dispatch(authActions.setSession({ session, user: session.user }));
+      } else {
+        dispatch(authActions.clearAuth());
         navigate('/login');
       }
     });
@@ -36,7 +30,14 @@ const AuthWrapper: React.FC = () => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [navigate]);
+  }, [dispatch, navigate]);
+
+  useEffect(() => {
+    // Redirect to login if not authenticated after loading is complete
+    if (!isLoading && !isAuthenticated) {
+      navigate('/login');
+    }
+  }, [isLoading, isAuthenticated, navigate]);
 
   if (isLoading) {
     return (

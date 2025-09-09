@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabaseClient';
 
+// @deprecated Use useReduxAuth from './useReduxAuth' instead. This hook will be removed in a future version.
+
 interface UseAuthReturn {
   user: User | null;
   session: Session | null;
