@@ -1,5 +1,5 @@
 import { supabase } from '../../lib/supabaseClient';
-import { User, Session } from '@supabase/supabase-js';
+import { Session } from '@supabase/supabase-js';
 import axiosInstance from '../../lib/axios';
 import { HTTP_METHODS, CONTENT_TYPES } from '../constants';
 import { store } from '../store';
@@ -74,7 +74,6 @@ async function makeAuthenticatedRequest<T>(
   }
 }
 
-// HTTP method helpers that automatically include Bearer token
 export async function get<T>(url: string, config?: Omit<RequestConfig, 'method' | 'data'>): Promise<T> {
   return makeAuthenticatedRequest<T>(url, { ...config, method: HTTP_METHODS.GET });
 }
@@ -96,14 +95,13 @@ export async function del<T>(url: string, config?: Omit<RequestConfig, 'method' 
 }
 
 // Supabase Auth Methods
-export async function getSession(): Promise<{ session: Session | null; user: User | null }> {
+export async function getSession(): Promise<{ session: Session | null }> {
   try {
     const { data: { session }, error } = await supabase.auth.getSession();
     if (error) throw error;
     
     return {
       session,
-      user: session?.user ?? null,
     };
   } catch (error) {
     console.error('Error getting session:', error);
@@ -121,14 +119,13 @@ export async function signOut(): Promise<void> {
   }
 }
 
-export async function refreshSession(): Promise<{ session: Session | null; user: User | null }> {
+export async function refreshSession(): Promise<{ session: Session | null }> {
   try {
     const { data: { session }, error } = await supabase.auth.refreshSession();
     if (error) throw error;
     
     return {
       session,
-      user: session?.user ?? null,
     };
   } catch (error) {
     console.error('Error refreshing session:', error);

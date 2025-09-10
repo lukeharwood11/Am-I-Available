@@ -7,7 +7,6 @@ import {
   getGoogleTokens
 } from '../redux/thunks/auth.thunk';
 import {
-  selectUser,
   selectSession,
   selectAuthLoading,
   selectIsAuthenticated,
@@ -17,7 +16,6 @@ import {
 } from '../redux/selectors/auth.selectors';
 
 interface UseReduxAuthReturn {
-  user: ReturnType<typeof selectUser>;
   session: ReturnType<typeof selectSession>;
   loading: boolean;
   isAuthenticated: boolean;
@@ -38,7 +36,6 @@ export const useReduxAuth = (): UseReduxAuthReturn => {
   const dispatch = useAppDispatch();
   
   // Selectors
-  const user = useAppSelector(selectUser);
   const session = useAppSelector(selectSession);
   const loading = useAppSelector(selectAuthLoading);
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
@@ -72,7 +69,6 @@ export const useReduxAuth = (): UseReduxAuthReturn => {
   }, [dispatch]);
 
   return {
-    user,
     session,
     loading,
     isAuthenticated,

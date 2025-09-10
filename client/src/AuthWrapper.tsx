@@ -20,7 +20,7 @@ const AuthWrapper: React.FC = () => {
     // Subscribe to auth changes
     const { data: { subscription } } = onAuthStateChange((_event, session) => {
       if (session) {
-        dispatch(authActions.setSession({ session, user: session.user }));
+        dispatch(authActions.setSession({ session }));
       } else {
         dispatch(authActions.clearAuth());
         navigate('/login');

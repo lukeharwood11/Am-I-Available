@@ -1,9 +1,8 @@
-import { User, Session } from '@supabase/supabase-js';
+import { Session } from '@supabase/supabase-js';
 import { Recipe } from '../../types/recipe';
 
 // Auth State Types
 export interface AuthState {
-  user: User | null;
   session: Session | null;
   loading: boolean;
   isAuthenticated: boolean;

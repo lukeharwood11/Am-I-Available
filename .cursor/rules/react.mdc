@@ -5,11 +5,14 @@ alwaysApply: false
 ---
 # React Code
 
-When writing react code, first look in the components directory to reuse components. If something can be reusable, split up a component into reusable pieces. Always examine file structure before writing.
-
-For CSS, we use vanilla css which should accompany the file in which they are being applied (i.e. login.page.tsx should have a login.page.module.css), do NOT use tailwind or any other css library.
-
-Don't use magic colors, use the ones in [style.css](mdc:client/src/style.css).
-
-## Components
-After creating/updating a component, create a storybook story for it and its variations.
+- When writing react code, first look in the components directory to reuse components. If something can be reusable, split up a component into reusable pieces. Always examine file structure before writing.
+- For CSS, we use vanilla css which should accompany the file in which they are being applied (i.e. login.page.tsx should have a login.page.module.css), do NOT use tailwind or any other css library.
+- Don't use magic colors, use the ones in [style.css](mdc:client/src/style.css).
+- Use redux for state management
+- Don't use classes unneccesarily in javascript, prefer to use functional approaches instead
+- All component files should have only one component
+- Components should not have any logic defined in the function, all logic should be passed down (this includes any useEffects/useMemo/useState) from the parent component (if reasonable) or a hook should be created (stored in /client/src/hooks) to manage the state of that component (named useComponentName.ts)
+- Do NOT over abstract things prematurely
+- After creating/updating a component, create/update a storybook story for it and its variations
+- Reusable components (across multiple pages) should be put in `/client/src/components` along with their storybook/tsx/css
+- Components that are specific to a page should be placed within the same folder as the .page component with its own .module.css file

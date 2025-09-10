@@ -4,12 +4,6 @@ import { RootState } from '../store';
 // Base selectors
 export const selectAuthState = (state: RootState) => state.auth;
 
-// Memoized selectors
-export const selectUser = createSelector(
-  [selectAuthState],
-  (auth) => auth.user
-);
-
 export const selectSession = createSelector(
   [selectAuthState],
   (auth) => auth.session
@@ -38,9 +32,4 @@ export const selectAccessToken = createSelector(
 export const selectRefreshToken = createSelector(
   [selectAuthState],
   (auth) => auth.refreshToken
-);
-
-export const selectUserId = createSelector(
-  [selectUser],
-  (user) => user?.id ?? null
 );

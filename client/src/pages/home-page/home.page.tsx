@@ -3,11 +3,11 @@ import styles from './home.page.module.css';
 import Card from '../../components/card/Card';
 import { MdOutlineCalendarMonth, MdOutlineNewspaper } from 'react-icons/md';
 import { useAppSelector } from '../../redux/hooks';
-import { selectUser } from '../../redux/selectors/auth.selectors';
+import { selectAuthState } from '../../redux';
 
 const HomePage = () => {
     const navigate = useNavigate();
-    const user = useAppSelector(selectUser);
+    const user = useAppSelector((state) => state.auth.session?.user);
     
     const menuOptions = [
         {
@@ -30,7 +30,7 @@ const HomePage = () => {
         <div className={styles.homePage}>
             <div className={styles.container}>
                 <h1 className={styles.title}>Am I Available?</h1>
-                <p className={styles.subtitle}>Your ultimate availability companion</p>
+                <p className={styles.subtitle}>Welcome {user ? user.user_metadata.name : 'Friend'}!</p>
                 
                 <div className={styles.menuGrid}>
                     {menuOptions.map((option, index) => (

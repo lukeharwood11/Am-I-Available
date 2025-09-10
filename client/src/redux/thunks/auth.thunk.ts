@@ -8,9 +8,9 @@ export const initializeAuth = createAsyncThunk(
   'auth/initialize',
   async (_, { dispatch, rejectWithValue }) => {
     try {
-      const { session, user } = await getSession();
-      dispatch(authActions.setSession({ session, user }));
-      return { session, user };
+      const { session } = await getSession();
+      dispatch(authActions.setSession({ session }));
+      return { session };
     } catch (error) {
       const message = error instanceof Error ? error.message : ERROR_MESSAGES.AUTH.LOGIN_FAILED;
       dispatch(authActions.setAuthError(message));
@@ -40,9 +40,9 @@ export const refreshUserSession = createAsyncThunk(
   'auth/refreshSession',
   async (_, { dispatch, rejectWithValue }) => {
     try {
-      const { session, user } = await refreshSession();
-      dispatch(authActions.setSession({ session, user }));
-      return { session, user };
+      const { session } = await refreshSession();
+      dispatch(authActions.setSession({ session }));
+      return { session };
     } catch (error) {
       const message = error instanceof Error ? error.message : ERROR_MESSAGES.AUTH.TOKEN_REFRESH_FAILED;
       dispatch(authActions.setAuthError(message));
