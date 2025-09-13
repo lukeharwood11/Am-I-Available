@@ -20,8 +20,6 @@ class RelationshipsService:
             id=db_relationship.id,
             user_id_1=db_relationship.user_id_1,
             user_id_2=db_relationship.user_id_2,
-            relationship_type=db_relationship.relationship_type,
-            status=db_relationship.status,
             created_at=db_relationship.created_at,
             updated_at=db_relationship.updated_at
         )
@@ -30,8 +28,7 @@ class RelationshipsService:
         self, 
         *, 
         user_id_1: str, 
-        user_id_2: str, 
-        relationship_type: str
+        user_id_2: str
     ) -> RelationshipCreateResponse:
         """Create a new relationship between two users"""
         # Check if relationship already exists
@@ -49,8 +46,7 @@ class RelationshipsService:
         # Create the relationship
         db_relationship = await self.databridge.create_relationship(
             user_id_1=user_id_1,
-            user_id_2=user_id_2,
-            relationship_type=relationship_type
+            user_id_2=user_id_2
         )
         
         if not db_relationship:
@@ -80,38 +76,26 @@ class RelationshipsService:
     async def get_user_relationships(
         self, 
         *, 
-        user_id: str, 
-        status: str | None = None,
-        relationship_type: str | None = None
+        user_id: str
     ) -> RelationshipsListResponse:
         """Get all relationships for a user with optional filters"""
         db_relationships = await self.databridge.get_user_relationships(
-            user_id=user_id,
-            status=status,
-            relationship_type=relationship_type
+            user_id=user_id
         )
         
         relationships = [self._convert_db_to_model(rel) for rel in db_relationships]
         
-        filters = {}
-        if status:
-            filters["status"] = status
-        if relationship_type:
-            filters["relationship_type"] = relationship_type
-        
         return RelationshipsListResponse(
             relationships=relationships,
             count=len(relationships),
-            filters=filters if filters else None
+            filters=None
         )
     
     async def update_relationship(
         self, 
         *, 
         relationship_id: str, 
-        user_id: str,
-        relationship_type: str | None = None,
-        status: str | None = None
+        user_id: str
     ) -> RelationshipUpdateResponse:
         """Update a relationship"""
         # First verify the relationship exists and user has permission
@@ -134,9 +118,7 @@ class RelationshipsService:
         
         # Update the relationship
         db_relationship = await self.databridge.update_relationship(
-            relationship_id=relationship_id,
-            relationship_type=relationship_type,
-            status=status
+            relationship_id=relationship_id
         )
         
         if not db_relationship:
@@ -186,28 +168,3 @@ class RelationshipsService:
         
         return RelationshipDeleteResponse()
     
-    async def approve_relationship(
-        self, 
-        *, 
-        relationship_id: str, 
-        user_id: str
-    ) -> RelationshipUpdateResponse:
-        """Approve a pending relationship request"""
-        return await self.update_relationship(
-            relationship_id=relationship_id,
-            user_id=user_id,
-            status="approved"
-        )
-    
-    async def reject_relationship(
-        self, 
-        *, 
-        relationship_id: str, 
-        user_id: str
-    ) -> RelationshipUpdateResponse:
-        """Reject a pending relationship request"""
-        return await self.update_relationship(
-            relationship_id=relationship_id,
-            user_id=user_id,
-            status="rejected"
-        )

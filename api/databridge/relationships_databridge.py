@@ -9,8 +9,6 @@ class DBRelationshipResponse(BaseModel):
     id: str
     user_id_1: str
     user_id_2: str
-    relationship_type: str
-    status: str
     created_at: datetime
     updated_at: datetime
 
@@ -24,16 +22,13 @@ class RelationshipsDatabridge:
         self, 
         *, 
         user_id_1: str, 
-        user_id_2: str, 
-        relationship_type: str
+        user_id_2: str
     ) -> DBRelationshipResponse | None:
         """Create a new relationship between two users"""
         try:
             data = {
                 'user_id_1': user_id_1,
-                'user_id_2': user_id_2,
-                'relationship_type': relationship_type,
-                'status': 'pending'
+                'user_id_2': user_id_2
             }
             
             response = self.relationships.insert(data).execute()
@@ -61,18 +56,11 @@ class RelationshipsDatabridge:
     async def get_user_relationships(
         self, 
         *, 
-        user_id: str, 
-        status: str | None = None,
-        relationship_type: str | None = None
+        user_id: str
     ) -> list[DBRelationshipResponse]:
         """Get all relationships for a user with optional filters"""
         try:
             query = self.relationships.select('*').or_(f'user_id_1.eq.{user_id},user_id_2.eq.{user_id}')
-            
-            if status:
-                query = query.eq('status', status)
-            if relationship_type:
-                query = query.eq('relationship_type', relationship_type)
             
             response = query.execute()
             if not response.data:
@@ -86,18 +74,11 @@ class RelationshipsDatabridge:
     async def update_relationship(
         self, 
         *, 
-        relationship_id: str, 
-        relationship_type: str | None = None,
-        status: str | None = None
+        relationship_id: str
     ) -> DBRelationshipResponse | None:
         """Update a relationship"""
         try:
             update_data = {'updated_at': datetime.now().isoformat()}
-            
-            if relationship_type is not None:
-                update_data['relationship_type'] = relationship_type
-            if status is not None:
-                update_data['status'] = status
             
             response = self.relationships.update(update_data).eq('id', relationship_id).execute()
             if not response.data:

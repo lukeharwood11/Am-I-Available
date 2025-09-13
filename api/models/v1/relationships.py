@@ -10,30 +10,16 @@ from typing import Literal
 class CreateRelationshipRequest(BaseModel):
     """Request model for creating a new relationship"""
     user_id_2: str = Field(description="UUID of the user being requested to connect with")
-    relationship_type: Literal["family", "friend", "partner", "colleague"] = Field(
-        description="Type of relationship"
-    )
 
 
 class UpdateRelationshipRequest(BaseModel):
     """Request model for updating a relationship"""
     relationship_id: str = Field(description="UUID of the relationship to update")
-    relationship_type: Literal["family", "friend", "partner", "colleague"] | None = Field(
-        None, description="Updated relationship type"
-    )
-    status: Literal["pending", "approved", "rejected"] | None = Field(
-        None, description="Updated relationship status"
-    )
 
 
 class GetRelationshipsRequest(BaseModel):
     """Request model for getting user relationships"""
-    status: Literal["pending", "approved", "rejected"] | None = Field(
-        None, description="Filter by relationship status"
-    )
-    relationship_type: Literal["family", "friend", "partner", "colleague"] | None = Field(
-        None, description="Filter by relationship type"
-    )
+    pass
 
 
 class DeleteRelationshipRequest(BaseModel):
@@ -50,8 +36,6 @@ class RelationshipData(BaseModel):
     id: str = Field(description="Relationship UUID")
     user_id_1: str = Field(description="UUID of the requester")
     user_id_2: str = Field(description="UUID of the requested user")
-    relationship_type: str = Field(description="Type of relationship")
-    status: str = Field(description="Relationship status")
     created_at: datetime = Field(description="When the relationship was created")
     updated_at: datetime = Field(description="When the relationship was last updated")
 
