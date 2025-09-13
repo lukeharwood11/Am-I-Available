@@ -37,4 +37,3 @@ export { default as NavBar } from './nav-bar/NavBar';
 
 // Modal components
 export { default as Modal } from './modal/Modal';
-export { default as CreateRecipeModal } from './create-recipe-modal/CreateRecipeModal'; 

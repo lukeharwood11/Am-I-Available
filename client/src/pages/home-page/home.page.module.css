@@ -6,6 +6,12 @@
   flex-direction: column;
 }
 
+.requestsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -29,45 +35,6 @@
   color: var(--grey-600);
   font-weight: 400;
   margin: 0.5rem 0 1rem 0;
-}
-
-
-.menuGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.menuCard {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: none;
-  cursor: pointer;
-  background: white;
-  border-radius: var(--border-radius-standard);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-}
-
-.menuCard:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-}
-
-.menuCard.green {
-  border-top: 4px solid var(--primary);
-}
-
-.menuCard.green:hover {
-  background: var(--subtle-primary);
-}
-
-.menuCard.pink {
-  border-top: 4px solid var(--secondary);
-}
-
-.menuCard.pink:hover {
-  background: var(--subtle-secondary);
 }
 
 .cardContent {
@@ -131,12 +98,6 @@
   .subtitle {
     font-size: 1.125rem;
     margin-bottom: 2rem;
-  }
-  
-  .menuGrid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    max-width: 400px;
   }
 }
 
