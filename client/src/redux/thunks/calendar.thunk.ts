@@ -1,8 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { getEvents, syncWithGoogle } from '../hubs/calendar.hub';
-import { 
-    calendarActions
-} from '../slices/calendar.slice';
+import calendarSlice from '../slices/calendar.slice';
 import { ERROR_MESSAGES } from '../constants';
 
 // Fetch calendar events
@@ -10,13 +8,13 @@ export const fetchCalendarEvents = createAsyncThunk(
   'calendar/fetchEvents',
   async (_, { dispatch, rejectWithValue }) => {
     try {
-      dispatch(calendarActions.setLoading(true));
+      dispatch(calendarSlice.actions.setLoading(true));
       const events = await getEvents();
-      dispatch(calendarActions.setEvents(events));
+      dispatch(calendarSlice.actions.setEvents(events));
       return events;
     } catch (error) {
       const message = error instanceof Error ? error.message : ERROR_MESSAGES.CALENDAR.FETCH_EVENTS_FAILED;
-      dispatch(calendarActions.setCalendarError(message));
+      dispatch(calendarSlice.actions.setCalendarError(message));
       return rejectWithValue(message);
     }
   }
@@ -30,14 +28,14 @@ export const syncWithGoogleCalendar = createAsyncThunk(
     { dispatch, rejectWithValue }
   ) => {
     try {
-      dispatch(calendarActions.setLoading(true));
+      dispatch(calendarSlice.actions.setLoading(true));
       const events = await syncWithGoogle(googleTokens);
-      dispatch(calendarActions.setEvents(events));
-      dispatch(calendarActions.setGoogleTokens(googleTokens));
+      dispatch(calendarSlice.actions.setEvents(events));
+      dispatch(calendarSlice.actions.setGoogleTokens(googleTokens));
       return events;
     } catch (error) {
       const message = error instanceof Error ? error.message : ERROR_MESSAGES.CALENDAR.SYNC_FAILED;
-      dispatch(calendarActions.setCalendarError(message));
+      dispatch(calendarSlice.actions.setCalendarError(message));
       return rejectWithValue(message);
     }
   }

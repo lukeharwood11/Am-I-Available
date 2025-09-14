@@ -11,7 +11,10 @@ Am I Available?
 
 ### Drafts
 - [ ] Ability to create a draft of a date (like a "todo")
+
+### Smart Scheduling
 - [ ] Ability to find a time for a draft
+- [ ] Take into account user preferences (work/school hours) via natural language
 
 ### Calendar Visibility
 - [ ] Ability to view upcoming events
@@ -19,4 +22,4 @@ Am I Available?
 ### Creating New Events
 - [ ] Ability to schedule new events using natural language
 - [ ] Ability to schedule new events using natural language with voice
-- [ ] Adding travel time to new events
+- [ ] Adding travel time to new events (hooks)

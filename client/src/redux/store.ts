@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { authReducer, calendarReducer } from './slices';
+import { authReducer, relationshipsReducer } from './slices';
+import calendarSlice from './slices/calendar.slice';
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
-    calendar: calendarReducer,
+    calendar: calendarSlice.reducer,
+    relationships: relationshipsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

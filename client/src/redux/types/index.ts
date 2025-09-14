@@ -1,6 +1,8 @@
 import { Session } from '@supabase/supabase-js';
 import { Recipe } from '../../types/recipe';
 
+export * from './relationships.types';
+
 // Auth State Types
 export interface AuthState {
   session: Session | null;

@@ -54,6 +54,4 @@ const calendarSlice = createSlice({
   },
 });
 
-export const calendarActions = { ...calendarSlice.actions };
-
-export default calendarSlice.reducer;
+export default calendarSlice;

@@ -27,6 +27,22 @@ export const ERROR_MESSAGES = {
     FETCH_EVENTS_FAILED: 'Failed to fetch calendar events.',
     SYNC_FAILED: 'Failed to sync with Google Calendar.',
   },
+  RELATIONSHIPS: {
+    CREATE_FAILED: 'Failed to create relationship.',
+    FETCH_FAILED: 'Failed to fetch relationships.',
+    UPDATE_FAILED: 'Failed to update relationship.',
+    DELETE_FAILED: 'Failed to delete relationship.',
+    APPROVE_FAILED: 'Failed to approve relationship.',
+    REJECT_FAILED: 'Failed to reject relationship.',
+  },
+  RELATIONSHIP_REQUESTS: {
+    CREATE_FAILED: 'Failed to create relationship request.',
+    FETCH_FAILED: 'Failed to fetch relationship requests.',
+    UPDATE_FAILED: 'Failed to update relationship request.',
+    DELETE_FAILED: 'Failed to delete relationship request.',
+    APPROVE_FAILED: 'Failed to approve relationship request.',
+    REJECT_FAILED: 'Failed to reject relationship request.',
+  },
   NETWORK: {
     CONNECTION_ERROR: 'Network connection error. Please check your internet connection.',
     SERVER_ERROR: 'Server error. Please try again later.',
