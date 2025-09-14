@@ -1,0 +1,47 @@
+name: Deploy Application
+
+on:
+  workflow_dispatch:
+  
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+
+  plan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1.7.0
+        with:
+          audience: sts.amazonaws.com
+          role-to-assume: arn:aws:iam::891612573605:role/github-oidc
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: us-east-2
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '23'
+          cache: 'yarn'
+      - name: Install Dependencies
+        run: yarn install
+      - name: Build
+        run: yarn build:prod
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.9.8"
+      - name: Terraform Init and Plan
+        run: |
+          cd terraform
+          terraform init
+          terraform plan -out=tf.plan -detailed-exitcode
+      - name: Show Plan Output
+        run: |
+          cd terraform
+          terraform show tf.plan
+      - name: Terraform Apply
+        run: |
+          cd terraform
+          terraform apply tf.plan

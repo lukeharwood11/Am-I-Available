@@ -24,7 +24,8 @@ provider "aws" {
   }
 }
 
-# Provider alias for us-east-1 (required for CloudFront certificates)
+# Provider alias for us-east-1 
+# (required for CloudFront certificates, since I'm dumb and decided to create the certificate in us-east-1)
 provider "aws" {
   alias  = "us_east_1"
   region = "us-east-1"
