@@ -28,7 +28,7 @@ jobs:
       - name: Install Dependencies
         run: yarn install
       - name: Build
-        run: yarn build
+        run: yarn build:prod
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: "1.9.8"

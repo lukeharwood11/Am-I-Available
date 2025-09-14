@@ -7,6 +7,10 @@ set -e
 BUCKET="s3://amiavailable.com"
 BUILD_DIR="dist"
 
+# Build the project with production environment
+echo "Building project with production configuration..."
+npm run build:prod
+
 # Check if build directory exists
 if [ ! -d "$BUILD_DIR" ]; then
     echo "Error: Build directory not found!"
