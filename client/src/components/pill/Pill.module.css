@@ -1,0 +1,99 @@
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: var(--border-radius-full);
+  font-weight: 400;
+  font-family: inherit;
+  white-space: nowrap;
+  transition: all 0.2s ease-in-out;
+  border: 1px solid transparent;
+}
+
+/* Sizes */
+.small {
+  padding: 4px 12px;
+  font-size: 12px;
+}
+
+.medium {
+  padding: 6px 16px;
+  font-size: 14px;
+}
+
+.large {
+  padding: 8px 20px;
+  font-size: 16px;
+}
+
+/* Primary Color Variants */
+.primary.filled {
+  background-color: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.primary.outlined {
+  background-color: transparent;
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.primary.outlined:hover {
+  background-color: var(--subtle-primary);
+}
+
+/* Secondary Color Variants */
+.secondary.filled {
+  background-color: var(--secondary);
+  color: white;
+  border-color: var(--secondary);
+}
+
+.secondary.outlined {
+  background-color: transparent;
+  color: var(--secondary);
+  border-color: var(--secondary);
+}
+
+.secondary.outlined:hover {
+  background-color: var(--subtle-secondary);
+}
+
+/* Danger Color Variants */
+.danger.filled {
+  background-color: var(--danger-red);
+  color: white;
+  border-color: var(--danger-red);
+}
+
+.danger.outlined {
+  background-color: transparent;
+  color: var(--danger-red);
+  border-color: var(--danger-red);
+}
+
+.danger.outlined:hover {
+  background-color: var(--subtle-danger);
+}
+
+/* Icon styling */
+.leftIcon, .rightIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.leftIcon {
+  margin-left: -2px;
+}
+
+.rightIcon {
+  margin-right: -2px;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+}

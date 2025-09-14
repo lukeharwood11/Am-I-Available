@@ -6,6 +6,7 @@
   border-radius: var(--border-radius-standard);
   background-color: white;
   transition: all 0.2s ease-in-out;
+  box-sizing: border-box;
 }
 
 .inputWrapper:focus-within {

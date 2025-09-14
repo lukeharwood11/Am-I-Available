@@ -7,6 +7,12 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+class DBUserData(BaseModel):
+    id: str
+    email: str
+    full_name: str
+
+
 class DBRelationshipRequestResponse(BaseModel):
     id: str
     requester_id: str
@@ -14,6 +20,14 @@ class DBRelationshipRequestResponse(BaseModel):
     status: str
     created_at: datetime
     updated_at: datetime
+
+class DBRelationshipRequestResponseWithUser(BaseModel):
+    id: str
+    requested_email: str
+    status: str
+    created_at: datetime
+    updated_at: datetime
+    requester: DBUserData
 
 
 class RelationshipRequestsDatabridge:
@@ -47,16 +61,32 @@ class RelationshipRequestsDatabridge:
     ) -> DBRelationshipRequestResponse | None:
         """Get a specific relationship request by ID"""
         try:
-            response = (
-                self.relationship_requests.select("*")
-                .eq("id", request_id)
-                .single()
-                .execute()
-            )
-            if not response.data:
+            response = self.supabase.rpc('get_relationship_request_with_user', {
+                'p_request_id': request_id
+            }).execute()
+            
+            if not response.data or len(response.data) == 0:
                 return None
 
-            return DBRelationshipRequestResponse(**response.data)
+            row = response.data[0]
+            
+            # Create the user data
+            user_data = DBUserData(
+                id=row['user_id'],
+                email=row['user_email'],
+                full_name=row['user_full_name']
+            )
+            
+            # Create the relationship request data
+            return DBRelationshipRequestResponse(
+                id=row['id'],
+                requester_id=row['requester_id'],
+                requested_email=row['requested_email'],
+                status=row['status'],
+                created_at=row['created_at'],
+                updated_at=row['updated_at'],
+                requester=user_data
+            )
         except Exception as e:
             logger.info(f"Error fetching relationship request: {e}")
             return None
@@ -66,39 +96,74 @@ class RelationshipRequestsDatabridge:
     ) -> list[DBRelationshipRequestResponse]:
         """Get all relationship requests sent by a user"""
         try:
-            query = self.relationship_requests.select("*").eq(
-                "requester_id", requester_id
-            )
-
-            if status:
-                query = query.eq("status", status)
-
-            response = query.execute()
+            response = self.supabase.rpc('get_sent_relationship_requests', {
+                'p_requester_id': requester_id,
+                'p_status': status
+            }).execute()
+            
             if not response.data:
                 return []
 
-            return [DBRelationshipRequestResponse(**item) for item in response.data]
+            result = []
+            for row in response.data:
+                # Create the user data
+                user_data = DBUserData(
+                    id=row['user_id'],
+                    email=row['user_email'],
+                    full_name=row['user_full_name']
+                )
+                
+                # Create the relationship request data
+                request_data = DBRelationshipRequestResponse(
+                    id=row['id'],
+                    requester_id=row['requester_id'],
+                    requested_email=row['requested_email'],
+                    status=row['status'],
+                    created_at=row['created_at'],
+                    updated_at=row['updated_at'],
+                    requester=user_data
+                )
+                result.append(request_data)
+
+            return result
         except Exception as e:
             logger.info(f"Error fetching sent relationship requests: {e}")
             return []
 
     async def get_received_relationship_requests(
         self, *, user_email: str, status: str | None = None
-    ) -> list[DBRelationshipRequestResponse]:
+    ) -> list[DBRelationshipRequestResponseWithUser]:
         """Get all relationship requests received by a user (by email)"""
         try:
-            query = self.relationship_requests.select("*").eq(
-                "requested_email", user_email
-            )
-
-            if status:
-                query = query.eq("status", status)
-
-            response = query.execute()
+            response = self.supabase.rpc('get_received_relationship_requests', {
+                'p_requested_email': user_email,
+                'p_status': status
+            }).execute()
+            
             if not response.data:
                 return []
 
-            return [DBRelationshipRequestResponse(**item) for item in response.data]
+            result = []
+            for row in response.data:
+                # Create the user data
+                user_data = DBUserData(
+                    id=row['user_id'],
+                    email=row['user_email'],
+                    full_name=row['user_full_name']
+                )
+                
+                # Create the relationship request data
+                request_data = DBRelationshipRequestResponseWithUser(
+                    id=row['id'],
+                    requested_email=row['requested_email'],
+                    status=row['status'],
+                    created_at=row['created_at'],
+                    updated_at=row['updated_at'],
+                    requester=user_data
+                )
+                result.append(request_data)
+
+            return result
         except Exception as e:
             logger.info(f"Error fetching received relationship requests: {e}")
             return []
@@ -108,6 +173,7 @@ class RelationshipRequestsDatabridge:
     ) -> DBRelationshipRequestResponse | None:
         """Update a relationship request status"""
         try:
+            # First update the record
             update_data = {"status": status, "updated_at": datetime.now().isoformat()}
 
             response = (
@@ -118,7 +184,8 @@ class RelationshipRequestsDatabridge:
             if not response.data:
                 return None
 
-            return DBRelationshipRequestResponse(**response.data[0])
+            # Then fetch the updated record with user data
+            return await self.get_relationship_request_by_id(request_id=request_id)
         except Exception as e:
             logger.info(f"Error updating relationship request: {e}")
             return None
@@ -153,3 +220,4 @@ class RelationshipRequestsDatabridge:
         except Exception as e:
             logger.info(f"Error checking existing request: {e}")
             return None
+

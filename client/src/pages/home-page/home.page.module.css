@@ -12,18 +12,22 @@
   align-items: center;
 }
 
+.requestsHeaderButtons {
+  display: flex;
+  gap: .5rem;
+}
+
 .centerContainer {
   width: min(100%, 900px);
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  justify-content: space-between;
 }
 
 .requests {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: .5rem;
 }
 
 .nlpContainer {
@@ -38,4 +42,17 @@
 
 .nlpInput {
   width: 100% !important
+}
+
+.requestCard {
+  display: flex;
+  flex-direction: row !important;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.requestCardButtons {
+  display: flex;
+  gap: .5rem;
 }

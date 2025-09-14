@@ -14,6 +14,7 @@ interface CardProps {
   footer?: React.ReactNode;
   hoverable?: boolean;
   style?: React.CSSProperties;
+  contentClassName?: string;
 }
 
 const Card: React.FC<CardProps> = ({
@@ -25,14 +26,16 @@ const Card: React.FC<CardProps> = ({
   header,
   footer,
   hoverable = false,
-  style
+  style,
+  contentClassName
 }) => {
   const cardClasses = [
     styles.card,
     styles[variant],
     styles[`padding-${padding}`],
     onClick || hoverable ? styles.interactive : '',
-    className
+    className,
+    contentClassName
   ].filter(Boolean).join(' ');
 
   const CardComponent = onClick ? 'button' : 'div';
@@ -50,7 +53,7 @@ const Card: React.FC<CardProps> = ({
         </div>
       )}
       
-      <div className={styles.content}>
+      <div className={`${styles.content} ${contentClassName}`}>
         {children}
       </div>
       

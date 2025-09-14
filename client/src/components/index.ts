@@ -40,3 +40,9 @@ export { default as Modal } from './modal/Modal';
 
 // Text components
 export * from './text';
+
+// Tabs components
+export * from './tabs';
+
+// Menu components
+export * from './menu';

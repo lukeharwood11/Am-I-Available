@@ -2,6 +2,8 @@ from pydantic import BaseModel, Field, EmailStr
 from datetime import datetime
 from typing import Literal
 
+import api.models.v1.users as users
+
 
 # ============================================================================
 # REQUEST MODELS
@@ -49,7 +51,16 @@ class RelationshipRequestData(BaseModel):
     """Core relationship request data model"""
 
     id: str = Field(description="Relationship request UUID")
-    requester_id: str = Field(description="UUID of the user who sent the request")
+    requester_id: str = Field(description="User ID who sent the request")
+    requested_email: str = Field(description="Email of the person being invited")
+    status: str = Field(description="Request status")
+    created_at: datetime = Field(description="When the request was created")
+    updated_at: datetime = Field(description="When the request was last updated")
+
+class RelationshipRequestDataWithUser(BaseModel):
+    """Relationship request data model with user data"""
+    id: str = Field(description="Relationship request UUID")
+    requester: users.UserData = Field(description="User who sent the request")
     requested_email: str = Field(description="Email of the person being invited")
     status: str = Field(description="Request status")
     created_at: datetime = Field(description="When the request was created")
@@ -66,9 +77,15 @@ class RelationshipRequestResponse(BaseModel):
 
 class RelationshipRequestsListResponse(BaseModel):
     """Response model for listing relationship requests"""
-
     status: str = "success"
     relationship_requests: list[RelationshipRequestData]
+    count: int
+    filters: dict[str, str] | None = None
+
+class RelationshipRequestsListResponseWithUser(BaseModel):
+    """Response model for listing relationship requests with user data"""
+    status: str = "success"
+    relationship_requests: list[RelationshipRequestDataWithUser]
     count: int
     filters: dict[str, str] | None = None
 

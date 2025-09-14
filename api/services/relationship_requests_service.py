@@ -2,6 +2,7 @@ from fastapi import HTTPException
 from ..databridge.relationship_requests_databridge import (
     RelationshipRequestsDatabridge,
     DBRelationshipRequestResponse,
+    DBRelationshipRequestResponseWithUser,
 )
 from ..models.v1.relationship_requests import (
     RelationshipRequestData,
@@ -9,8 +10,11 @@ from ..models.v1.relationship_requests import (
     RelationshipRequestUpdateResponse,
     RelationshipRequestDeleteResponse,
     RelationshipRequestsListResponse,
+    RelationshipRequestsListResponseWithUser,
     RelationshipRequestResponse,
+    RelationshipRequestDataWithUser,
 )
+import api.models.v1.users as users
 
 
 class RelationshipRequestsService:
@@ -18,17 +22,31 @@ class RelationshipRequestsService:
         self.databridge = databridge
 
     def _convert_db_to_model(
-        self, db_request: DBRelationshipRequestResponse
-    ) -> RelationshipRequestData:
+        self, db_request: DBRelationshipRequestResponse | DBRelationshipRequestResponseWithUser
+    ) -> RelationshipRequestData | RelationshipRequestDataWithUser:
         """Convert database response to API model"""
-        return RelationshipRequestData(
-            id=db_request.id,
-            requester_id=db_request.requester_id,
-            requested_email=db_request.requested_email,
-            status=db_request.status,
-            created_at=db_request.created_at,
-            updated_at=db_request.updated_at,
-        )
+        if isinstance(db_request, DBRelationshipRequestResponseWithUser):
+            return RelationshipRequestDataWithUser(
+                id=db_request.id,
+                requester=users.UserData(
+                    id=db_request.requester.id,
+                    full_name=db_request.requester.full_name,
+                    email=db_request.requester.email,
+                ),
+                requested_email=db_request.requested_email,
+                status=db_request.status,
+                created_at=db_request.created_at,
+                updated_at=db_request.updated_at,
+            )
+        else:
+            return RelationshipRequestData(
+                id=db_request.id,
+                requester_id=db_request.requester_id,
+                requested_email=db_request.requested_email,
+                status=db_request.status,
+                created_at=db_request.created_at,
+                updated_at=db_request.updated_at,
+            )
 
     async def create_relationship_request(
         self, *, requester_id: str, requester_email: str, requested_email: str
@@ -100,7 +118,7 @@ class RelationshipRequestsService:
 
     async def get_received_relationship_requests(
         self, *, user_email: str, status: str | None = None
-    ) -> RelationshipRequestsListResponse:
+    ) -> RelationshipRequestsListResponseWithUser:
         """Get all relationship requests received by a user (by email)"""
         db_requests = await self.databridge.get_received_relationship_requests(
             user_email=user_email, status=status
@@ -112,7 +130,7 @@ class RelationshipRequestsService:
         if status:
             filters["status"] = status
 
-        return RelationshipRequestsListResponse(
+        return RelationshipRequestsListResponseWithUser(
             relationship_requests=requests, count=len(requests), filters=filters
         )
 

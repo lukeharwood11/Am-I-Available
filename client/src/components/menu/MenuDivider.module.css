@@ -1,0 +1,6 @@
+/* Menu Divider */
+.menuDivider {
+  height: 1px;
+  background-color: var(--grey-200);
+  margin: 4px 0;
+}

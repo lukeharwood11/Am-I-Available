@@ -1,0 +1,95 @@
+/* Menu Container */
+.menuContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.menuContainer.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Trigger */
+.trigger {
+  cursor: pointer;
+  outline: none;
+}
+
+.trigger:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: var(--border-radius-standard);
+}
+
+/* Menu Dropdown */
+.menu {
+  position: absolute;
+  z-index: 1000;
+  min-width: 200px;
+  background: white;
+  border: 1px solid var(--grey-200);
+  border-radius: var(--border-radius-standard);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 4px;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  pointer-events: none;
+}
+
+.menu.open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Placement Variants */
+.menu.bottom-start {
+  top: calc(100% + var(--offset));
+  left: 0;
+}
+
+.menu.bottom-end {
+  top: calc(100% + var(--offset));
+  right: 0;
+}
+
+.menu.top-start {
+  bottom: calc(100% + var(--offset));
+  left: 0;
+  transform: translateY(8px);
+}
+
+.menu.top-start.open {
+  transform: translateY(0);
+}
+
+.menu.top-end {
+  bottom: calc(100% + var(--offset));
+  right: 0;
+  transform: translateY(8px);
+}
+
+.menu.top-end.open {
+  transform: translateY(0);
+}
+
+.menu.left {
+  top: 0;
+  right: calc(100% + var(--offset));
+  transform: translateX(8px);
+}
+
+.menu.left.open {
+  transform: translateX(0);
+}
+
+.menu.right {
+  top: 0;
+  left: calc(100% + var(--offset));
+  transform: translateX(-8px);
+}
+
+.menu.right.open {
+  transform: translateX(0);
+}

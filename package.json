@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --mode local",
     "build": "tsc && vite build",
     "build:prod": "tsc && vite build --mode prod",
     "preview": "vite preview",

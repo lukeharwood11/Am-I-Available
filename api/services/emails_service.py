@@ -4,6 +4,7 @@ from fastapi import HTTPException
 
 import api.models.v1.emails as emails
 
+
 def create_email_template(subject: str, body: str) -> str:
     """Create a styled HTML email template using the app's design system"""
     return f"""<!DOCTYPE html>
@@ -259,7 +260,7 @@ class EmailsService:
         try:
             # Create styled HTML email
             html_body = create_email_template(subject, body)
-            
+
             response = self.ses_client.send_email(
                 Source=f"{self.source_name} <{self.source_email}>",
                 Destination={"ToAddresses": to},
@@ -267,7 +268,7 @@ class EmailsService:
                     "Subject": {"Data": subject},
                     "Body": {
                         "Html": {"Data": html_body},
-                        "Text": {"Data": body}  # Keep plain text as fallback
+                        "Text": {"Data": body},  # Keep plain text as fallback
                     },
                 },
             )
