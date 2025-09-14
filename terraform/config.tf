@@ -1,0 +1,35 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+
+  backend "s3" {
+    bucket         = "lukeharwood-dev-tfstate"
+    key            = "prod/amia/terraform.tfstate"
+    region         = "us-east-2"
+    encrypt        = true
+    dynamodb_table = "lukeharwood-dev-tf-lock"
+  }
+}
+
+# Default provider for us-east-2
+provider "aws" {
+  region = "us-east-2"
+
+  default_tags {
+    tags = local.tags
+  }
+}
+
+# Provider alias for us-east-1 (required for CloudFront certificates)
+provider "aws" {
+  alias  = "us_east_1"
+  region = "us-east-1"
+
+  default_tags {
+    tags = local.tags
+  }
+}
