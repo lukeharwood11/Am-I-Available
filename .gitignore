@@ -23,8 +23,6 @@ yarn-error.log*
 
 # Environment variables
 .env
-.env.local
-.env.*.local
 
 # Build outputs
 dist/
@@ -41,7 +39,7 @@ storybook-static
 .branches/
 .migrations/
 .git/
-.env*
+supabase/**/*.env*
 volumes/
 
 # Terraform
