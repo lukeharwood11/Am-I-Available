@@ -53,6 +53,24 @@ resource "aws_route53_record" "amia_mail_from_mx" {
   records = ["10 feedback-smtp.${local.region}.amazonses.com"]
 }
 
+# SPF record for custom MAIL FROM domain
+resource "aws_route53_record" "amia_mail_from_spf" {
+  zone_id = data.aws_route53_zone.main.zone_id
+  name    = aws_ses_domain_mail_from.amia_domain_mail_from.mail_from_domain
+  type    = "TXT"
+  ttl     = "3600"
+  records = ["v=spf1 include:amazonses.com ~all"]
+}
+
+# DMARC record for main domain
+resource "aws_route53_record" "amia_dmarc" {
+  zone_id = data.aws_route53_zone.main.zone_id
+  name    = "_dmarc.${aws_ses_domain_identity.amia_domain_identity.domain}"
+  type    = "TXT"
+  ttl     = "3600"
+  records = ["v=DMARC1; p=quarantine; rua=mailto:dmarc@${aws_ses_domain_identity.amia_domain_identity.domain}; ruf=mailto:dmarc@${aws_ses_domain_identity.amia_domain_identity.domain}; fo=1"]
+}
+
 resource "aws_iam_policy" "amia_ses_policy" {
   name = "amia_ses_policy"
   policy = jsonencode({
