@@ -1,3 +1,5 @@
 export * from './api.hub';
 export * from './auth.hub';
 export * from './calendar.hub';
+export * from './relationships.hub';
+export * from './relationship-requests.hub';

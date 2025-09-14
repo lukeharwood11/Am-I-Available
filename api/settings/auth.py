@@ -15,7 +15,7 @@ class DebugHTTPBearer(HTTPBearer):
         super().__init__(**kwargs)
         
     async def __call__(self, request: Request) -> HTTPAuthorizationCredentials:
-        print("=== HTTPBearer.__call__ invoked ===")
+        logger.info("=== HTTPBearer.__call__ invoked ===")
         log.info("=== HTTPBearer.__call__ invoked ===")
         try:
             result = await super().__call__(request)
@@ -24,7 +24,7 @@ class DebugHTTPBearer(HTTPBearer):
         except Exception as e:
             log.error(f"HTTPBearer failed: {str(e)}")
             log.error(f"HTTPBearer exception type: {type(e)}")
-            print(f"DEBUG: HTTPBearer failed: {str(e)}")
+            logger.info(f"DEBUG: HTTPBearer failed: {str(e)}")
             raise
 
 

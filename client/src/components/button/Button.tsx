@@ -25,12 +25,16 @@ const Button: React.FC<ButtonProps> = ({
   disabled,
   ...props
 }) => {
+  const hasChildren = Boolean(children);
+  const isIconOnly = !hasChildren && !isLoading && (leftIcon || rightIcon);
+  
   const buttonClasses = [
     styles.button,
     styles[variant],
     styles[size],
     fullWidth ? styles.fullWidth : '',
     isLoading ? styles.loading : '',
+    isIconOnly ? styles.iconOnly : '',
     className
   ].filter(Boolean).join(' ');
 
@@ -46,7 +50,9 @@ const Button: React.FC<ButtonProps> = ({
       {!isLoading && leftIcon && (
         <span className={styles.leftIcon}>{leftIcon}</span>
       )}
-      <span className={styles.content}>{children}</span>
+      {hasChildren && (
+        <span className={styles.content}>{children}</span>
+      )}
       {!isLoading && rightIcon && (
         <span className={styles.rightIcon}>{rightIcon}</span>
       )}

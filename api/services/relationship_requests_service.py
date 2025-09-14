@@ -1,4 +1,4 @@
-from fastapi import Depends, HTTPException
+from fastapi import HTTPException
 from ..databridge.relationship_requests_databridge import RelationshipRequestsDatabridge, DBRelationshipRequestResponse
 from ..models.v1.relationship_requests import (
     RelationshipRequestData,
@@ -11,7 +11,7 @@ from ..models.v1.relationship_requests import (
 
 
 class RelationshipRequestsService:
-    def __init__(self, databridge: RelationshipRequestsDatabridge = Depends()):
+    def __init__(self, databridge: RelationshipRequestsDatabridge):
         self.databridge = databridge
     
     def _convert_db_to_model(self, db_request: DBRelationshipRequestResponse) -> RelationshipRequestData:
@@ -29,10 +29,17 @@ class RelationshipRequestsService:
         self, 
         *, 
         requester_id: str, 
+        requester_email: str,
         requested_email: str
     ) -> RelationshipRequestCreateResponse:
         """Create a new relationship request via email"""
         # Check if request already exists
+        if requester_email == requested_email:
+            raise HTTPException(
+                status_code=400, 
+                detail="Silly goose, you cannot send a relationship request to yourself"
+            )
+        
         existing = await self.databridge.check_existing_request(
             requester_id=requester_id, 
             requested_email=requested_email

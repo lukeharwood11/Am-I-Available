@@ -1,9 +1,10 @@
-from fastapi import Depends
 from ..settings.database import get_supabase_admin_client
 from supabase import Client
 from pydantic import BaseModel
 from datetime import datetime
+import logging
 
+logger = logging.getLogger(__name__)
 
 class DBEventRequestResponse(BaseModel):
     id: str
@@ -21,7 +22,7 @@ class DBEventRequestResponse(BaseModel):
 
 
 class EventRequestsDatabridge:
-    def __init__(self, supabase: Client = Depends(get_supabase_admin_client)):
+    def __init__(self, supabase: Client):
         self.supabase = supabase
         self.event_requests = self.supabase.table('event_requests')
     
@@ -58,7 +59,7 @@ class EventRequestsDatabridge:
             _data = response.data[0]
             return DBEventRequestResponse(**_data)
         except Exception as e:
-            print(f"Error creating event request: {e}")
+            logger.info(f"Error creating event request: {e}")
             return None
     
     async def get_event_request_by_id(self, *, event_request_id: str) -> DBEventRequestResponse | None:
@@ -70,7 +71,7 @@ class EventRequestsDatabridge:
             
             return DBEventRequestResponse(**response.data)
         except Exception as e:
-            print(f"Error fetching event request: {e}")
+            logger.info(f"Error fetching event request: {e}")
             return None
     
     async def get_user_event_requests(
@@ -101,7 +102,7 @@ class EventRequestsDatabridge:
             
             return [DBEventRequestResponse(**item) for item in response.data]
         except Exception as e:
-            print(f"Error fetching user event requests: {e}")
+            logger.info(f"Error fetching user event requests: {e}")
             return []
     
     async def get_all_event_requests(
@@ -134,7 +135,7 @@ class EventRequestsDatabridge:
             
             return [DBEventRequestResponse(**item) for item in response.data]
         except Exception as e:
-            print(f"Error fetching all event requests: {e}")
+            logger.info(f"Error fetching all event requests: {e}")
             return []
     
     async def update_event_request(
@@ -177,7 +178,7 @@ class EventRequestsDatabridge:
             
             return DBEventRequestResponse(**response.data[0])
         except Exception as e:
-            print(f"Error updating event request: {e}")
+            logger.info(f"Error updating event request: {e}")
             return None
     
     async def delete_event_request(self, *, event_request_id: str) -> bool:
@@ -186,7 +187,7 @@ class EventRequestsDatabridge:
             response = self.event_requests.delete().eq('id', event_request_id).execute()
             return response.data is not None and len(response.data) > 0
         except Exception as e:
-            print(f"Error deleting event request: {e}")
+            logger.info(f"Error deleting event request: {e}")
             return False
     
     async def get_event_request_by_google_id(self, *, google_event_id: str) -> DBEventRequestResponse | None:
@@ -198,5 +199,5 @@ class EventRequestsDatabridge:
             
             return DBEventRequestResponse(**response.data)
         except Exception as e:
-            print(f"Error fetching event request by Google ID: {e}")
+            logger.info(f"Error fetching event request by Google ID: {e}")
             return None

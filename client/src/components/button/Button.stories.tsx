@@ -152,4 +152,36 @@ export const FullWidth: Story = {
     size: 'medium',
     fullWidth: true,
   },
+};
+
+export const IconOnlyLeft: Story = {
+  args: {
+    variant: 'primary',
+    size: 'medium',
+    leftIcon: <MdPerson size={20} />,
+  },
+};
+
+export const IconOnlyRight: Story = {
+  args: {
+    variant: 'primary',
+    size: 'medium',
+    rightIcon: <MdAdd size={20} />,
+  },
+};
+
+export const IconOnlySmall: Story = {
+  args: {
+    variant: 'secondary',
+    size: 'small',
+    leftIcon: <MdAdd size={16} />,
+  },
+};
+
+export const IconOnlyLarge: Story = {
+  args: {
+    variant: 'alternate',
+    size: 'large',
+    rightIcon: <MdPerson size={24} />,
+  },
 }; 

@@ -1,10 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, Body
 from typing import Any
-import logging
 
 from api.settings.config import config
 from ...settings.auth import get_current_user_id
-from ...databridge.user_token_databridge import UserTokenDatabridge
+from ...dependencies import get_google_events_service
 from ...services.google_events_service import GoogleEventsService
 from ...models.v1.events import (
     EventListResponse,
@@ -21,22 +20,14 @@ from ...models.v1.events import (
     EventData
 )
 
-logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/google/events", tags=["Google Events"])
-
-
-def get_events_service(
-    user_token_databridge: UserTokenDatabridge = Depends(UserTokenDatabridge)
-) -> GoogleEventsService:
-    """Dependency to get events service instance"""
-    return GoogleEventsService(user_token_databridge)
 
 
 @router.get("/week", response_model=EventListResponse)
 async def get_current_week_events(
     user_id: str = Depends(get_current_user_id),
-    events_service: GoogleEventsService = Depends(get_events_service)
+    events_service: GoogleEventsService = Depends(get_google_events_service)
 ) -> EventListResponse:
     """
     Get calendar events for the current week
@@ -55,12 +46,6 @@ async def get_current_week_events(
         
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
-    except Exception as e:
-        logger.error(f"Error getting current week events: {str(e)}")
-        raise HTTPException(
-            status_code=500,
-            detail="Failed to retrieve current week events"
-        )
 
 
 @router.get("", response_model=EventListResponse)
@@ -71,7 +56,7 @@ async def list_calendar_events(
     max_results: int = Query(250, ge=1, le=2500, description="Maximum number of events"),
     query: str | None = Query(None, description="Text search query"),
     user_id: str = Depends(get_current_user_id),
-    events_service: GoogleEventsService = Depends(get_events_service)
+    events_service: GoogleEventsService = Depends(get_google_events_service)
 ) -> EventListResponse:
     """
     List calendar events with flexible filtering options
@@ -107,9 +92,6 @@ async def list_calendar_events(
         
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
-    except Exception as e:
-        logger.error(f"Error listing events: {str(e)}")
-        raise HTTPException(status_code=500, detail="Failed to list events")
 
 
 @router.get("/{event_id}", response_model=EventResponse)
@@ -117,7 +99,7 @@ async def get_event_by_id(
     event_id: str,
     calendar_id: str = Query("primary", description="Calendar ID"),
     user_id: str = Depends(get_current_user_id),
-    events_service: GoogleEventsService = Depends(get_events_service)
+    events_service: GoogleEventsService = Depends(get_google_events_service)
 ) -> EventResponse:
     """
     Get details for a specific calendar event
@@ -133,9 +115,6 @@ async def get_event_by_id(
         
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
-    except Exception as e:
-        logger.error(f"Error getting event {event_id}: {str(e)}")
-        raise HTTPException(status_code=500, detail="Failed to get event details")
 
 
 @router.post("", response_model=EventCreateResponse)
@@ -144,7 +123,7 @@ async def create_calendar_event(
     calendar_id: str = Query("primary", description="Calendar ID"),
     send_notifications: bool = Query(True, description="Send notifications to attendees"),
     user_id: str = Depends(get_current_user_id),
-    events_service: GoogleEventsService = Depends(get_events_service)
+    events_service: GoogleEventsService = Depends(get_google_events_service)
 ) -> EventCreateResponse:
     """
     Create a new calendar event
@@ -188,9 +167,6 @@ async def create_calendar_event(
         
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
-    except Exception as e:
-        logger.error(f"Error creating event: {str(e)}")
-        raise HTTPException(status_code=500, detail="Failed to create event")
 
 
 @router.put("/{event_id}", response_model=EventUpdateResponse)
@@ -200,7 +176,7 @@ async def update_calendar_event(
     calendar_id: str = Query("primary", description="Calendar ID"),
     send_notifications: bool = Query(True, description="Send notifications to attendees"),
     user_id: str = Depends(get_current_user_id),
-    events_service: GoogleEventsService = Depends(get_events_service)
+    events_service: GoogleEventsService = Depends(get_google_events_service)
 ) -> EventUpdateResponse:
     """
     Update an existing calendar event
@@ -220,9 +196,6 @@ async def update_calendar_event(
         
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
-    except Exception as e:
-        logger.error(f"Error updating event {event_id}: {str(e)}")
-        raise HTTPException(status_code=500, detail="Failed to update event")
 
 
 @router.delete("/{event_id}", response_model=EventDeleteResponse)
@@ -231,7 +204,7 @@ async def delete_calendar_event(
     calendar_id: str = Query("primary", description="Calendar ID"),
     send_notifications: bool = Query(True, description="Send notifications to attendees"),
     user_id: str = Depends(get_current_user_id),
-    events_service: GoogleEventsService = Depends(get_events_service)
+    events_service: GoogleEventsService = Depends(get_google_events_service)
 ) -> EventDeleteResponse:
     """
     Delete a calendar event
@@ -248,9 +221,6 @@ async def delete_calendar_event(
         
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
-    except Exception as e:
-        logger.error(f"Error deleting event {event_id}: {str(e)}")
-        raise HTTPException(status_code=500, detail="Failed to delete event")
 
 
 @router.get("/search", response_model=SearchEventsResponse)
@@ -261,7 +231,7 @@ async def search_calendar_events(
     time_min: str | None = Query(None, description="Lower time bound (RFC3339)"),
     time_max: str | None = Query(None, description="Upper time bound (RFC3339)"),
     user_id: str = Depends(get_current_user_id),
-    events_service: GoogleEventsService = Depends(get_events_service)
+    events_service: GoogleEventsService = Depends(get_google_events_service)
 ) -> SearchEventsResponse:
     """
     Search calendar events using text query
@@ -285,9 +255,6 @@ async def search_calendar_events(
         
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
-    except Exception as e:
-        logger.error(f"Error searching events: {str(e)}")
-        raise HTTPException(status_code=500, detail="Failed to search events")
 
 
 @router.post("/quick-add", response_model=QuickAddEventResponse)
@@ -296,7 +263,7 @@ async def quick_add_calendar_event(
     calendar_id: str = Query("primary", description="Calendar ID"),
     send_notifications: bool = Query(True, description="Send notifications"),
     user_id: str = Depends(get_current_user_id),
-    events_service: GoogleEventsService = Depends(get_events_service)
+    events_service: GoogleEventsService = Depends(get_google_events_service)
 ) -> QuickAddEventResponse:
     """
     Quickly add an event using natural language
@@ -320,9 +287,6 @@ async def quick_add_calendar_event(
         
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
-    except Exception as e:
-        logger.error(f"Error quick adding event: {str(e)}")
-        raise HTTPException(status_code=500, detail="Failed to quick add event")
 
 
 @router.post("/{event_id}/move", response_model=EventMoveResponse)
@@ -332,7 +296,7 @@ async def move_calendar_event(
     source_calendar_id: str = Query("primary", description="Source calendar ID"),
     send_notifications: bool = Query(True, description="Send notifications"),
     user_id: str = Depends(get_current_user_id),
-    events_service: GoogleEventsService = Depends(get_events_service)
+    events_service: GoogleEventsService = Depends(get_google_events_service)
 ) -> EventMoveResponse:
     """
     Move an event to a different calendar
@@ -358,16 +322,13 @@ async def move_calendar_event(
         
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
-    except Exception as e:
-        logger.error(f"Error moving event {event_id}: {str(e)}")
-        raise HTTPException(status_code=500, detail="Failed to move event")
 
 
 @router.get("/today", response_model=TodayEventsResponse)
 async def get_today_calendar_events(
     calendar_id: str = Query("primary", description="Calendar ID"),
     user_id: str = Depends(get_current_user_id),
-    events_service: GoogleEventsService = Depends(get_events_service)
+    events_service: GoogleEventsService = Depends(get_google_events_service)
 ) -> TodayEventsResponse:
     """
     Get events for today
@@ -385,9 +346,6 @@ async def get_today_calendar_events(
         
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
-    except Exception as e:
-        logger.error(f"Error getting today's events: {str(e)}")
-        raise HTTPException(status_code=500, detail="Failed to get today's events")
 
 
 @router.get("/upcoming", response_model=UpcomingEventsResponse)
@@ -395,7 +353,7 @@ async def get_upcoming_calendar_events(
     days_ahead: int = Query(7, ge=1, le=365, description="Number of days ahead"),
     calendar_id: str = Query("primary", description="Calendar ID"),
     user_id: str = Depends(get_current_user_id),
-    events_service: GoogleEventsService = Depends(get_events_service)
+    events_service: GoogleEventsService = Depends(get_google_events_service)
 ) -> UpcomingEventsResponse:
     """
     Get upcoming events for the next N days
@@ -415,9 +373,6 @@ async def get_upcoming_calendar_events(
         
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
-    except Exception as e:
-        logger.error(f"Error getting upcoming events: {str(e)}")
-        raise HTTPException(status_code=500, detail="Failed to get upcoming events")
 
 
 # ============================================================================
@@ -427,7 +382,7 @@ async def get_upcoming_calendar_events(
 @router.get("/calendars", response_model=CalendarListResponse)
 async def get_user_calendars(
     user_id: str = Depends(get_current_user_id),
-    events_service: GoogleEventsService = Depends(get_events_service)
+    events_service: GoogleEventsService = Depends(get_google_events_service)
 ) -> CalendarListResponse:
     """
     List all calendars accessible to the user
@@ -444,6 +399,3 @@ async def get_user_calendars(
         
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
-    except Exception as e:
-        logger.error(f"Error getting calendars: {str(e)}")
-        raise HTTPException(status_code=500, detail="Failed to get calendars")

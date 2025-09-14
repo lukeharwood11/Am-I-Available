@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { MdSave, MdClose, MdAdd, MdDelete } from 'react-icons/md';
+import { MdSave, MdClose } from 'react-icons/md';
 import Modal from '../modal/Modal';
 import Input from '../input/Input';
 import TextArea from '../textarea/TextArea';
 import Button from '../button/Button';
 import Select, { SelectOption } from '../select/Select';
 import { RecipeCreate, RecipeInstruction, RecipeInstructionType } from '../../types/recipe';
-import { useRecipeApi } from '../../hooks/useRecipeApi';
+// TODO: Implement useRecipeApi hook
+// import { useRecipeApi } from '../../hooks/useRecipeApi';
 import styles from './CreateRecipeModal.module.css';
 import { ErrorMessage } from '../error-message';
 
@@ -21,7 +22,13 @@ const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
   onClose,
   onRecipeCreated,
 }) => {
-  const { createRecipe, loading, error } = useRecipeApi();
+  // TODO: Implement recipe API
+  const createRecipe = async (recipe: any) => {
+    console.log('Creating recipe:', recipe);
+    return recipe;
+  };
+  const loading = false;
+  const error = null;
 
   const difficultyOptions: SelectOption[] = [
     { value: 'easy', label: 'Easy' },
@@ -174,7 +181,7 @@ const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
         </div>
 
         {error && (
-            <ErrorMessage>{error.message}</ErrorMessage>
+            <ErrorMessage>{error}</ErrorMessage>
         )}
 
         <div className={styles.formActions}>

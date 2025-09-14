@@ -62,21 +62,6 @@ const AnimatedLogo: React.FC<AnimatedLogoProps> = ({ onClick, className }) => {
     }
   };
 
-  const slideInVariants: Variants = {
-    hidden: {
-      opacity: 0,
-      x: -30,
-    },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        duration: 0.8,
-        ease: [0.25, 0.46, 0.45, 0.94],
-        delay: 0.2
-      }
-    }
-  };
 
   return (
     <motion.div 

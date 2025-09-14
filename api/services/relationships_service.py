@@ -1,4 +1,4 @@
-from fastapi import Depends, HTTPException
+from fastapi import HTTPException
 from ..databridge.relationships_databridge import RelationshipsDatabridge, DBRelationshipResponse
 from ..models.v1.relationships import (
     RelationshipData,
@@ -11,7 +11,7 @@ from ..models.v1.relationships import (
 
 
 class RelationshipsService:
-    def __init__(self, databridge: RelationshipsDatabridge = Depends()):
+    def __init__(self, databridge: RelationshipsDatabridge):
         self.databridge = databridge
     
     def _convert_db_to_model(self, db_relationship: DBRelationshipResponse) -> RelationshipData:
@@ -79,6 +79,7 @@ class RelationshipsService:
         user_id: str
     ) -> RelationshipsListResponse:
         """Get all relationships for a user with optional filters"""
+        print(self.databridge)
         db_relationships = await self.databridge.get_user_relationships(
             user_id=user_id
         )

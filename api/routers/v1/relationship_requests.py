@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from typing import Dict, Any
-import logging
 
 from ...settings.auth import get_current_user_id, get_current_user
+from ...dependencies import get_relationship_requests_service
 from ...services.relationship_requests_service import RelationshipRequestsService
 from ...models.v1.relationship_requests import (
     CreateRelationshipRequestRequest,
@@ -16,20 +16,14 @@ from ...models.v1.relationship_requests import (
     RelationshipRequestDeleteResponse
 )
 
-logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/relationship-requests", tags=["Relationship Requests"])
-
-
-def get_relationship_requests_service() -> RelationshipRequestsService:
-    """Dependency to get relationship requests service instance"""
-    return RelationshipRequestsService()
 
 
 @router.post("", response_model=RelationshipRequestCreateResponse)
 async def create_relationship_request(
     request: CreateRelationshipRequestRequest,
-    user_id: str = Depends(get_current_user_id),
+    user: str = Depends(get_current_user),
     service: RelationshipRequestsService = Depends(get_relationship_requests_service)
 ) -> RelationshipRequestCreateResponse:
     """
@@ -38,14 +32,11 @@ async def create_relationship_request(
     Returns:
         Created relationship request data
     """
-    try:
-        return await service.create_relationship_request(
-            requester_id=user_id,
-            requested_email=str(request.requested_email)
-        )
-    except Exception as e:
-        logger.error(f"Error creating relationship request: {str(e)}")
-        raise HTTPException(status_code=500, detail="Internal server error")
+    return await service.create_relationship_request(
+        requester_id=user["user_id"],
+        requester_email=str(user["email"]),
+        requested_email=str(request.requested_email)
+    )
 
 
 @router.get("/sent", response_model=RelationshipRequestsListResponse)
@@ -60,14 +51,10 @@ async def get_sent_relationship_requests(
     Returns:
         List of sent relationship requests
     """
-    try:
-        return await service.get_sent_relationship_requests(
-            requester_id=user_id,
-            status=status
-        )
-    except Exception as e:
-        logger.error(f"Error fetching sent relationship requests: {str(e)}")
-        raise HTTPException(status_code=500, detail="Internal server error")
+    return await service.get_sent_relationship_requests(
+        requester_id=user_id,
+        status=status
+    )
 
 
 @router.get("/received", response_model=RelationshipRequestsListResponse)
@@ -82,18 +69,14 @@ async def get_received_relationship_requests(
     Returns:
         List of received relationship requests
     """
-    try:
-        user_email = user_data.get("email")
-        if not user_email:
-            raise HTTPException(status_code=400, detail="User email not found")
-        
-        return await service.get_received_relationship_requests(
+    user_email = user_data.get("email")
+    if not user_email:
+        raise HTTPException(status_code=400, detail="User email not found")
+    
+    return await service.get_received_relationship_requests(
             user_email=user_email,
             status=status
         )
-    except Exception as e:
-        logger.error(f"Error fetching received relationship requests: {str(e)}")
-        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/{request_id}", response_model=RelationshipRequestResponse)
@@ -108,11 +91,7 @@ async def get_relationship_request(
     Returns:
         Relationship request data
     """
-    try:
-        return await service.get_relationship_request(request_id=request_id)
-    except Exception as e:
-        logger.error(f"Error fetching relationship request: {str(e)}")
-        raise HTTPException(status_code=500, detail="Internal server error")
+    return await service.get_relationship_request(request_id=request_id)
 
 
 @router.patch("/{request_id}", response_model=RelationshipRequestUpdateResponse)
@@ -128,22 +107,18 @@ async def update_relationship_request(
     Returns:
         Updated relationship request data
     """
-    try:
-        user_id = user_data.get("user_id")
-        user_email = user_data.get("email")
-        
-        if not user_id or not user_email:
-            raise HTTPException(status_code=400, detail="User data not found")
-        
-        return await service.update_relationship_request(
-            request_id=request_id,
-            user_id=user_id,
-            user_email=user_email,
-            status=request.status
-        )
-    except Exception as e:
-        logger.error(f"Error updating relationship request: {str(e)}")
-        raise HTTPException(status_code=500, detail="Internal server error")
+    user_id = user_data.get("user_id")
+    user_email = user_data.get("email")
+    
+    if not user_id or not user_email:
+        raise HTTPException(status_code=400, detail="User data not found")
+    
+    return await service.update_relationship_request(
+        request_id=request_id,
+        user_id=user_id,
+        user_email=user_email,
+        status=request.status
+    )
 
 
 @router.delete("/{request_id}", response_model=RelationshipRequestDeleteResponse)
@@ -158,21 +133,17 @@ async def delete_relationship_request(
     Returns:
         Deletion confirmation
     """
-    try:
-        user_id = user_data.get("user_id")
-        user_email = user_data.get("email")
-        
-        if not user_id or not user_email:
-            raise HTTPException(status_code=400, detail="User data not found")
-        
-        return await service.delete_relationship_request(
-            request_id=request_id,
-            user_id=user_id,
-            user_email=user_email
-        )
-    except Exception as e:
-        logger.error(f"Error deleting relationship request: {str(e)}")
-        raise HTTPException(status_code=500, detail="Internal server error")
+    user_id = user_data.get("user_id")
+    user_email = user_data.get("email")
+    
+    if not user_id or not user_email:
+        raise HTTPException(status_code=400, detail="User data not found")
+    
+    return await service.delete_relationship_request(
+        request_id=request_id,
+        user_id=user_id,
+        user_email=user_email
+    )
 
 
 @router.post("/{request_id}/approve", response_model=RelationshipRequestUpdateResponse)
@@ -187,21 +158,17 @@ async def approve_relationship_request(
     Returns:
         Updated relationship request data with approved status
     """
-    try:
-        user_id = user_data.get("user_id")
-        user_email = user_data.get("email")
-        
-        if not user_id or not user_email:
-            raise HTTPException(status_code=400, detail="User data not found")
-        
-        return await service.approve_relationship_request(
-            request_id=request_id,
-            user_id=user_id,
-            user_email=user_email
-        )
-    except Exception as e:
-        logger.error(f"Error approving relationship request: {str(e)}")
-        raise HTTPException(status_code=500, detail="Internal server error")
+    user_id = user_data.get("user_id")
+    user_email = user_data.get("email")
+    
+    if not user_id or not user_email:
+        raise HTTPException(status_code=400, detail="User data not found")
+    
+    return await service.approve_relationship_request(
+        request_id=request_id,
+        user_id=user_id,
+        user_email=user_email
+    )
 
 
 @router.post("/{request_id}/reject", response_model=RelationshipRequestUpdateResponse)
@@ -216,18 +183,14 @@ async def reject_relationship_request(
     Returns:
         Updated relationship request data with rejected status
     """
-    try:
-        user_id = user_data.get("user_id")
-        user_email = user_data.get("email")
-        
-        if not user_id or not user_email:
-            raise HTTPException(status_code=400, detail="User data not found")
-        
-        return await service.reject_relationship_request(
-            request_id=request_id,
-            user_id=user_id,
-            user_email=user_email
-        )
-    except Exception as e:
-        logger.error(f"Error rejecting relationship request: {str(e)}")
-        raise HTTPException(status_code=500, detail="Internal server error")
+    user_id = user_data.get("user_id")
+    user_email = user_data.get("email")
+    
+    if not user_id or not user_email:
+        raise HTTPException(status_code=400, detail="User data not found")
+    
+    return await service.reject_relationship_request(
+        request_id=request_id,
+        user_id=user_id,
+        user_email=user_email
+    )

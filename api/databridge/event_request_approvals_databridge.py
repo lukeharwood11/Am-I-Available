@@ -1,4 +1,3 @@
-from fastapi import Depends
 from ..settings.database import get_supabase_admin_client
 from supabase import Client
 from pydantic import BaseModel
@@ -18,7 +17,7 @@ class DBEventRequestApprovalResponse(BaseModel):
 
 
 class EventRequestApprovalsDatabridge:
-    def __init__(self, supabase: Client = Depends(get_supabase_admin_client)):
+    def __init__(self, supabase: Client):
         self.supabase = supabase
         self.event_request_approvals = self.supabase.table('event_request_approvals')
     

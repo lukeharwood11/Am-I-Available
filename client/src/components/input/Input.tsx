@@ -34,7 +34,8 @@ const Input: React.FC<InputProps> = ({
   const wrapperClasses = [
     styles.inputWrapper,
     styles[variant],
-    styles[size]
+    styles[size],
+    fullWidth ? styles.fullWidth : '',
   ].filter(Boolean).join(' ');
 
   return (

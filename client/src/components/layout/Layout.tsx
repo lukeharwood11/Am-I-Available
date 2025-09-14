@@ -7,9 +7,9 @@ const Layout: React.FC = () => {
   return (
     <div className={styles.layout}>
       <NavBar />
-      <main className={styles.content}>
+      <div className={styles.content}>
         <Outlet />
-      </main>
+      </div>
     </div>
   );
 };

@@ -135,6 +135,11 @@
   width: 100%;
 }
 
+/* Icon only buttons */
+.iconOnly {
+  gap: 0;
+}
+
 /* Loading state */
 .loading {
   cursor: wait;

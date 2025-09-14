@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Image.module.css';
-import { Icon, Logo } from '../icons';
+import { Icon } from '../icons';
 
 export type ImageSize = 'small' | 'medium' | 'large' | 'xlarge';
 export type ImageVariant = 'default' | 'rounded' | 'circle';

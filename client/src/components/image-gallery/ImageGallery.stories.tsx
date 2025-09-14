@@ -198,7 +198,7 @@ export const LargeImageGrid: Story = {
 
 export const SingleImage: Story = {
   args: {
-    images: [sampleImages[0]],
+    images: [sampleImages[0]!],
     variant: 'carousel',
     size: 'large',
     showCaptions: true,

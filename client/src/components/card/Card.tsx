@@ -13,6 +13,7 @@ interface CardProps {
   header?: React.ReactNode;
   footer?: React.ReactNode;
   hoverable?: boolean;
+  style?: React.CSSProperties;
 }
 
 const Card: React.FC<CardProps> = ({
@@ -23,7 +24,8 @@ const Card: React.FC<CardProps> = ({
   className,
   header,
   footer,
-  hoverable = false
+  hoverable = false,
+  style
 }) => {
   const cardClasses = [
     styles.card,
@@ -40,6 +42,7 @@ const Card: React.FC<CardProps> = ({
       className={cardClasses}
       onClick={onClick}
       type={onClick ? 'button' : undefined}
+      style={style}
     >
       {header && (
         <div className={styles.header}>

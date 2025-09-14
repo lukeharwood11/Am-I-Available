@@ -24,7 +24,7 @@ export const Default: Story = {};
 
 export const WithContent: Story = {
   decorators: [
-    (Story) => (
+    () => (
       <MemoryRouter>
         <div style={{ height: '100vh' }}>
           <Layout />

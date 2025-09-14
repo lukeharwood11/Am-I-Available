@@ -1,2 +1,2 @@
 // get calendar events from google calendar
-import axios from "axios";
+// TODO: Implement calendar API functionality

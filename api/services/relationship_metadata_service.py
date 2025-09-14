@@ -1,4 +1,4 @@
-from fastapi import Depends, HTTPException
+from fastapi import HTTPException
 from ..databridge.relationship_metadata_databridge import RelationshipMetadataDatabridge, DBRelationshipMetadataResponse
 from ..models.v1.relationship_metadata import (
     RelationshipMetadataData,
@@ -11,7 +11,7 @@ from ..models.v1.relationship_metadata import (
 
 
 class RelationshipMetadataService:
-    def __init__(self, databridge: RelationshipMetadataDatabridge = Depends()):
+    def __init__(self, databridge: RelationshipMetadataDatabridge):
         self.databridge = databridge
     
     def _convert_db_to_model(self, db_metadata: DBRelationshipMetadataResponse) -> RelationshipMetadataData:

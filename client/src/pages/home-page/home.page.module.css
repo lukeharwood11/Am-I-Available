@@ -1,9 +1,9 @@
 .homePage {
-  flex: 1;
-  background: linear-gradient(135deg, var(--primary-bg) 0%, var(--secondary-bg) 100%);
-  padding: 1rem;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  padding: 2rem;
+  background: linear-gradient(135deg, var(--primary-bg) 0%, var(--secondary-bg) 100%);
 }
 
 .requestsHeader {
@@ -12,111 +12,30 @@
   align-items: center;
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  text-align: center;
-  flex: 1;
+.centerContainer {
+  width: min(100%, 900px);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  gap: 1rem;
+  justify-content: space-between;
 }
 
-.title {
-  font-size: 3rem;
-  font-weight: 700;
-  color: var(--primary-dark);
-  margin: 0.5rem 0;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.subtitle {
-  font-size: 1.25rem;
-  color: var(--grey-600);
-  font-weight: 400;
-  margin: 0.5rem 0 1rem 0;
-}
-
-.cardContent {
+.requests {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
   gap: 1rem;
 }
 
-.iconContainer {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
+.nlpContainer {
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-bottom: 0.5rem;
-  transition: all 0.3s ease;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  margin-bottom: 2rem;
+  box-sizing: border-box;
 }
 
-.green .iconContainer {
-  background: var(--primary-accent);
-  color: var(--primary-dark);
-}
-
-.pink .iconContainer {
-  background: var(--secondary-accent);
-  color: var(--secondary-dark);
-}
-
-.menuCard:hover .iconContainer {
-  transform: scale(1.1);
-}
-
-.cardTitle {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--grey-800);
-  margin: 0;
-  line-height: 1.2;
-}
-
-.cardDescription {
-  font-size: 1rem;
-  color: var(--grey-600);
-  margin: 0;
-  line-height: 1.5;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-  .homePage {
-    padding: 1rem 0.5rem;
-  }
-  
-  .title {
-    font-size: 2.5rem;
-  }
-  
-  .subtitle {
-    font-size: 1.125rem;
-    margin-bottom: 2rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .title {
-    font-size: 2rem;
-  }
-  
-  .cardTitle {
-    font-size: 1.25rem;
-  }
-  
-  .iconContainer {
-    width: 64px;
-    height: 64px;
-  }
-  
-  .iconContainer svg {
-    width: 36px;
-    height: 36px;
-  }
+.nlpInput {
+  width: 100% !important
 }

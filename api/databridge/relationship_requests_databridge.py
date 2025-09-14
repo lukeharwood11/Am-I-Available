@@ -1,9 +1,10 @@
-from fastapi import Depends
 from ..settings.database import get_supabase_admin_client
 from supabase import Client
 from pydantic import BaseModel
 from datetime import datetime
+import logging
 
+logger = logging.getLogger(__name__)
 
 class DBRelationshipRequestResponse(BaseModel):
     id: str
@@ -15,7 +16,7 @@ class DBRelationshipRequestResponse(BaseModel):
 
 
 class RelationshipRequestsDatabridge:
-    def __init__(self, supabase: Client = Depends(get_supabase_admin_client)):
+    def __init__(self, supabase: Client):
         self.supabase = supabase
         self.relationship_requests = self.supabase.table('relationship_requests')
     
@@ -40,7 +41,7 @@ class RelationshipRequestsDatabridge:
             _data = response.data[0]
             return DBRelationshipRequestResponse(**_data)
         except Exception as e:
-            print(f"Error creating relationship request: {e}")
+            logger.info(f"Error creating relationship request: {e}")
             return None
     
     async def get_relationship_request_by_id(self, *, request_id: str) -> DBRelationshipRequestResponse | None:
@@ -52,7 +53,7 @@ class RelationshipRequestsDatabridge:
             
             return DBRelationshipRequestResponse(**response.data)
         except Exception as e:
-            print(f"Error fetching relationship request: {e}")
+            logger.info(f"Error fetching relationship request: {e}")
             return None
     
     async def get_sent_relationship_requests(
@@ -74,7 +75,7 @@ class RelationshipRequestsDatabridge:
             
             return [DBRelationshipRequestResponse(**item) for item in response.data]
         except Exception as e:
-            print(f"Error fetching sent relationship requests: {e}")
+            logger.info(f"Error fetching sent relationship requests: {e}")
             return []
     
     async def get_received_relationship_requests(
@@ -96,7 +97,7 @@ class RelationshipRequestsDatabridge:
             
             return [DBRelationshipRequestResponse(**item) for item in response.data]
         except Exception as e:
-            print(f"Error fetching received relationship requests: {e}")
+            logger.info(f"Error fetching received relationship requests: {e}")
             return []
     
     async def update_relationship_request(
@@ -118,7 +119,7 @@ class RelationshipRequestsDatabridge:
             
             return DBRelationshipRequestResponse(**response.data[0])
         except Exception as e:
-            print(f"Error updating relationship request: {e}")
+            logger.info(f"Error updating relationship request: {e}")
             return None
     
     async def delete_relationship_request(self, *, request_id: str) -> bool:
@@ -127,7 +128,7 @@ class RelationshipRequestsDatabridge:
             response = self.relationship_requests.delete().eq('id', request_id).execute()
             return response.data is not None and len(response.data) > 0
         except Exception as e:
-            print(f"Error deleting relationship request: {e}")
+            logger.info(f"Error deleting relationship request: {e}")
             return False
     
     async def check_existing_request(
@@ -145,5 +146,5 @@ class RelationshipRequestsDatabridge:
             
             return DBRelationshipRequestResponse(**response.data[0])
         except Exception as e:
-            print(f"Error checking existing request: {e}")
+            logger.info(f"Error checking existing request: {e}")
             return None

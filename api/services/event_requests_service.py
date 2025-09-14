@@ -1,4 +1,4 @@
-from fastapi import Depends, HTTPException
+from fastapi import HTTPException
 from datetime import datetime
 from ..databridge.event_requests_databridge import EventRequestsDatabridge, DBEventRequestResponse
 from ..models.v1.event_requests import (
@@ -12,7 +12,7 @@ from ..models.v1.event_requests import (
 
 
 class EventRequestsService:
-    def __init__(self, databridge: EventRequestsDatabridge = Depends()):
+    def __init__(self, databridge: EventRequestsDatabridge):
         self.databridge = databridge
     
     def _convert_db_to_model(self, db_request: DBEventRequestResponse) -> EventRequestData:

@@ -1,4 +1,4 @@
-from fastapi import Depends, HTTPException
+from fastapi import HTTPException
 from ..databridge.event_request_approvals_databridge import EventRequestApprovalsDatabridge, DBEventRequestApprovalResponse
 from ..models.v1.event_request_approvals import (
     EventRequestApprovalData,
@@ -11,7 +11,7 @@ from ..models.v1.event_request_approvals import (
 
 
 class EventRequestApprovalsService:
-    def __init__(self, databridge: EventRequestApprovalsDatabridge = Depends()):
+    def __init__(self, databridge: EventRequestApprovalsDatabridge):
         self.databridge = databridge
     
     def _convert_db_to_model(self, db_approval: DBEventRequestApprovalResponse) -> EventRequestApprovalData:

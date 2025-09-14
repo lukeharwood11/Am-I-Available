@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from typing import Dict, Any
-import logging
 
 from ...settings.auth import get_current_user_id, get_current_user
+from ...dependencies import get_relationships_service
 from ...services.relationships_service import RelationshipsService
 from ...models.v1.relationships import (
     CreateRelationshipRequest,
@@ -16,14 +16,8 @@ from ...models.v1.relationships import (
     RelationshipDeleteResponse
 )
 
-logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/relationships", tags=["Relationships"])
-
-
-def get_relationships_service() -> RelationshipsService:
-    """Dependency to get relationships service instance"""
-    return RelationshipsService()
 
 
 @router.post("", response_model=RelationshipCreateResponse)
@@ -38,21 +32,15 @@ async def create_relationship(
     Returns:
         Created relationship data
     """
-    try:
-        return await service.create_relationship(
-            user_id_1=user_id,
-            user_id_2=request.user_id_2,
-            relationship_type=request.relationship_type
-        )
-    except Exception as e:
-        logger.error(f"Error creating relationship: {str(e)}")
-        raise HTTPException(status_code=500, detail="Internal server error")
+    return await service.create_relationship(
+        user_id_1=user_id,
+        user_id_2=request.user_id_2,
+        relationship_type=request.relationship_type
+    )
 
 
 @router.get("", response_model=RelationshipsListResponse)
 async def get_user_relationships(
-    status: str | None = Query(None, description="Filter by relationship status"),
-    relationship_type: str | None = Query(None, description="Filter by relationship type"),
     user_id: str = Depends(get_current_user_id),
     service: RelationshipsService = Depends(get_relationships_service)
 ) -> RelationshipsListResponse:
@@ -62,15 +50,9 @@ async def get_user_relationships(
     Returns:
         List of user's relationships
     """
-    try:
-        return await service.get_user_relationships(
-            user_id=user_id,
-            status=status,
-            relationship_type=relationship_type
-        )
-    except Exception as e:
-        logger.error(f"Error fetching user relationships: {str(e)}")
-        raise HTTPException(status_code=500, detail="Internal server error")
+    return await service.get_user_relationships(
+        user_id=user_id,
+    )
 
 
 @router.get("/{relationship_id}", response_model=RelationshipResponse)
@@ -85,11 +67,7 @@ async def get_relationship(
     Returns:
         Relationship data
     """
-    try:
-        return await service.get_relationship(relationship_id=relationship_id)
-    except Exception as e:
-        logger.error(f"Error fetching relationship: {str(e)}")
-        raise HTTPException(status_code=500, detail="Internal server error")
+    return await service.get_relationship(relationship_id=relationship_id)
 
 
 @router.patch("/{relationship_id}", response_model=RelationshipUpdateResponse)
@@ -105,16 +83,12 @@ async def update_relationship(
     Returns:
         Updated relationship data
     """
-    try:
-        return await service.update_relationship(
-            relationship_id=relationship_id,
-            user_id=user_id,
-            relationship_type=request.relationship_type,
-            status=request.status
-        )
-    except Exception as e:
-        logger.error(f"Error updating relationship: {str(e)}")
-        raise HTTPException(status_code=500, detail="Internal server error")
+    return await service.update_relationship(
+        relationship_id=relationship_id,
+        user_id=user_id,
+        relationship_type=request.relationship_type,
+        status=request.status
+    )
 
 
 @router.delete("/{relationship_id}", response_model=RelationshipDeleteResponse)
@@ -129,14 +103,10 @@ async def delete_relationship(
     Returns:
         Deletion confirmation
     """
-    try:
-        return await service.delete_relationship(
-            relationship_id=relationship_id,
-            user_id=user_id
-        )
-    except Exception as e:
-        logger.error(f"Error deleting relationship: {str(e)}")
-        raise HTTPException(status_code=500, detail="Internal server error")
+    return await service.delete_relationship(
+        relationship_id=relationship_id,
+        user_id=user_id
+    )
 
 
 @router.post("/{relationship_id}/approve", response_model=RelationshipUpdateResponse)
@@ -151,14 +121,10 @@ async def approve_relationship(
     Returns:
         Updated relationship data with approved status
     """
-    try:
-        return await service.approve_relationship(
-            relationship_id=relationship_id,
-            user_id=user_id
-        )
-    except Exception as e:
-        logger.error(f"Error approving relationship: {str(e)}")
-        raise HTTPException(status_code=500, detail="Internal server error")
+    return await service.approve_relationship(
+        relationship_id=relationship_id,
+        user_id=user_id
+    )
 
 
 @router.post("/{relationship_id}/reject", response_model=RelationshipUpdateResponse)
@@ -173,11 +139,7 @@ async def reject_relationship(
     Returns:
         Updated relationship data with rejected status
     """
-    try:
-        return await service.reject_relationship(
-            relationship_id=relationship_id,
-            user_id=user_id
-        )
-    except Exception as e:
-        logger.error(f"Error rejecting relationship: {str(e)}")
-        raise HTTPException(status_code=500, detail="Internal server error")
+    return await service.reject_relationship(
+        relationship_id=relationship_id,
+        user_id=user_id
+    )

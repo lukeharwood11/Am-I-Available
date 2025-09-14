@@ -1,9 +1,10 @@
-from fastapi import Depends
 from ..settings.database import get_supabase_admin_client
 from supabase import Client
 from pydantic import BaseModel
 from datetime import datetime
+import logging
 
+logger = logging.getLogger(__name__)
 
 class DBRelationshipResponse(BaseModel):
     id: str
@@ -14,7 +15,7 @@ class DBRelationshipResponse(BaseModel):
 
 
 class RelationshipsDatabridge:
-    def __init__(self, supabase: Client = Depends(get_supabase_admin_client)):
+    def __init__(self, supabase: Client):
         self.supabase = supabase
         self.relationships = self.supabase.table('relationships')
     
@@ -38,7 +39,7 @@ class RelationshipsDatabridge:
             _data = response.data[0]
             return DBRelationshipResponse(**_data)
         except Exception as e:
-            print(f"Error creating relationship: {e}")
+            logger.info(f"Error creating relationship: {e}")
             return None
     
     async def get_relationship_by_id(self, *, relationship_id: str) -> DBRelationshipResponse | None:
@@ -50,7 +51,7 @@ class RelationshipsDatabridge:
             
             return DBRelationshipResponse(**response.data)
         except Exception as e:
-            print(f"Error fetching relationship: {e}")
+            logger.info(f"Error fetching relationship: {e}")
             return None
     
     async def get_user_relationships(
@@ -68,7 +69,7 @@ class RelationshipsDatabridge:
             
             return [DBRelationshipResponse(**item) for item in response.data]
         except Exception as e:
-            print(f"Error fetching user relationships: {e}")
+            logger.info(f"Error fetching user relationships: {e}")
             return []
     
     async def update_relationship(
@@ -86,7 +87,7 @@ class RelationshipsDatabridge:
             
             return DBRelationshipResponse(**response.data[0])
         except Exception as e:
-            print(f"Error updating relationship: {e}")
+            logger.info(f"Error updating relationship: {e}")
             return None
     
     async def delete_relationship(self, *, relationship_id: str) -> bool:
@@ -95,7 +96,7 @@ class RelationshipsDatabridge:
             response = self.relationships.delete().eq('id', relationship_id).execute()
             return response.data is not None and len(response.data) > 0
         except Exception as e:
-            print(f"Error deleting relationship: {e}")
+            logger.info(f"Error deleting relationship: {e}")
             return False
     
     async def check_existing_relationship(
@@ -116,5 +117,5 @@ class RelationshipsDatabridge:
             
             return DBRelationshipResponse(**response.data[0])
         except Exception as e:
-            print(f"Error checking existing relationship: {e}")
+            logger.info(f"Error checking existing relationship: {e}")
             return None

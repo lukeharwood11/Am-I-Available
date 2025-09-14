@@ -2,6 +2,7 @@ import React from 'react';
 import { MdClose } from 'react-icons/md';
 import styles from './Modal.module.css';
 import Button from '../button/Button';
+import Text from '../text/Text';
 
 interface ModalProps {
   isOpen: boolean;
@@ -44,7 +45,7 @@ const Modal: React.FC<ModalProps> = ({
       <div className={`${styles.modal} ${styles[size]}`}>
         {(title || showCloseButton) && (
           <div className={styles.header}>
-            {title && <h2 className={styles.title}>{title}</h2>}
+            {title && <Text variant='heading-small' className={styles.title}>{title}</Text>}
             {showCloseButton && (
               <Button
                 variant="secondary-subtle"

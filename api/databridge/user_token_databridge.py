@@ -1,14 +1,16 @@
-from fastapi import Depends
 from ..settings.database import get_supabase_admin_client
 from supabase import Client
 from pydantic import BaseModel
+import logging
+
+logger = logging.getLogger(__name__)
 
 class DBUserTokenResponse(BaseModel):
     google_access_token: str
     google_refresh_token: str
 
 class UserTokenDatabridge:
-    def __init__(self, supabase: Client = Depends(get_supabase_admin_client)):
+    def __init__(self, supabase: Client):
         self.supabase = supabase
         self.user_tokens = self.supabase.table('user_tokens')
     
@@ -24,5 +26,5 @@ class UserTokenDatabridge:
                 google_refresh_token=_data['google_refresh_token']
             )
         except Exception as e:
-            print(f"Error fetching user tokens: {e}")
+            logger.info(f"Error fetching user tokens: {e}")
             return None

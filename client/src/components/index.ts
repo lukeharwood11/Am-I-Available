@@ -37,3 +37,6 @@ export { default as NavBar } from './nav-bar/NavBar';
 
 // Modal components
 export { default as Modal } from './modal/Modal';
+
+// Text components
+export * from './text';

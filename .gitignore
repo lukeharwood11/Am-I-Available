@@ -43,3 +43,8 @@ storybook-static
 .git/
 .env*
 volumes/
+
+# Terraform
+.terraform
+.terraform.lock.hcl
+*.plan
