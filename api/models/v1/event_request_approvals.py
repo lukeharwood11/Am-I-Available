@@ -7,8 +7,10 @@ from typing import Literal
 # REQUEST MODELS
 # ============================================================================
 
+
 class CreateEventRequestApprovalRequest(BaseModel):
     """Request model for creating an event request approval"""
+
     event_request_id: str = Field(description="UUID of the event request")
     user_id: str = Field(description="UUID of the user who needs to approve")
     required: bool = Field(False, description="Whether this approval is required")
@@ -16,13 +18,19 @@ class CreateEventRequestApprovalRequest(BaseModel):
 
 class UpdateEventRequestApprovalRequest(BaseModel):
     """Request model for updating an event request approval"""
+
     approval_id: str = Field(description="UUID of the approval to update")
-    status: Literal["pending", "approved", "rejected"] = Field(description="Approval status")
-    response_notes: str | None = Field(None, description="Optional notes from the approver")
+    status: Literal["pending", "approved", "rejected"] = Field(
+        description="Approval status"
+    )
+    response_notes: str | None = Field(
+        None, description="Optional notes from the approver"
+    )
 
 
 class GetEventRequestApprovalsRequest(BaseModel):
     """Request model for getting event request approvals"""
+
     event_request_id: str | None = Field(None, description="Filter by event request ID")
     user_id: str | None = Field(None, description="Filter by user ID")
     status: Literal["pending", "approved", "rejected"] | None = Field(
@@ -33,6 +41,7 @@ class GetEventRequestApprovalsRequest(BaseModel):
 
 class DeleteEventRequestApprovalRequest(BaseModel):
     """Request model for deleting an event request approval"""
+
     approval_id: str = Field(description="UUID of the approval to delete")
 
 
@@ -40,8 +49,10 @@ class DeleteEventRequestApprovalRequest(BaseModel):
 # RESPONSE MODELS
 # ============================================================================
 
+
 class EventRequestApprovalData(BaseModel):
     """Core event request approval data model"""
+
     id: str = Field(description="Approval UUID")
     event_request_id: str = Field(description="UUID of the event request")
     user_id: str = Field(description="UUID of the user who needs to approve")
@@ -55,6 +66,7 @@ class EventRequestApprovalData(BaseModel):
 
 class EventRequestApprovalResponse(BaseModel):
     """Response model for single event request approval operations"""
+
     status: str = "success"
     event_request_approval: EventRequestApprovalData
     message: str | None = None
@@ -62,6 +74,7 @@ class EventRequestApprovalResponse(BaseModel):
 
 class EventRequestApprovalsListResponse(BaseModel):
     """Response model for listing event request approvals"""
+
     status: str = "success"
     event_request_approvals: list[EventRequestApprovalData]
     count: int
@@ -70,12 +83,14 @@ class EventRequestApprovalsListResponse(BaseModel):
 
 class EventRequestApprovalDeleteResponse(BaseModel):
     """Response model for event request approval deletion"""
+
     status: str = "success"
     message: str = "Event request approval deleted successfully"
 
 
 class EventRequestApprovalCreateResponse(BaseModel):
     """Response model for event request approval creation"""
+
     status: str = "success"
     event_request_approval: EventRequestApprovalData
     message: str = "Event request approval created successfully"
@@ -83,6 +98,7 @@ class EventRequestApprovalCreateResponse(BaseModel):
 
 class EventRequestApprovalUpdateResponse(BaseModel):
     """Response model for event request approval updates"""
+
     status: str = "success"
     event_request_approval: EventRequestApprovalData
     message: str = "Event request approval updated successfully"

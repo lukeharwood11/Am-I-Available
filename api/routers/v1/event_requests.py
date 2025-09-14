@@ -14,7 +14,7 @@ from ...models.v1.event_requests import (
     EventRequestsListResponse,
     EventRequestCreateResponse,
     EventRequestUpdateResponse,
-    EventRequestDeleteResponse
+    EventRequestDeleteResponse,
 )
 
 
@@ -25,11 +25,11 @@ router = APIRouter(prefix="/event-requests", tags=["Event Requests"])
 async def create_event_request(
     request: CreateEventRequestRequest,
     user_id: str = Depends(get_current_user_id),
-    service: EventRequestsService = Depends(get_event_requests_service)
+    service: EventRequestsService = Depends(get_event_requests_service),
 ) -> EventRequestCreateResponse:
     """
     Create a new event request
-    
+
     Returns:
         Created event request data
     """
@@ -41,22 +41,28 @@ async def create_event_request(
         end_date=request.end_date,
         importance_level=request.importance_level,
         notes=request.notes,
-        created_by=user_id
+        created_by=user_id,
     )
 
 
 @router.get("", response_model=EventRequestsListResponse)
 async def get_user_event_requests(
     status: str | None = Query(None, description="Filter by event request status"),
-    importance_level: int | None = Query(None, ge=1, le=5, description="Filter by importance level"),
-    start_date_from: datetime | None = Query(None, description="Filter events starting from this date"),
-    start_date_to: datetime | None = Query(None, description="Filter events starting before this date"),
+    importance_level: int | None = Query(
+        None, ge=1, le=5, description="Filter by importance level"
+    ),
+    start_date_from: datetime | None = Query(
+        None, description="Filter events starting from this date"
+    ),
+    start_date_to: datetime | None = Query(
+        None, description="Filter events starting before this date"
+    ),
     user_id: str = Depends(get_current_user_id),
-    service: EventRequestsService = Depends(get_event_requests_service)
+    service: EventRequestsService = Depends(get_event_requests_service),
 ) -> EventRequestsListResponse:
     """
     Get all event requests created by the current user with optional filters
-    
+
     Returns:
         List of user's event requests
     """
@@ -65,23 +71,29 @@ async def get_user_event_requests(
         status=status,
         importance_level=importance_level,
         start_date_from=start_date_from,
-        start_date_to=start_date_to
+        start_date_to=start_date_to,
     )
 
 
 @router.get("/all", response_model=EventRequestsListResponse)
 async def get_all_event_requests(
     status: str | None = Query(None, description="Filter by event request status"),
-    importance_level: int | None = Query(None, ge=1, le=5, description="Filter by importance level"),
-    start_date_from: datetime | None = Query(None, description="Filter events starting from this date"),
-    start_date_to: datetime | None = Query(None, description="Filter events starting before this date"),
+    importance_level: int | None = Query(
+        None, ge=1, le=5, description="Filter by importance level"
+    ),
+    start_date_from: datetime | None = Query(
+        None, description="Filter events starting from this date"
+    ),
+    start_date_to: datetime | None = Query(
+        None, description="Filter events starting before this date"
+    ),
     created_by: str | None = Query(None, description="Filter by creator user ID"),
     user_id: str = Depends(get_current_user_id),
-    service: EventRequestsService = Depends(get_event_requests_service)
+    service: EventRequestsService = Depends(get_event_requests_service),
 ) -> EventRequestsListResponse:
     """
     Get all event requests with optional filters (potentially for admin/system use)
-    
+
     Returns:
         List of event requests
     """
@@ -90,7 +102,7 @@ async def get_all_event_requests(
         importance_level=importance_level,
         start_date_from=start_date_from,
         start_date_to=start_date_to,
-        created_by=created_by
+        created_by=created_by,
     )
 
 
@@ -98,11 +110,11 @@ async def get_all_event_requests(
 async def get_event_request(
     event_request_id: str,
     user_id: str = Depends(get_current_user_id),
-    service: EventRequestsService = Depends(get_event_requests_service)
+    service: EventRequestsService = Depends(get_event_requests_service),
 ) -> EventRequestResponse:
     """
     Get a specific event request by ID
-    
+
     Returns:
         Event request data
     """
@@ -113,17 +125,15 @@ async def get_event_request(
 async def get_event_request_by_google_id(
     google_event_id: str,
     user_id: str = Depends(get_current_user_id),
-    service: EventRequestsService = Depends(get_event_requests_service)
+    service: EventRequestsService = Depends(get_event_requests_service),
 ) -> EventRequestResponse:
     """
     Get an event request by Google Calendar event ID
-    
+
     Returns:
         Event request data
     """
-    return await service.get_event_request_by_google_id(
-        google_event_id=google_event_id
-    )
+    return await service.get_event_request_by_google_id(google_event_id=google_event_id)
 
 
 @router.patch("/{event_request_id}", response_model=EventRequestUpdateResponse)
@@ -131,11 +141,11 @@ async def update_event_request(
     event_request_id: str,
     request: UpdateEventRequestRequest,
     user_id: str = Depends(get_current_user_id),
-    service: EventRequestsService = Depends(get_event_requests_service)
+    service: EventRequestsService = Depends(get_event_requests_service),
 ) -> EventRequestUpdateResponse:
     """
     Update an event request
-    
+
     Returns:
         Updated event request data
     """
@@ -149,7 +159,7 @@ async def update_event_request(
         end_date=request.end_date,
         importance_level=request.importance_level,
         status=request.status,
-        notes=request.notes
+        notes=request.notes,
     )
 
 
@@ -157,17 +167,16 @@ async def update_event_request(
 async def delete_event_request(
     event_request_id: str,
     user_id: str = Depends(get_current_user_id),
-    service: EventRequestsService = Depends(get_event_requests_service)
+    service: EventRequestsService = Depends(get_event_requests_service),
 ) -> EventRequestDeleteResponse:
     """
     Delete an event request
-    
+
     Returns:
         Deletion confirmation
     """
     return await service.delete_event_request(
-        event_request_id=event_request_id,
-        user_id=user_id
+        event_request_id=event_request_id, user_id=user_id
     )
 
 
@@ -175,17 +184,16 @@ async def delete_event_request(
 async def approve_event_request(
     event_request_id: str,
     user_id: str = Depends(get_current_user_id),
-    service: EventRequestsService = Depends(get_event_requests_service)
+    service: EventRequestsService = Depends(get_event_requests_service),
 ) -> EventRequestUpdateResponse:
     """
     Approve a pending event request
-    
+
     Returns:
         Updated event request data with approved status
     """
     return await service.approve_event_request(
-        event_request_id=event_request_id,
-        user_id=user_id
+        event_request_id=event_request_id, user_id=user_id
     )
 
 
@@ -193,15 +201,14 @@ async def approve_event_request(
 async def reject_event_request(
     event_request_id: str,
     user_id: str = Depends(get_current_user_id),
-    service: EventRequestsService = Depends(get_event_requests_service)
+    service: EventRequestsService = Depends(get_event_requests_service),
 ) -> EventRequestUpdateResponse:
     """
     Reject a pending event request
-    
+
     Returns:
         Updated event request data with rejected status
     """
     return await service.reject_event_request(
-        event_request_id=event_request_id,
-        user_id=user_id
+        event_request_id=event_request_id, user_id=user_id
     )

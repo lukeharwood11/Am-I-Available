@@ -94,7 +94,7 @@ const AnimatedLogo: React.FC<AnimatedLogoProps> = ({ onClick, className }) => {
           animate="visible"
           className={styles.word}
         >
-          I
+          /
         </motion.span>
         
         {/* Space after I */}

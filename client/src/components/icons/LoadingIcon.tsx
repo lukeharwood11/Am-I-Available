@@ -166,9 +166,18 @@ const LoadingIcon: React.FC<LoadingIconProps> = ({ size = 24, className }) => {
             {/* Background */}
             <rect x="20" y="20" width="160" height="160" rx="30" className="background"/>
 
-            {/* Letters (eyes) */}
-            <text x="70" y="100" className="letter c-letter">C</text>
-            <text x="130" y="100" className="letter g-letter">G</text>
+            {/* Eyes */}
+            {/* Left eye */}
+            <ellipse cx="70" cy="95" rx="25" ry="25" fill="white" className="c-letter"/>
+            <ellipse cx="70" cy="95" rx="18" ry="18" fill="#333" className="c-letter"/>
+            <ellipse cx="72" cy="79" rx="5" ry="5" fill="white" className="c-letter"/>
+            <ellipse cx="73" cy="77" rx="1" ry="2" fill="white" className="c-letter"/>
+            
+            {/* Right eye */}
+            <ellipse cx="130" cy="95" rx="25" ry="25" fill="white" className="g-letter"/>
+            <ellipse cx="130" cy="95" rx="18" ry="18" fill="#333" className="g-letter"/>
+            <ellipse cx="132" cy="79" rx="5" ry="5" fill="white" className="g-letter"/>
+            <ellipse cx="133" cy="77" rx="1" ry="2" fill="white" className="g-letter"/>
 
             {/* Mouth */}
             <path d="M 70 140 Q 100 160 130 140" className="mouth"/>

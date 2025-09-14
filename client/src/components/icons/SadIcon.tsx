@@ -49,9 +49,18 @@ const SadIcon: React.FC<SadIconProps> = ({ size = 24, className }) => {
             {/* Background shape */}
             <rect x="20" y="20" width="160" height="160" rx="30" fill="#FF6B6B"/>
             
-            {/* Letters */}
-            <text x="70" y="100" className="letter c-letter">C</text>
-            <text x="130" y="100" className="letter g-letter">G</text>
+            {/* Eyes */}
+            {/* Left eye */}
+            <ellipse cx="70" cy="95" rx="25" ry="25" fill="white"/>
+            <ellipse cx="70" cy="95" rx="18" ry="18" fill="#333"/>
+            <ellipse cx="72" cy="79" rx="5" ry="5" fill="white"/>
+            <ellipse cx="73" cy="77" rx="1" ry="2" fill="white"/>
+            
+            {/* Right eye */}
+            <ellipse cx="130" cy="95" rx="25" ry="25" fill="white"/>
+            <ellipse cx="130" cy="95" rx="18" ry="18" fill="#333"/>
+            <ellipse cx="132" cy="79" rx="5" ry="5" fill="white"/>
+            <ellipse cx="133" cy="77" rx="1" ry="2" fill="white"/>
             
             {/* Animated Frown */}
             <path className="frown" d="M 70 140 Q 100 140 130 140"/>

@@ -7,23 +7,30 @@ from typing import Literal
 # REQUEST MODELS
 # ============================================================================
 
+
 class CreateRelationshipRequest(BaseModel):
     """Request model for creating a new relationship"""
-    user_id_2: str = Field(description="UUID of the user being requested to connect with")
+
+    user_id_2: str = Field(
+        description="UUID of the user being requested to connect with"
+    )
 
 
 class UpdateRelationshipRequest(BaseModel):
     """Request model for updating a relationship"""
+
     relationship_id: str = Field(description="UUID of the relationship to update")
 
 
 class GetRelationshipsRequest(BaseModel):
     """Request model for getting user relationships"""
+
     pass
 
 
 class DeleteRelationshipRequest(BaseModel):
     """Request model for deleting a relationship"""
+
     relationship_id: str = Field(description="UUID of the relationship to delete")
 
 
@@ -31,8 +38,10 @@ class DeleteRelationshipRequest(BaseModel):
 # RESPONSE MODELS
 # ============================================================================
 
+
 class RelationshipData(BaseModel):
     """Core relationship data model"""
+
     id: str = Field(description="Relationship UUID")
     user_id_1: str = Field(description="UUID of the requester")
     user_id_2: str = Field(description="UUID of the requested user")
@@ -42,6 +51,7 @@ class RelationshipData(BaseModel):
 
 class RelationshipResponse(BaseModel):
     """Response model for single relationship operations"""
+
     status: str = "success"
     relationship: RelationshipData
     message: str | None = None
@@ -49,6 +59,7 @@ class RelationshipResponse(BaseModel):
 
 class RelationshipsListResponse(BaseModel):
     """Response model for listing relationships"""
+
     status: str = "success"
     relationships: list[RelationshipData]
     count: int
@@ -57,12 +68,14 @@ class RelationshipsListResponse(BaseModel):
 
 class RelationshipDeleteResponse(BaseModel):
     """Response model for relationship deletion"""
+
     status: str = "success"
     message: str = "Relationship deleted successfully"
 
 
 class RelationshipCreateResponse(BaseModel):
     """Response model for relationship creation"""
+
     status: str = "success"
     relationship: RelationshipData
     message: str = "Relationship created successfully"
@@ -70,6 +83,7 @@ class RelationshipCreateResponse(BaseModel):
 
 class RelationshipUpdateResponse(BaseModel):
     """Response model for relationship updates"""
+
     status: str = "success"
     relationship: RelationshipData
     message: str = "Relationship updated successfully"

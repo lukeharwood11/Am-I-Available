@@ -5,6 +5,7 @@ description = "Am I Available web application"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "boto3>=1.40.30",
     "fastapi[standard]",
     "google>=3.0.0",
     "google-api-python-client>=2.181.0",

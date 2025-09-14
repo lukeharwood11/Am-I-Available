@@ -10,12 +10,17 @@ resource "aws_ses_domain_identity_verification" "amia_domain_identity_verificati
   domain = aws_ses_domain_identity.amia_domain_identity.domain
 }
 
-resource "aws_route53_record" "amia_domain_identity_verification" {
-  zone_id = data.aws_route53_zone.main.zone_id
-  name    = aws_ses_domain_identity.amia_domain_identity.domain
-  type    = "TXT"
-  ttl     = "3600"
-  records = [aws_ses_domain_identity.amia_domain_identity.verification_token]
+# Combined TXT Record for SES Domain Verification and SPF
+resource "aws_route53_record" "amia_domain_txt" {
+  zone_id         = data.aws_route53_zone.main.zone_id
+  name            = aws_ses_domain_identity.amia_domain_identity.domain
+  type            = "TXT"
+  ttl             = "3600"
+  allow_overwrite = true
+  records = [
+    aws_ses_domain_identity.amia_domain_identity.verification_token,
+    "v=spf1 include:amazonses.com ~all"
+  ]
 }
 
 resource "aws_route53_record" "amia_domain_mx" {
@@ -24,14 +29,6 @@ resource "aws_route53_record" "amia_domain_mx" {
   type    = "MX"
   ttl     = "3600"
   records = ["10 feedback-smtp.us-east-2.amazonses.com"]
-}
-
-resource "aws_route53_record" "amia_domain_spf" {
-  zone_id = data.aws_route53_zone.main.zone_id
-  name    = aws_ses_domain_identity.amia_domain_identity.domain
-  type    = "TXT"
-  ttl     = "3600"
-  records = ["v=spf1 include:amazonses.com ~all"]
 }
 
 resource "aws_ses_domain_mail_from" "amia_domain_mail_from" {

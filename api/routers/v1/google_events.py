@@ -17,7 +17,7 @@ from ...models.v1.events import (
     TodayEventsResponse,
     UpcomingEventsResponse,
     CalendarListResponse,
-    EventData
+    EventData,
 )
 
 
@@ -27,23 +27,21 @@ router = APIRouter(prefix="/google/events", tags=["Google Events"])
 @router.get("/week", response_model=EventListResponse)
 async def get_current_week_events(
     user_id: str = Depends(get_current_user_id),
-    events_service: GoogleEventsService = Depends(get_google_events_service)
+    events_service: GoogleEventsService = Depends(get_google_events_service),
 ) -> EventListResponse:
     """
     Get calendar events for the current week
-    
+
     Returns:
         List of calendar events for current week (Monday to Sunday)
     """
     try:
         events = await events_service.get_current_week_events(user_id=user_id)
-        
+
         return EventListResponse(
-            events=events,
-            count=len(events),
-            period="current_week"
+            events=events, count=len(events), period="current_week"
         )
-        
+
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
@@ -51,16 +49,22 @@ async def get_current_week_events(
 @router.get("", response_model=EventListResponse)
 async def list_calendar_events(
     calendar_id: str = Query("primary", description="Calendar ID to query"),
-    time_min: str | None = Query(None, description="Lower bound for event start time (RFC3339)"),
-    time_max: str | None = Query(None, description="Upper bound for event end time (RFC3339)"),
-    max_results: int = Query(250, ge=1, le=2500, description="Maximum number of events"),
+    time_min: str | None = Query(
+        None, description="Lower bound for event start time (RFC3339)"
+    ),
+    time_max: str | None = Query(
+        None, description="Upper bound for event end time (RFC3339)"
+    ),
+    max_results: int = Query(
+        250, ge=1, le=2500, description="Maximum number of events"
+    ),
     query: str | None = Query(None, description="Text search query"),
     user_id: str = Depends(get_current_user_id),
-    events_service: GoogleEventsService = Depends(get_google_events_service)
+    events_service: GoogleEventsService = Depends(get_google_events_service),
 ) -> EventListResponse:
     """
     List calendar events with flexible filtering options
-    
+
     Query Parameters:
         - calendar_id: Calendar ID (default: "primary")
         - time_min: Start time filter (RFC3339 format)
@@ -75,9 +79,9 @@ async def list_calendar_events(
             time_min=time_min,
             time_max=time_max,
             max_results=max_results,
-            query=query
+            query=query,
         )
-        
+
         return EventListResponse(
             events=events,
             count=len(events),
@@ -86,10 +90,10 @@ async def list_calendar_events(
                 "time_min": time_min,
                 "time_max": time_max,
                 "max_results": max_results,
-                "query": query
-            }
+                "query": query,
+            },
         )
-        
+
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
@@ -99,20 +103,18 @@ async def get_event_by_id(
     event_id: str,
     calendar_id: str = Query("primary", description="Calendar ID"),
     user_id: str = Depends(get_current_user_id),
-    events_service: GoogleEventsService = Depends(get_google_events_service)
+    events_service: GoogleEventsService = Depends(get_google_events_service),
 ) -> EventResponse:
     """
     Get details for a specific calendar event
     """
     try:
         event = await events_service.get_event_by_id(
-            user_id=user_id,
-            event_id=event_id,
-            calendar_id=calendar_id
+            user_id=user_id, event_id=event_id, calendar_id=calendar_id
         )
-        
+
         return EventResponse(event=event)
-        
+
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
@@ -121,13 +123,15 @@ async def get_event_by_id(
 async def create_calendar_event(
     event_data: EventData = Body(..., description="Event data"),
     calendar_id: str = Query("primary", description="Calendar ID"),
-    send_notifications: bool = Query(True, description="Send notifications to attendees"),
+    send_notifications: bool = Query(
+        True, description="Send notifications to attendees"
+    ),
     user_id: str = Depends(get_current_user_id),
-    events_service: GoogleEventsService = Depends(get_google_events_service)
+    events_service: GoogleEventsService = Depends(get_google_events_service),
 ) -> EventCreateResponse:
     """
     Create a new calendar event
-    
+
     Request Body Example:
     {
         "summary": "Meeting with team",
@@ -158,13 +162,11 @@ async def create_calendar_event(
             user_id=user_id,
             event_data=event_data,
             calendar_id=calendar_id,
-            send_notifications=send_notifications
+            send_notifications=send_notifications,
         )
-        
-        return EventCreateResponse(
-            event=created_event
-        )
-        
+
+        return EventCreateResponse(event=created_event)
+
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
@@ -174,9 +176,11 @@ async def update_calendar_event(
     event_id: str,
     event_data: EventData = Body(..., description="Updated event data"),
     calendar_id: str = Query("primary", description="Calendar ID"),
-    send_notifications: bool = Query(True, description="Send notifications to attendees"),
+    send_notifications: bool = Query(
+        True, description="Send notifications to attendees"
+    ),
     user_id: str = Depends(get_current_user_id),
-    events_service: GoogleEventsService = Depends(get_google_events_service)
+    events_service: GoogleEventsService = Depends(get_google_events_service),
 ) -> EventUpdateResponse:
     """
     Update an existing calendar event
@@ -187,13 +191,11 @@ async def update_calendar_event(
             event_id=event_id,
             event_data=event_data,
             calendar_id=calendar_id,
-            send_notifications=send_notifications
+            send_notifications=send_notifications,
         )
-        
-        return EventUpdateResponse(
-            event=updated_event
-        )
-        
+
+        return EventUpdateResponse(event=updated_event)
+
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
@@ -202,9 +204,11 @@ async def update_calendar_event(
 async def delete_calendar_event(
     event_id: str,
     calendar_id: str = Query("primary", description="Calendar ID"),
-    send_notifications: bool = Query(True, description="Send notifications to attendees"),
+    send_notifications: bool = Query(
+        True, description="Send notifications to attendees"
+    ),
     user_id: str = Depends(get_current_user_id),
-    events_service: GoogleEventsService = Depends(get_google_events_service)
+    events_service: GoogleEventsService = Depends(get_google_events_service),
 ) -> EventDeleteResponse:
     """
     Delete a calendar event
@@ -214,11 +218,11 @@ async def delete_calendar_event(
             user_id=user_id,
             event_id=event_id,
             calendar_id=calendar_id,
-            send_notifications=send_notifications
+            send_notifications=send_notifications,
         )
-        
+
         return EventDeleteResponse()
-        
+
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
@@ -231,7 +235,7 @@ async def search_calendar_events(
     time_min: str | None = Query(None, description="Lower time bound (RFC3339)"),
     time_max: str | None = Query(None, description="Upper time bound (RFC3339)"),
     user_id: str = Depends(get_current_user_id),
-    events_service: GoogleEventsService = Depends(get_google_events_service)
+    events_service: GoogleEventsService = Depends(get_google_events_service),
 ) -> SearchEventsResponse:
     """
     Search calendar events using text query
@@ -243,16 +247,13 @@ async def search_calendar_events(
             calendar_id=calendar_id,
             max_results=max_results,
             time_min=time_min,
-            time_max=time_max
+            time_max=time_max,
         )
-        
+
         return SearchEventsResponse(
-            events=events,
-            count=len(events),
-            query=q,
-            calendar_id=calendar_id
+            events=events, count=len(events), query=q, calendar_id=calendar_id
         )
-        
+
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
@@ -263,11 +264,11 @@ async def quick_add_calendar_event(
     calendar_id: str = Query("primary", description="Calendar ID"),
     send_notifications: bool = Query(True, description="Send notifications"),
     user_id: str = Depends(get_current_user_id),
-    events_service: GoogleEventsService = Depends(get_google_events_service)
+    events_service: GoogleEventsService = Depends(get_google_events_service),
 ) -> QuickAddEventResponse:
     """
     Quickly add an event using natural language
-    
+
     Example request body:
     {
         "text": "Lunch with John tomorrow at 1pm"
@@ -278,13 +279,11 @@ async def quick_add_calendar_event(
             user_id=user_id,
             text=text,
             calendar_id=calendar_id,
-            send_notifications=send_notifications
+            send_notifications=send_notifications,
         )
-        
-        return QuickAddEventResponse(
-            event=created_event
-        )
-        
+
+        return QuickAddEventResponse(event=created_event)
+
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
@@ -292,15 +291,17 @@ async def quick_add_calendar_event(
 @router.post("/{event_id}/move", response_model=EventMoveResponse)
 async def move_calendar_event(
     event_id: str,
-    destination_calendar_id: str = Body(..., embed=True, description="Destination calendar ID"),
+    destination_calendar_id: str = Body(
+        ..., embed=True, description="Destination calendar ID"
+    ),
     source_calendar_id: str = Query("primary", description="Source calendar ID"),
     send_notifications: bool = Query(True, description="Send notifications"),
     user_id: str = Depends(get_current_user_id),
-    events_service: GoogleEventsService = Depends(get_google_events_service)
+    events_service: GoogleEventsService = Depends(get_google_events_service),
 ) -> EventMoveResponse:
     """
     Move an event to a different calendar
-    
+
     Example request body:
     {
         "destination_calendar_id": "calendar_id@group.calendar.google.com"
@@ -312,14 +313,13 @@ async def move_calendar_event(
             event_id=event_id,
             destination_calendar_id=destination_calendar_id,
             source_calendar_id=source_calendar_id,
-            send_notifications=send_notifications
+            send_notifications=send_notifications,
         )
-        
+
         return EventMoveResponse(
-            event=moved_event,
-            message=f"Event moved to {destination_calendar_id}"
+            event=moved_event, message=f"Event moved to {destination_calendar_id}"
         )
-        
+
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
@@ -328,22 +328,18 @@ async def move_calendar_event(
 async def get_today_calendar_events(
     calendar_id: str = Query("primary", description="Calendar ID"),
     user_id: str = Depends(get_current_user_id),
-    events_service: GoogleEventsService = Depends(get_google_events_service)
+    events_service: GoogleEventsService = Depends(get_google_events_service),
 ) -> TodayEventsResponse:
     """
     Get events for today
     """
     try:
         events = await events_service.get_today_calendar_events(
-            user_id=user_id,
-            calendar_id=calendar_id
+            user_id=user_id, calendar_id=calendar_id
         )
-        
-        return TodayEventsResponse(
-            events=events,
-            count=len(events)
-        )
-        
+
+        return TodayEventsResponse(events=events, count=len(events))
+
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
@@ -353,24 +349,20 @@ async def get_upcoming_calendar_events(
     days_ahead: int = Query(7, ge=1, le=365, description="Number of days ahead"),
     calendar_id: str = Query("primary", description="Calendar ID"),
     user_id: str = Depends(get_current_user_id),
-    events_service: GoogleEventsService = Depends(get_google_events_service)
+    events_service: GoogleEventsService = Depends(get_google_events_service),
 ) -> UpcomingEventsResponse:
     """
     Get upcoming events for the next N days
     """
     try:
         events = await events_service.get_upcoming_calendar_events(
-            user_id=user_id,
-            days_ahead=days_ahead,
-            calendar_id=calendar_id
+            user_id=user_id, days_ahead=days_ahead, calendar_id=calendar_id
         )
-        
+
         return UpcomingEventsResponse(
-            events=events,
-            count=len(events),
-            period=f"next_{days_ahead}_days"
+            events=events, count=len(events), period=f"next_{days_ahead}_days"
         )
-        
+
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
@@ -379,23 +371,19 @@ async def get_upcoming_calendar_events(
 # CALENDAR MANAGEMENT ENDPOINTS
 # ============================================================================
 
+
 @router.get("/calendars", response_model=CalendarListResponse)
 async def get_user_calendars(
     user_id: str = Depends(get_current_user_id),
-    events_service: GoogleEventsService = Depends(get_google_events_service)
+    events_service: GoogleEventsService = Depends(get_google_events_service),
 ) -> CalendarListResponse:
     """
     List all calendars accessible to the user
     """
     try:
-        calendars = await events_service.get_user_calendars(
-            user_id=user_id
-        )
-        
-        return CalendarListResponse(
-            calendars=calendars,
-            count=len(calendars)
-        )
-        
+        calendars = await events_service.get_user_calendars(user_id=user_id)
+
+        return CalendarListResponse(calendars=calendars, count=len(calendars))
+
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))

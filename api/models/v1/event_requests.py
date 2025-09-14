@@ -7,26 +7,39 @@ from typing import Literal
 # REQUEST MODELS
 # ============================================================================
 
+
 class CreateEventRequestRequest(BaseModel):
     """Request model for creating a new event request"""
-    google_event_id: str | None = Field(None, description="Google Calendar event ID if created from Google Calendar")
+
+    google_event_id: str | None = Field(
+        None, description="Google Calendar event ID if created from Google Calendar"
+    )
     location: str | None = Field(None, description="Event location")
     description: str | None = Field(None, description="Event description")
     start_date: datetime = Field(description="Event start date and time")
     end_date: datetime = Field(description="Event end date and time")
-    importance_level: int = Field(1, ge=1, le=5, description="Importance level from 1 (low) to 5 (critical)")
+    importance_level: int = Field(
+        1, ge=1, le=5, description="Importance level from 1 (low) to 5 (critical)"
+    )
     notes: str | None = Field(None, description="Additional notes for the event")
 
 
 class UpdateEventRequestRequest(BaseModel):
     """Request model for updating an event request"""
+
     event_request_id: str = Field(description="UUID of the event request to update")
     google_event_id: str | None = Field(None, description="Google Calendar event ID")
     location: str | None = Field(None, description="Updated event location")
     description: str | None = Field(None, description="Updated event description")
-    start_date: datetime | None = Field(None, description="Updated event start date and time")
-    end_date: datetime | None = Field(None, description="Updated event end date and time")
-    importance_level: int | None = Field(None, ge=1, le=5, description="Updated importance level")
+    start_date: datetime | None = Field(
+        None, description="Updated event start date and time"
+    )
+    end_date: datetime | None = Field(
+        None, description="Updated event end date and time"
+    )
+    importance_level: int | None = Field(
+        None, ge=1, le=5, description="Updated importance level"
+    )
     status: Literal["pending", "approved", "rejected"] | None = Field(
         None, description="Updated event request status"
     )
@@ -35,17 +48,25 @@ class UpdateEventRequestRequest(BaseModel):
 
 class GetEventRequestsRequest(BaseModel):
     """Request model for getting event requests"""
+
     status: Literal["pending", "approved", "rejected"] | None = Field(
         None, description="Filter by event request status"
     )
-    importance_level: int | None = Field(None, ge=1, le=5, description="Filter by importance level")
-    start_date_from: datetime | None = Field(None, description="Filter events starting from this date")
-    start_date_to: datetime | None = Field(None, description="Filter events starting before this date")
+    importance_level: int | None = Field(
+        None, ge=1, le=5, description="Filter by importance level"
+    )
+    start_date_from: datetime | None = Field(
+        None, description="Filter events starting from this date"
+    )
+    start_date_to: datetime | None = Field(
+        None, description="Filter events starting before this date"
+    )
     created_by: str | None = Field(None, description="Filter by creator user ID")
 
 
 class DeleteEventRequestRequest(BaseModel):
     """Request model for deleting an event request"""
+
     event_request_id: str = Field(description="UUID of the event request to delete")
 
 
@@ -53,8 +74,10 @@ class DeleteEventRequestRequest(BaseModel):
 # RESPONSE MODELS
 # ============================================================================
 
+
 class EventRequestData(BaseModel):
     """Core event request data model"""
+
     id: str = Field(description="Event request UUID")
     google_event_id: str | None = Field(description="Google Calendar event ID")
     location: str | None = Field(description="Event location")
@@ -71,6 +94,7 @@ class EventRequestData(BaseModel):
 
 class EventRequestResponse(BaseModel):
     """Response model for single event request operations"""
+
     status: str = "success"
     event_request: EventRequestData
     message: str | None = None
@@ -78,6 +102,7 @@ class EventRequestResponse(BaseModel):
 
 class EventRequestsListResponse(BaseModel):
     """Response model for listing event requests"""
+
     status: str = "success"
     event_requests: list[EventRequestData]
     count: int
@@ -86,12 +111,14 @@ class EventRequestsListResponse(BaseModel):
 
 class EventRequestDeleteResponse(BaseModel):
     """Response model for event request deletion"""
+
     status: str = "success"
     message: str = "Event request deleted successfully"
 
 
 class EventRequestCreateResponse(BaseModel):
     """Response model for event request creation"""
+
     status: str = "success"
     event_request: EventRequestData
     message: str = "Event request created successfully"
@@ -99,6 +126,7 @@ class EventRequestCreateResponse(BaseModel):
 
 class EventRequestUpdateResponse(BaseModel):
     """Response model for event request updates"""
+
     status: str = "success"
     event_request: EventRequestData
     message: str = "Event request updated successfully"

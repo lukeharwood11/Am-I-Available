@@ -12,7 +12,7 @@ import logging
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)
-log.info("Starting AmIA API...") 
+log.info("Starting AmIA API...")
 
 app = FastAPI(
     title="AmIA API",
@@ -21,8 +21,8 @@ app = FastAPI(
     openapi_tags=[],
     swagger_ui_init_oauth={
         "clientId": config.google.client_id,
-        "scopes": "email profile openid https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/calendar"
-    }
+        "scopes": "email profile openid https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/calendar",
+    },
 )
 
 
@@ -34,8 +34,8 @@ outh2_scheme = OAuth2AuthorizationCodeBearer(
         "email": "Email",
         "profile": "Profile",
         "https://www.googleapis.com/auth/gmail.modify": "Gmail Modify",
-        "https://www.googleapis.com/auth/calendar": "Calendar"
-    }
+        "https://www.googleapis.com/auth/calendar": "Calendar",
+    },
 )
 
 # Add CORS middleware
@@ -49,23 +49,26 @@ app.add_middleware(
 
 app.include_router(v1_router)
 
+
 @app.get("/")
 async def root():
     return {"message": "Welcome to AmIA API"}
 
+
 auth_templates = Jinja2Templates(directory="api/api_files")
+
+
 # static serve api_files/get_token.html
 @app.get("/auth")
 async def get_token(request: Request):
     return auth_templates.TemplateResponse(
-        "get_token.html", 
+        "get_token.html",
         {
             "request": request,
             "supabase_url": config.supabase.url,
-            "supabase_anon_key": config.supabase.anon_key
-        }
+            "supabase_anon_key": config.supabase.anon_key,
+        },
     )
-
 
 
 @app.get("/health")

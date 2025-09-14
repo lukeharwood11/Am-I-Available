@@ -5,6 +5,7 @@ from typing import Any
 
 class EventDateTime(BaseModel):
     """Represents date/time information for calendar events"""
+
     date_time: datetime | None = Field(None, alias="dateTime")
     date: str | None = None
     time_zone: str | None = Field(None, alias="timeZone")
@@ -12,6 +13,7 @@ class EventDateTime(BaseModel):
 
 class EventAttendee(BaseModel):
     """Represents an event attendee"""
+
     email: str
     display_name: str | None = Field(None, alias="displayName")
     response_status: str | None = Field(None, alias="responseStatus")
@@ -25,6 +27,7 @@ class EventAttendee(BaseModel):
 
 class EventCreator(BaseModel):
     """Represents event creator information"""
+
     email: str | None = None
     display_name: str | None = Field(None, alias="displayName")
     self_: bool = Field(False, alias="self")
@@ -32,6 +35,7 @@ class EventCreator(BaseModel):
 
 class EventOrganizer(BaseModel):
     """Represents event organizer information"""
+
     email: str | None = None
     display_name: str | None = Field(None, alias="displayName")
     self_: bool = Field(False, alias="self")
@@ -39,18 +43,21 @@ class EventOrganizer(BaseModel):
 
 class EventReminder(BaseModel):
     """Represents a single event reminder"""
+
     method: str  # "email" or "popup"
     minutes: int
 
 
 class EventReminders(BaseModel):
     """Represents event reminder settings"""
+
     use_default: bool = Field(True, alias="useDefault")
     overrides: list[EventReminder] = []
 
 
 class EventAttachment(BaseModel):
     """Represents an event attachment"""
+
     file_id: str = Field(alias="fileId")
     file_url: str = Field(alias="fileUrl")
     title: str
@@ -60,10 +67,13 @@ class EventAttachment(BaseModel):
 
 class ConferenceData(BaseModel):
     """Represents conference/meeting data"""
+
     conference_id: str | None = Field(None, alias="conferenceId")
     conference_solution: dict[str, Any] | None = Field(None, alias="conferenceSolution")
     create_request: dict[str, Any] | None = Field(None, alias="createRequest")
-    entry_points: list[dict[str, Any]] = Field(default_factory=list, alias="entryPoints")
+    entry_points: list[dict[str, Any]] = Field(
+        default_factory=list, alias="entryPoints"
+    )
     notes: str | None = None
     parameters: dict[str, Any] | None = None
     signature: str | None = None
@@ -71,6 +81,7 @@ class ConferenceData(BaseModel):
 
 class CalendarEvent(BaseModel):
     """Represents a Google Calendar event"""
+
     id: str | None = None
     etag: str | None = None
     summary: str = "No title"
@@ -96,7 +107,7 @@ class CalendarEvent(BaseModel):
     event_type: str | None = Field(None, alias="eventType")
     recurring_event_id: str | None = Field(None, alias="recurringEventId")
     i_cal_uid: str | None = Field(None, alias="iCalUID")
-    
+
     class Config:
         validate_by_name = True
         populate_by_name = True
@@ -104,6 +115,7 @@ class CalendarEvent(BaseModel):
 
 class CalendarInfo(BaseModel):
     """Represents calendar information"""
+
     id: str
     summary: str | None = None
     description: str | None = None
@@ -116,10 +128,14 @@ class CalendarInfo(BaseModel):
     time_zone: str | None = Field(None, alias="timeZone")
     hidden: bool = False
     deleted: bool = False
-    notification_settings: dict[str, Any] | None = Field(None, alias="notificationSettings")
+    notification_settings: dict[str, Any] | None = Field(
+        None, alias="notificationSettings"
+    )
     summary_override: str | None = Field(None, alias="summaryOverride")
-    default_reminders: list[EventReminder] = Field(default_factory=list, alias="defaultReminders")
-    
+    default_reminders: list[EventReminder] = Field(
+        default_factory=list, alias="defaultReminders"
+    )
+
     class Config:
         validate_by_name = True
         populate_by_name = True
@@ -127,6 +143,7 @@ class CalendarInfo(BaseModel):
 
 class EventListResponse(BaseModel):
     """Response model for event list operations"""
+
     status: str = "success"
     events: list[CalendarEvent]
     count: int
@@ -138,6 +155,7 @@ class EventListResponse(BaseModel):
 
 class EventResponse(BaseModel):
     """Response model for single event operations"""
+
     status: str = "success"
     event: CalendarEvent
     message: str | None = None
@@ -145,6 +163,7 @@ class EventResponse(BaseModel):
 
 class CalendarListResponse(BaseModel):
     """Response model for calendar list operations"""
+
     status: str = "success"
     calendars: list[CalendarInfo]
     count: int
@@ -152,12 +171,14 @@ class CalendarListResponse(BaseModel):
 
 class EventDeleteResponse(BaseModel):
     """Response model for event deletion"""
+
     status: str = "success"
     message: str = "Event deleted successfully"
 
 
 class EventMoveResponse(BaseModel):
     """Response model for event move operations"""
+
     status: str = "success"
     event: CalendarEvent
     message: str

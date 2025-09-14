@@ -1,6 +1,14 @@
 from fastapi import APIRouter, Depends
+from pydantic import BaseModel
 from api.settings import auth
-from api.routers.v1 import events, google_events, relationships, relationship_requests, event_requests
+from api.routers.v1 import (
+    events,
+    google_events,
+    relationships,
+    relationship_requests,
+    event_requests,
+    emails,
+)
 
 protected_router = APIRouter(
     dependencies=[Depends(auth.verify_jwt)],
@@ -11,6 +19,7 @@ protected_router.include_router(google_events.router)
 protected_router.include_router(relationships.router)
 protected_router.include_router(relationship_requests.router)
 protected_router.include_router(event_requests.router)
+protected_router.include_router(emails.router)
 
 unprotected_router = APIRouter()
 
@@ -21,4 +30,3 @@ v1_router = APIRouter(prefix="/api/v1")
 
 v1_router.include_router(unprotected_router)
 v1_router.include_router(protected_router)
-

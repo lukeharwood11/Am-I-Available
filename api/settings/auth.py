@@ -8,22 +8,23 @@ from .config import config
 
 import logging
 
-log = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
+
 
 class DebugHTTPBearer(HTTPBearer):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        
+
     async def __call__(self, request: Request) -> HTTPAuthorizationCredentials:
         logger.info("=== HTTPBearer.__call__ invoked ===")
-        log.info("=== HTTPBearer.__call__ invoked ===")
+        logger.info("=== HTTPBearer.__call__ invoked ===")
         try:
             result = await super().__call__(request)
-            log.info(f"HTTPBearer success, got credentials: {result}")
+            logger.info(f"HTTPBearer success, got credentials: {result}")
             return result
         except Exception as e:
-            log.error(f"HTTPBearer failed: {str(e)}")
-            log.error(f"HTTPBearer exception type: {type(e)}")
+            logger.error(f"HTTPBearer failed: {str(e)}")
+            logger.error(f"HTTPBearer exception type: {type(e)}")
             logger.info(f"DEBUG: HTTPBearer failed: {str(e)}")
             raise
 
@@ -57,10 +58,10 @@ async def verify_jwt(
             "email": response.user.email,
             "user": response.user,
         }
-        
+
         # Cache the user data in request state
         setattr(request.state, cache_key, user_data)
-        
+
         return user_data
 
     except Exception as e:
