@@ -15,6 +15,22 @@ class DBRelationshipResponse(BaseModel):
     updated_at: datetime
 
 
+class DBRelationshipWithUserResponse(BaseModel):
+    id: str
+    user_id_1: str
+    user_id_2: str
+    created_at: datetime
+    updated_at: datetime
+    other_user_id: str
+    other_user_email: str
+    other_user_full_name: str
+
+
+class DBRelationshipsListResponse(BaseModel):
+    relationships: list[DBRelationshipWithUserResponse]
+    total_count: int
+
+
 class RelationshipsDatabridge:
     def __init__(self, supabase: Client):
         self.supabase = supabase
@@ -40,7 +56,7 @@ class RelationshipsDatabridge:
     async def get_relationship_by_id(
         self, *, relationship_id: str
     ) -> DBRelationshipResponse | None:
-        """Get a specific relationship by ID"""
+        """Get a specific relationship by ID (legacy method for backward compatibility)"""
         try:
             response = (
                 self.relationships.select("*")
@@ -56,10 +72,31 @@ class RelationshipsDatabridge:
             logger.info(f"Error fetching relationship: {e}")
             return None
 
+    async def get_relationship_by_id_with_user(
+        self, *, relationship_id: str, current_user_id: str
+    ) -> DBRelationshipWithUserResponse | None:
+        """Get a specific relationship by ID with other user data"""
+        try:
+            response = self.supabase.rpc(
+                "get_relationship_by_id_with_user",
+                {
+                    "p_relationship_id": relationship_id,
+                    "p_current_user_id": current_user_id,
+                }
+            ).execute()
+            
+            if not response.data:
+                return None
+
+            return DBRelationshipWithUserResponse(**response.data[0])
+        except Exception as e:
+            logger.info(f"Error fetching relationship with user: {e}")
+            return None
+
     async def get_user_relationships(
         self, *, user_id: str
     ) -> list[DBRelationshipResponse]:
-        """Get all relationships for a user with optional filters"""
+        """Get all relationships for a user (legacy method for backward compatibility)"""
         try:
             query = self.relationships.select("*").or_(
                 f"user_id_1.eq.{user_id},user_id_2.eq.{user_id}"
@@ -73,6 +110,38 @@ class RelationshipsDatabridge:
         except Exception as e:
             logger.info(f"Error fetching user relationships: {e}")
             return []
+
+    async def get_user_relationships_with_users(
+        self, *, user_id: str, skip: int = 0, take: int = 10
+    ) -> DBRelationshipsListResponse:
+        """Get relationships for a user with other user data and pagination"""
+        try:
+            response = self.supabase.rpc(
+                "get_user_relationships",
+                {
+                    "p_user_id": user_id,
+                    "p_skip": skip,
+                    "p_take": take,
+                }
+            ).execute()
+            
+            if not response.data:
+                return DBRelationshipsListResponse(relationships=[], total_count=0)
+
+            relationships = []
+            total_count = 0
+            
+            for item in response.data:
+                relationships.append(DBRelationshipWithUserResponse(**item))
+                total_count = item.get("total_count", 0)
+            
+            return DBRelationshipsListResponse(
+                relationships=relationships,
+                total_count=total_count
+            )
+        except Exception as e:
+            logger.info(f"Error fetching user relationships with users: {e}")
+            return DBRelationshipsListResponse(relationships=[], total_count=0)
 
     async def update_relationship(
         self, *, relationship_id: str

@@ -1,0 +1,10 @@
+.logo {
+  display: inline-block;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  color: currentColor;
+  margin: 0;
+  line-height: 1;
+  user-select: none;
+}

@@ -2,6 +2,8 @@ from fastapi import HTTPException
 from ..databridge.relationships_databridge import (
     RelationshipsDatabridge,
     DBRelationshipResponse,
+    DBRelationshipWithUserResponse,
+    DBRelationshipsListResponse,
 )
 from ..models.v1.relationships import (
     RelationshipData,
@@ -10,6 +12,10 @@ from ..models.v1.relationships import (
     RelationshipDeleteResponse,
     RelationshipsListResponse,
     RelationshipResponse,
+    RelationshipWithUserData,
+    RelationshipWithUserResponse,
+    RelationshipsWithUsersListResponse,
+    UserData,
 )
 
 
@@ -27,6 +33,23 @@ class RelationshipsService:
             user_id_2=db_relationship.user_id_2,
             created_at=db_relationship.created_at,
             updated_at=db_relationship.updated_at,
+        )
+
+    def _convert_db_with_user_to_model(
+        self, db_relationship: DBRelationshipWithUserResponse
+    ) -> RelationshipWithUserData:
+        """Convert database response with user data to API model"""
+        return RelationshipWithUserData(
+            id=db_relationship.id,
+            user_id_1=db_relationship.user_id_1,
+            user_id_2=db_relationship.user_id_2,
+            created_at=db_relationship.created_at,
+            updated_at=db_relationship.updated_at,
+            other_user=UserData(
+                id=db_relationship.other_user_id,
+                email=db_relationship.other_user_email,
+                full_name=db_relationship.other_user_full_name,
+            )
         )
 
     async def create_relationship(
@@ -56,7 +79,7 @@ class RelationshipsService:
         return RelationshipCreateResponse(relationship=relationship_data)
 
     async def get_relationship(self, *, relationship_id: str) -> RelationshipResponse:
-        """Get a specific relationship by ID"""
+        """Get a specific relationship by ID (legacy method)"""
         db_relationship = await self.databridge.get_relationship_by_id(
             relationship_id=relationship_id
         )
@@ -67,10 +90,24 @@ class RelationshipsService:
         relationship_data = self._convert_db_to_model(db_relationship)
         return RelationshipResponse(relationship=relationship_data)
 
+    async def get_relationship_with_user(
+        self, *, relationship_id: str, current_user_id: str
+    ) -> RelationshipWithUserResponse:
+        """Get a specific relationship by ID with other user data"""
+        db_relationship = await self.databridge.get_relationship_by_id_with_user(
+            relationship_id=relationship_id, current_user_id=current_user_id
+        )
+
+        if not db_relationship:
+            raise HTTPException(status_code=404, detail="Relationship not found")
+
+        relationship_data = self._convert_db_with_user_to_model(db_relationship)
+        return RelationshipWithUserResponse(relationship=relationship_data)
+
     async def get_user_relationships(
         self, *, user_id: str
     ) -> RelationshipsListResponse:
-        """Get all relationships for a user with optional filters"""
+        """Get all relationships for a user (legacy method)"""
         print(self.databridge)
         db_relationships = await self.databridge.get_user_relationships(user_id=user_id)
 
@@ -78,6 +115,25 @@ class RelationshipsService:
 
         return RelationshipsListResponse(
             relationships=relationships, count=len(relationships), filters=None
+        )
+
+    async def get_user_relationships_with_users(
+        self, *, user_id: str, skip: int = 0, take: int = 10
+    ) -> RelationshipsWithUsersListResponse:
+        """Get relationships for a user with other user data and pagination"""
+        db_result = await self.databridge.get_user_relationships_with_users(
+            user_id=user_id, skip=skip, take=take
+        )
+
+        relationships = [
+            self._convert_db_with_user_to_model(rel) for rel in db_result.relationships
+        ]
+
+        return RelationshipsWithUsersListResponse(
+            relationships=relationships,
+            total_count=db_result.total_count,
+            skip=skip,
+            take=take,
         )
 
     async def update_relationship(

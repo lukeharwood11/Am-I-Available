@@ -1,15 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RelationshipState } from '../types/relationships.types';
-import { RelationshipData } from '../hubs/relationships.hub';
-import { RelationshipRequestData } from '../hubs/relationship-requests.hub';
+import { RelationshipWithUserData } from '../hubs/relationships.hub';
+import { RelationshipRequestData, RelationshipRequestWithUserData } from '../hubs/relationship-requests.hub';
 import {
   createRelationshipThunk,
   fetchUserRelationshipsThunk,
   fetchRelationshipThunk,
   updateRelationshipThunk,
   deleteRelationshipThunk,
-  approveRelationshipThunk,
-  rejectRelationshipThunk,
 } from '../thunks/relationships.thunk';
 import {
   createRelationshipRequestThunk,
@@ -30,6 +28,11 @@ const initialState: RelationshipState = {
   },
   currentRelationship: null,
   currentRelationshipRequest: null,
+  pagination: {
+    skip: 0,
+    take: 10,
+    total_count: 0,
+  },
   loading: false,
   error: null,
 };
@@ -44,16 +47,19 @@ const relationshipSlice = createSlice({
     setError: (state, action: PayloadAction<string | null>) => {
       state.error = action.payload;
     },
-    setRelationships: (state, action: PayloadAction<RelationshipData[]>) => {
+    setRelationships: (state, action: PayloadAction<RelationshipWithUserData[]>) => {
       state.relationships = action.payload;
+    },
+    setPagination: (state, action: PayloadAction<{ skip: number; take: number; total_count: number }>) => {
+      state.pagination = action.payload;
     },
     setSentRelationshipRequests: (state, action: PayloadAction<RelationshipRequestData[]>) => {
       state.relationshipRequests.sent = action.payload;
     },
-    setReceivedRelationshipRequests: (state, action: PayloadAction<RelationshipRequestData[]>) => {
+    setReceivedRelationshipRequests: (state, action: PayloadAction<RelationshipRequestWithUserData[]>) => {
       state.relationshipRequests.received = action.payload;
     },
-    setCurrentRelationship: (state, action: PayloadAction<RelationshipData | null>) => {
+    setCurrentRelationship: (state, action: PayloadAction<RelationshipWithUserData | null>) => {
       state.currentRelationship = action.payload;
     },
     setCurrentRelationshipRequest: (state, action: PayloadAction<RelationshipRequestData | null>) => {
@@ -83,14 +89,6 @@ const relationshipSlice = createSlice({
         state.error = null;
       })
       .addCase(deleteRelationshipThunk.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(approveRelationshipThunk.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(rejectRelationshipThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
@@ -147,14 +145,6 @@ const relationshipSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      .addCase(approveRelationshipThunk.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      })
-      .addCase(rejectRelationshipThunk.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      })
       .addCase(createRelationshipRequestThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
@@ -188,47 +178,34 @@ const relationshipSlice = createSlice({
         state.error = action.payload as string;
       })
       // Fulfilled handlers with data updates
-      .addCase(createRelationshipThunk.fulfilled, (state, action) => {
+      .addCase(createRelationshipThunk.fulfilled, (state) => {
         state.loading = false;
-        state.relationships.push(action.payload.relationship);
+        // Note: Create response returns basic RelationshipData, would need to refetch to get user data
+        // For now, we'll just refetch the relationships list
       })
       .addCase(fetchUserRelationshipsThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.relationships = action.payload.relationships;
+        state.pagination = {
+          skip: action.payload.skip,
+          take: action.payload.take,
+          total_count: action.payload.total_count,
+        };
       })
       .addCase(fetchRelationshipThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.currentRelationship = action.payload.relationship;
       })
-      .addCase(updateRelationshipThunk.fulfilled, (state, action) => {
+      .addCase(updateRelationshipThunk.fulfilled, (state) => {
         state.loading = false;
-        const index = state.relationships.findIndex(r => r.id === action.payload.relationship.id);
-        if (index !== -1) {
-          state.relationships[index] = action.payload.relationship;
-        }
-        if (state.currentRelationship?.id === action.payload.relationship.id) {
-          state.currentRelationship = action.payload.relationship;
-        }
+        // Note: Update response returns basic RelationshipData, would need to refetch to get user data
+        // For now, we'll just mark that a refetch is needed
       })
       .addCase(deleteRelationshipThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.relationships = state.relationships.filter(r => r.id !== action.meta.arg);
         if (state.currentRelationship?.id === action.meta.arg) {
           state.currentRelationship = null;
-        }
-      })
-      .addCase(approveRelationshipThunk.fulfilled, (state, action) => {
-        state.loading = false;
-        const index = state.relationships.findIndex(r => r.id === action.payload.relationship.id);
-        if (index !== -1) {
-          state.relationships[index] = action.payload.relationship;
-        }
-      })
-      .addCase(rejectRelationshipThunk.fulfilled, (state, action) => {
-        state.loading = false;
-        const index = state.relationships.findIndex(r => r.id === action.payload.relationship.id);
-        if (index !== -1) {
-          state.relationships[index] = action.payload.relationship;
         }
       })
       .addCase(createRelationshipRequestThunk.fulfilled, (state, action) => {
@@ -253,10 +230,6 @@ const relationshipSlice = createSlice({
         if (sentIndex !== -1) {
           state.relationshipRequests.sent[sentIndex] = action.payload.relationship_request;
         }
-        const receivedIndex = state.relationshipRequests.received.findIndex(r => r.id === action.payload.relationship_request.id);
-        if (receivedIndex !== -1) {
-          state.relationshipRequests.received[receivedIndex] = action.payload.relationship_request;
-        }
         if (state.currentRelationshipRequest?.id === action.payload.relationship_request.id) {
           state.currentRelationshipRequest = action.payload.relationship_request;
         }
@@ -272,17 +245,11 @@ const relationshipSlice = createSlice({
       })
       .addCase(approveRelationshipRequestThunk.fulfilled, (state, action) => {
         state.loading = false;
-        const index = state.relationshipRequests.received.findIndex(r => r.id === action.payload.relationship_request.id);
-        if (index !== -1) {
-          state.relationshipRequests.received[index] = action.payload.relationship_request;
-        }
+        state.relationshipRequests.received = state.relationshipRequests.received.filter(r => r.id !== action.payload.relationship_request.id);
       })
       .addCase(rejectRelationshipRequestThunk.fulfilled, (state, action) => {
         state.loading = false;
-        const index = state.relationshipRequests.received.findIndex(r => r.id === action.payload.relationship_request.id);
-        if (index !== -1) {
-          state.relationshipRequests.received[index] = action.payload.relationship_request;
-        }
+        state.relationshipRequests.received = state.relationshipRequests.received.filter(r => r.id !== action.payload.relationship_request.id);
       });
   },
 });

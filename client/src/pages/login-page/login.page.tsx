@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabaseClient';
 import Button from '../../components/button/Button';
 import { ErrorMessage } from '../../components/error-message';
-import { GoogleIcon, Icon } from '../../components/icons';
+import { GoogleIcon, Logo } from '../../components/icons';
 import styles from './login.page.module.css';
 
 const LoginPage = () => {
@@ -32,8 +32,8 @@ const LoginPage = () => {
         <div className={styles.container}>
             <div className={styles.loginBox}>
                 <div className={styles.header}>
-                    <Icon size={40} />
-                    <h1>Welcome Back!</h1>
+                    <Logo size={50} />
+                    <h1>Welcome!</h1>
                 </div>
                 {error && <ErrorMessage>{error}</ErrorMessage>}
 
@@ -47,7 +47,7 @@ const LoginPage = () => {
                 </Button>
 
                 <p className={styles.signupLink}>
-                    Don't have an account? <Link to="/signup">Create one</Link>
+                    Don't have an account? Create one above!
                 </p>
             </div>
         </div>

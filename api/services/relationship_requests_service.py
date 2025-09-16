@@ -10,23 +10,25 @@ from ..models.v1.relationship_requests import (
     RelationshipRequestUpdateResponse,
     RelationshipRequestDeleteResponse,
     RelationshipRequestsListResponse,
-    RelationshipRequestsListResponseWithUser,
+    RelationshipRequestWithUserListResponse,
     RelationshipRequestResponse,
-    RelationshipRequestDataWithUser,
+    RelationshipRequestWithUserData,
 )
 import api.models.v1.users as users
+from api.services.relationships_service import RelationshipsService
 
 
 class RelationshipRequestsService:
-    def __init__(self, databridge: RelationshipRequestsDatabridge):
-        self.databridge = databridge
+    def __init__(self, databridge: RelationshipRequestsDatabridge, relationships_service: RelationshipsService):
+        self.databridge: RelationshipRequestsDatabridge = databridge
+        self.relationships_service: RelationshipsService = relationships_service
 
     def _convert_db_to_model(
         self, db_request: DBRelationshipRequestResponse | DBRelationshipRequestResponseWithUser
-    ) -> RelationshipRequestData | RelationshipRequestDataWithUser:
+    ) -> RelationshipRequestData | RelationshipRequestWithUserData:
         """Convert database response to API model"""
         if isinstance(db_request, DBRelationshipRequestResponseWithUser):
-            return RelationshipRequestDataWithUser(
+            return RelationshipRequestWithUserData(
                 id=db_request.id,
                 requester=users.UserData(
                     id=db_request.requester.id,
@@ -118,7 +120,7 @@ class RelationshipRequestsService:
 
     async def get_received_relationship_requests(
         self, *, user_email: str, status: str | None = None
-    ) -> RelationshipRequestsListResponseWithUser:
+    ) -> RelationshipRequestWithUserListResponse:
         """Get all relationship requests received by a user (by email)"""
         db_requests = await self.databridge.get_received_relationship_requests(
             user_email=user_email, status=status
@@ -130,7 +132,7 @@ class RelationshipRequestsService:
         if status:
             filters["status"] = status
 
-        return RelationshipRequestsListResponseWithUser(
+        return RelationshipRequestWithUserListResponse(
             relationship_requests=requests, count=len(requests), filters=filters
         )
 
@@ -207,12 +209,24 @@ class RelationshipRequestsService:
         self, *, request_id: str, user_id: str, user_email: str
     ) -> RelationshipRequestUpdateResponse:
         """Approve a pending relationship request"""
-        return await self.update_relationship_request(
+
+        _update_response = await self.update_relationship_request(
             request_id=request_id,
             user_id=user_id,
             user_email=user_email,
             status="approved",
         )
+
+        if not _update_response:
+            raise HTTPException(status_code=500, detail="Failed to update relationship request")
+
+        # create a relationship
+        _create_response = await self.relationships_service.create_relationship(
+            user_id_1=_update_response.relationship_request.requester_id,
+            user_id_2=user_id,
+        )
+
+        return _update_response
 
     async def reject_relationship_request(
         self, *, request_id: str, user_id: str, user_email: str

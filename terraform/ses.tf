@@ -135,7 +135,7 @@ resource "aws_ses_active_receipt_rule_set" "amia_active_rule_set" {
 resource "aws_ses_receipt_rule" "amia_catch_all_rule" {
   name          = "catch-all-emails"
   rule_set_name = aws_ses_receipt_rule_set.amia_receipt_rule_set.rule_set_name
-  recipients    = ["amiavailable.com"]
+  recipients    = ["amia@amiavailable.com"]
   enabled       = true
   scan_enabled  = false // TODO: enable this later
 

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Image.module.css';
-import { Icon } from '../icons';
-
+import { Logo } from '../icons';
 export type ImageSize = 'small' | 'medium' | 'large' | 'xlarge';
 export type ImageVariant = 'default' | 'rounded' | 'circle';
 
@@ -170,7 +169,7 @@ const Image: React.FC<ImageProps> = ({
         style={customStyles}
       >
         <div className={styles.logoFallback}>
-          <Icon size={40}/>
+          <Logo size={40}/>
         </div>
       </div>
     );

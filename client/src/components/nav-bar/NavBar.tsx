@@ -7,7 +7,11 @@ import AnimatedLogo from '../animated-logo/AnimatedLogo';
 import styles from './NavBar.module.css';
 import { useNavigate } from 'react-router-dom';
 
-const NavBar: React.FC = () => {
+interface NavBarProps {
+  name: string;
+}
+
+const NavBar: React.FC<NavBarProps> = ({ name }) => {
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -86,7 +90,7 @@ const NavBar: React.FC = () => {
             onClick={handleProfileClick}
             leftIcon={<MdPerson size={24} />}
             className={styles.profileButton}>
-              Profile
+              {name}
           </Button>
           <Button
             variant="secondary-subtle"

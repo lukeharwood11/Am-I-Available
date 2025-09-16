@@ -57,7 +57,7 @@ class RelationshipRequestData(BaseModel):
     created_at: datetime = Field(description="When the request was created")
     updated_at: datetime = Field(description="When the request was last updated")
 
-class RelationshipRequestDataWithUser(BaseModel):
+class RelationshipRequestWithUserData(BaseModel):
     """Relationship request data model with user data"""
     id: str = Field(description="Relationship request UUID")
     requester: users.UserData = Field(description="User who sent the request")
@@ -82,10 +82,10 @@ class RelationshipRequestsListResponse(BaseModel):
     count: int
     filters: dict[str, str] | None = None
 
-class RelationshipRequestsListResponseWithUser(BaseModel):
+class RelationshipRequestWithUserListResponse(BaseModel):
     """Response model for listing relationship requests with user data"""
     status: str = "success"
-    relationship_requests: list[RelationshipRequestDataWithUser]
+    relationship_requests: list[RelationshipRequestWithUserData]
     count: int
     filters: dict[str, str] | None = None
 

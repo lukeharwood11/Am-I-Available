@@ -14,6 +14,8 @@ from ...models.v1.relationships import (
     RelationshipCreateResponse,
     RelationshipUpdateResponse,
     RelationshipDeleteResponse,
+    RelationshipWithUserResponse,
+    RelationshipsWithUsersListResponse,
 )
 
 
@@ -35,23 +37,26 @@ async def create_relationship(
     return await service.create_relationship(
         user_id_1=user_id,
         user_id_2=request.user_id_2,
-        relationship_type=request.relationship_type,
     )
 
 
-@router.get("", response_model=RelationshipsListResponse)
+@router.get("")
 async def get_user_relationships(
+    skip: int = Query(0, ge=0, description="Number of records to skip for pagination"),
+    take: int = Query(10, ge=1, description="Number of records to take (max 100)"),
     user_id: str = Depends(get_current_user_id),
     service: RelationshipsService = Depends(get_relationships_service),
-) -> RelationshipsListResponse:
+) -> RelationshipsWithUsersListResponse:
     """
-    Get all relationships for the current user with optional filters
+    Get relationships for the current user with other user data and pagination
 
     Returns:
-        List of user's relationships
+        List of user's relationships with other user information and pagination details
     """
-    return await service.get_user_relationships(
+    return await service.get_user_relationships_with_users(
         user_id=user_id,
+        skip=skip,
+        take=take,
     )
 
 
@@ -60,15 +65,16 @@ async def get_relationship(
     relationship_id: str,
     user_id: str = Depends(get_current_user_id),
     service: RelationshipsService = Depends(get_relationships_service),
-) -> RelationshipResponse:
+) -> RelationshipWithUserResponse:
     """
-    Get a specific relationship by ID
+    Get a specific relationship by ID with other user data
 
     Returns:
-        Relationship data
+        Relationship data with other user information
     """
-    return await service.get_relationship(relationship_id=relationship_id)
-
+    return await service.get_relationship_with_user(
+        relationship_id=relationship_id, current_user_id=user_id
+    )
 
 @router.patch("/{relationship_id}", response_model=RelationshipUpdateResponse)
 async def update_relationship(
@@ -78,7 +84,7 @@ async def update_relationship(
     service: RelationshipsService = Depends(get_relationships_service),
 ) -> RelationshipUpdateResponse:
     """
-    Update a relationship (type or status)
+    Update a relationship
 
     Returns:
         Updated relationship data
@@ -86,8 +92,6 @@ async def update_relationship(
     return await service.update_relationship(
         relationship_id=relationship_id,
         user_id=user_id,
-        relationship_type=request.relationship_type,
-        status=request.status,
     )
 
 
@@ -108,35 +112,3 @@ async def delete_relationship(
     )
 
 
-@router.post("/{relationship_id}/approve", response_model=RelationshipUpdateResponse)
-async def approve_relationship(
-    relationship_id: str,
-    user_id: str = Depends(get_current_user_id),
-    service: RelationshipsService = Depends(get_relationships_service),
-) -> RelationshipUpdateResponse:
-    """
-    Approve a pending relationship request
-
-    Returns:
-        Updated relationship data with approved status
-    """
-    return await service.approve_relationship(
-        relationship_id=relationship_id, user_id=user_id
-    )
-
-
-@router.post("/{relationship_id}/reject", response_model=RelationshipUpdateResponse)
-async def reject_relationship(
-    relationship_id: str,
-    user_id: str = Depends(get_current_user_id),
-    service: RelationshipsService = Depends(get_relationships_service),
-) -> RelationshipUpdateResponse:
-    """
-    Reject a pending relationship request
-
-    Returns:
-        Updated relationship data with rejected status
-    """
-    return await service.reject_relationship(
-        relationship_id=relationship_id, user_id=user_id
-    )

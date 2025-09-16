@@ -25,7 +25,8 @@ class UpdateRelationshipRequest(BaseModel):
 class GetRelationshipsRequest(BaseModel):
     """Request model for getting user relationships"""
 
-    pass
+    skip: int = Field(default=0, ge=0, description="Number of records to skip for pagination")
+    take: int = Field(default=10, ge=1, le=100, description="Number of records to take (max 100)")
 
 
 class DeleteRelationshipRequest(BaseModel):
@@ -39,6 +40,14 @@ class DeleteRelationshipRequest(BaseModel):
 # ============================================================================
 
 
+class UserData(BaseModel):
+    """User data model"""
+    
+    id: str = Field(description="User UUID")
+    email: str = Field(description="User email")
+    full_name: str = Field(description="User full name")
+
+
 class RelationshipData(BaseModel):
     """Core relationship data model"""
 
@@ -49,11 +58,30 @@ class RelationshipData(BaseModel):
     updated_at: datetime = Field(description="When the relationship was last updated")
 
 
+class RelationshipWithUserData(BaseModel):
+    """Relationship data with other user information"""
+
+    id: str = Field(description="Relationship UUID")
+    user_id_1: str = Field(description="UUID of the first user")
+    user_id_2: str = Field(description="UUID of the second user")
+    created_at: datetime = Field(description="When the relationship was created")
+    updated_at: datetime = Field(description="When the relationship was last updated")
+    other_user: UserData = Field(description="Data of the other user in the relationship")
+
+
 class RelationshipResponse(BaseModel):
     """Response model for single relationship operations"""
 
     status: str = "success"
     relationship: RelationshipData
+    message: str | None = None
+
+
+class RelationshipWithUserResponse(BaseModel):
+    """Response model for single relationship with user data"""
+
+    status: str = "success"
+    relationship: RelationshipWithUserData
     message: str | None = None
 
 
@@ -64,6 +92,16 @@ class RelationshipsListResponse(BaseModel):
     relationships: list[RelationshipData]
     count: int
     filters: dict[str, str] | None = None
+
+
+class RelationshipsWithUsersListResponse(BaseModel):
+    """Response model for listing relationships with user data and pagination"""
+
+    status: str = "success"
+    relationships: list[RelationshipWithUserData]
+    total_count: int
+    skip: int
+    take: int
 
 
 class RelationshipDeleteResponse(BaseModel):

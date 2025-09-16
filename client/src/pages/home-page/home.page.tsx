@@ -1,27 +1,42 @@
 import styles from './home.page.module.css';
 import Card from '../../components/card/Card';
 import { Button, Text } from '../../components';
-import { MdAdd, MdRefresh } from 'react-icons/md';
+import { MdAdd, MdCheck, MdClose, MdRefresh } from 'react-icons/md';
 import { CreateRequestModal } from './CreateRequestModal';
 import { useState, useEffect, useCallback } from 'react';
 import { CreateRelationshipModal } from './CreateRelationshipModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store';
 import { fetchUserRelationshipsThunk } from '../../redux/thunks/relationships.thunk';
-import { fetchReceivedRelationshipRequestsThunk, fetchSentRelationshipRequestsThunk } from '../../redux/thunks/relationship-requests.thunk';
+import { approveRelationshipRequestThunk, fetchReceivedRelationshipRequestsThunk, fetchSentRelationshipRequestsThunk, rejectRelationshipRequestThunk } from '../../redux/thunks/relationship-requests.thunk';
 import Pill from '../../components/pill';
+import Skeleton from '../../components/skeleton';
 
 const HomePage = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isRelationshipOpen, setIsRelationshipOpen] = useState(false);
     const relationships = useSelector((state: RootState) => state.relationships.relationships);
     const relationshipRequests = useSelector((state: RootState) => state.relationships.relationshipRequests);
+    const isLoading = useSelector((state: RootState) => state.relationships.loading);
+
+    const loading = isLoading && !relationshipRequests.received.length && !relationshipRequests.sent.length && !relationships.length;
     const dispatch = useDispatch<AppDispatch>();
 
     const handleRefresh = useCallback(() => {
-        dispatch(fetchUserRelationshipsThunk());
+        dispatch(fetchUserRelationshipsThunk({}));
         dispatch(fetchSentRelationshipRequestsThunk());
-        dispatch(fetchReceivedRelationshipRequestsThunk());
+        dispatch(fetchReceivedRelationshipRequestsThunk('pending'));
+    }, [dispatch]);
+
+
+    const handleChangeStatus = useCallback(async (requestId: string, status: string) => {
+        if (status === 'approved') {
+            await dispatch(approveRelationshipRequestThunk(requestId));
+        } else if (status === 'rejected') {
+            await dispatch(rejectRelationshipRequestThunk(requestId));
+        }
+        handleRefresh();
+
     }, [dispatch]);
 
     useEffect(() => {
@@ -65,20 +80,67 @@ const HomePage = () => {
                 </div>
                 <div className={styles.requests}>
                     <div className={styles.requestsHeader}>
-                        <Text variant="heading">Relationship Requests</Text>
+                        <Text variant="heading">Relationships</Text>
                         <div className={styles.requestsHeaderButtons}> 
                             <Button size='small' variant='primary-subtle' leftIcon={<MdAdd />} onClick={() => setIsRelationshipOpen(true)}>New</Button>
                             <Button size='small' variant='primary-subtle' leftIcon={<MdRefresh />} onClick={handleRefresh}>Refresh</Button>
                         </div>
                     </div>
                     {
+                        loading && !relationships.length && (
+                            Array.from({ length: 1}).map((_, index) => (
+                                <Skeleton width="100%" height="60px" key={index} variant="rounded" size="large" />
+                            ))
+                        )
+                    }
+                    {
+                        relationships.length > 0 && (
+                            <>
+                                <div style={{ marginBottom: '8px' }}>
+                                    <Text variant="caption">Your Friends</Text>
+                                </div>
+                                {relationships.map((relationship) => (
+                                    <Card key={relationship.id} contentClassName={styles.requestCard}>
+                                        <Text variant="caption">
+                                            {relationship.other_user.full_name || relationship.other_user.email}
+                                            {relationship.other_user.full_name && (
+                                                <Pill size="small" variant="outlined">{relationship.other_user.email}</Pill>
+                                            )}
+                                        </Text>
+                                    </Card>
+                                ))}
+                            </>
+                        )
+                    }
+                </div>
+                <div className={styles.requests}>
+                    <div className={styles.requestsHeader}>
+                        <Text variant="heading">Relationship Requests</Text>
+                        <div className={styles.requestsHeaderButtons}> 
+                            <Button size='small' variant='primary-subtle' leftIcon={<MdRefresh />} onClick={handleRefresh}>Refresh</Button>
+                        </div>
+                    </div>
+                    {
+                        loading && (
+                            Array.from({ length: 1}).map((_, index) => (
+                                <Skeleton width="100%" height="60px" key={index} variant="rounded" size="large" />
+                            ))
+                        )
+                    }
+                    {
                         relationshipRequests.received.length > 0 && (
                             relationshipRequests.received.map((request) => (
                                 <Card key={request.id} contentClassName={styles.requestCard}>
-                                    <Text variant="caption">New friend request from {request.requester_id}</Text> 
+                                    {
+                                        request.requester.full_name ? (
+                                            <Text variant="caption">New friend request from {request.requester.full_name} <Pill size="small" variant="outlined">{request.requester.email}</Pill></Text>
+                                        ) : (
+                                            <Text variant="caption">New friend request from {request.requester.email}</Text>
+                                        )
+                                    }
                                     <div className={styles.requestCardButtons}>
-                                        <Button size="small" variant="primary-subtle">Accept</Button>
-                                        <Button size="small" variant="danger-subtle">Reject</Button>
+                                        <Button leftIcon={<MdCheck />} size="small" variant="primary-subtle" onClick={() => handleChangeStatus(request.id, 'approved')}>Accept</Button>
+                                        <Button leftIcon={<MdClose />} size="small" variant="danger-subtle" onClick={() => handleChangeStatus(request.id, 'rejected')}>Reject</Button>
                                     </div>
                                 </Card>
                             ))
@@ -95,7 +157,7 @@ const HomePage = () => {
                         )
                     }
                     {
-                        relationshipRequests.received.length === 0 && relationshipRequests.sent.length === 0 && (
+                        !loading && relationshipRequests.received.length === 0 && relationshipRequests.sent.length === 0 && (
                             <Text variant="caption">No relationships found</Text>
                         )
                     }

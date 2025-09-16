@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './Logo.module.css';
 
 interface LogoProps {
     size?: number;
@@ -6,45 +7,18 @@ interface LogoProps {
 }
 
 const Logo: React.FC<LogoProps> = ({ size = 24, className }) => {
-    const aspectRatio = 50 / 200; // height / width
-    const width = size;
-    const height = size * aspectRatio;
-
+    const combinedClassName = [styles.logo, className].filter(Boolean).join(' ');
+    
+    // Calculate font size based on size prop (size represents the height equivalent)
+    const fontSize = size * 0.5625; // 18px when size is 32px (18/32 = 0.5625)
+    
     return (
-        <svg 
-            width={width} 
-            height={height} 
-            viewBox="0 0 200 50" 
-            fill="none" 
-            xmlns="http://www.w3.org/2000/svg"
-            className={className}
+        <h1 
+            className={combinedClassName}
+            style={{ fontSize: `${fontSize}px` }}
         >
-            <defs>
-                <style>
-                    {`
-                        .text {
-                            font-family: 'Arial', sans-serif;
-                            font-weight: bold;
-                            font-size: 20px;
-                            fill: white;
-                        }
-                    `}
-                </style>
-            </defs>
-            {/* Background shape */}
-            <rect x="10" y="10" width="180" height="30" rx="15" fill="#FF6B6B"/>
-            
-            {/* Text */}
-            <text x="30" y="32" className="text">Crunchy</text>
-            <text x="120" y="32" className="text">Girlz</text>
-            
-            {/* Underline for Girlz */}
-            <line x1="120" y1="35" x2="165" y2="35" stroke="white" strokeWidth="2"/>
-            
-            {/* Decorative elements */}
-            <circle cx="20" cy="18" r="4" fill="white" opacity="0.8"/>
-            <circle cx="25" cy="18" r="3" fill="white" opacity="0.6"/>
-        </svg>
+            AM/A
+        </h1>
     );
 };
 

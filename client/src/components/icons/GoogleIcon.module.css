@@ -1,0 +1,26 @@
+.googleIcon {
+  display: inline-block;
+}
+
+.googleIcon g {
+  stroke: none;
+  stroke-width: 1;
+  fill: none;
+  fill-rule: evenodd;
+}
+
+.bluePath {
+  fill: #4285F4;
+}
+
+.greenPath {
+  fill: #34A853;
+}
+
+.yellowPath {
+  fill: #FBBC05;
+}
+
+.redPath {
+  fill: #EA4335;
+}

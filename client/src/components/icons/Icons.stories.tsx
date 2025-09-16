@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 import GoogleIcon from './GoogleIcon';
 import LoadingIcon from './LoadingIcon';
 import Logo from './Logo';
-import SadIcon from './SadIcon';
 
 const meta: Meta = {
   title: 'Components/Icons',
@@ -59,21 +58,6 @@ export const LogoStory: StoryObj<typeof Logo> = {
   },
 };
 
-export const SadIconStory: StoryObj<typeof SadIcon> = {
-  name: 'Sad Icon',
-  render: (args) => <SadIcon {...args} />,
-  args: {
-    size: 48,
-  },
-  argTypes: {
-    size: {
-      control: { type: 'range', min: 24, max: 96, step: 8 },
-    },
-    className: {
-      control: 'text',
-    },
-  },
-};
 
 export const AllIconsSizes: StoryObj = {
   name: 'All Icons - Size Comparison',
@@ -90,10 +74,6 @@ export const AllIconsSizes: StoryObj = {
       <div style={{ textAlign: 'center' }}>
         <Logo size={24} />
         <p style={{ margin: '8px 0 0 0', fontSize: '12px' }}>Logo</p>
-      </div>
-      <div style={{ textAlign: 'center' }}>
-        <SadIcon size={24} />
-        <p style={{ margin: '8px 0 0 0', fontSize: '12px' }}>Sad</p>
       </div>
     </div>
   ),

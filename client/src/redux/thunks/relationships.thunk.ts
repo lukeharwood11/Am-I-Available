@@ -5,10 +5,9 @@ import {
   getRelationship,
   updateRelationship,
   deleteRelationship,
-  approveRelationship,
-  rejectRelationship,
   CreateRelationshipRequest,
-  UpdateRelationshipRequest
+  UpdateRelationshipRequest,
+  GetRelationshipsRequest
 } from '../hubs/relationships.hub';
 import { ERROR_MESSAGES } from '../constants';
 
@@ -26,12 +25,12 @@ export const createRelationshipThunk = createAsyncThunk(
   }
 );
 
-// Fetch all user relationships
+// Fetch all user relationships with pagination
 export const fetchUserRelationshipsThunk = createAsyncThunk(
   'relationships/fetchAll',
-  async (_, { rejectWithValue }) => {
+  async (params: GetRelationshipsRequest = {}, { rejectWithValue }) => {
     try {
-      const response = await getUserRelationships();
+      const response = await getUserRelationships(params);
       return response;
     } catch (error) {
       const message = error instanceof Error ? error.message : ERROR_MESSAGES.RELATIONSHIPS.FETCH_FAILED;
@@ -85,30 +84,3 @@ export const deleteRelationshipThunk = createAsyncThunk(
   }
 );
 
-// Approve a relationship
-export const approveRelationshipThunk = createAsyncThunk(
-  'relationships/approve',
-  async (relationshipId: string, { rejectWithValue }) => {
-    try {
-      const response = await approveRelationship(relationshipId);
-      return response;
-    } catch (error) {
-      const message = error instanceof Error ? error.message : ERROR_MESSAGES.RELATIONSHIPS.APPROVE_FAILED;
-      return rejectWithValue(message);
-    }
-  }
-);
-
-// Reject a relationship
-export const rejectRelationshipThunk = createAsyncThunk(
-  'relationships/reject',
-  async (relationshipId: string, { rejectWithValue }) => {
-    try {
-      const response = await rejectRelationship(relationshipId);
-      return response;
-    } catch (error) {
-      const message = error instanceof Error ? error.message : ERROR_MESSAGES.RELATIONSHIPS.REJECT_FAILED;
-      return rejectWithValue(message);
-    }
-  }
-);

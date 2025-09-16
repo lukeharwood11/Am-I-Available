@@ -34,6 +34,28 @@ export interface RelationshipRequestsListResponse {
   filters?: Record<string, string>;
 }
 
+export interface UserData {
+  id: string;
+  full_name: string;
+  email: string;
+}
+
+export interface RelationshipRequestWithUserData {
+  id: string;
+  requester: UserData;
+  requested_email: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface RelationshipRequestWithUserListResponse {
+  status: string;
+  relationship_requests: RelationshipRequestWithUserData[];
+  count: number;
+  filters?: Record<string, string>;
+}
+
 export interface RelationshipRequestDeleteResponse {
   status: string;
   message: string;
@@ -97,10 +119,10 @@ export async function getSentRelationshipRequests(
  */
 export async function getReceivedRelationshipRequests(
   status?: string
-): Promise<RelationshipRequestsListResponse> {
+): Promise<RelationshipRequestWithUserListResponse> {
   try {
     const params = status ? { status } : undefined;
-    const response = await get<RelationshipRequestsListResponse>(
+    const response = await get<RelationshipRequestWithUserListResponse>(
       '/api/v1/relationship-requests/received',
       { params }
     );

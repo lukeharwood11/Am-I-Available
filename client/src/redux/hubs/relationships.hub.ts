@@ -4,12 +4,27 @@ import { get, post, patch, del } from './auth.hub';
 // TYPE DEFINITIONS
 // ============================================================================
 
+export interface UserData {
+  id: string;
+  email: string;
+  full_name: string;
+}
+
 export interface RelationshipData {
   id: string;
   user_id_1: string;
   user_id_2: string;
   created_at: string;
   updated_at: string;
+}
+
+export interface RelationshipWithUserData {
+  id: string;
+  user_id_1: string;
+  user_id_2: string;
+  created_at: string;
+  updated_at: string;
+  other_user: UserData;
 }
 
 export interface CreateRelationshipRequest {
@@ -21,9 +36,20 @@ export interface UpdateRelationshipRequest {
   status?: string;
 }
 
+export interface GetRelationshipsRequest {
+  skip?: number;
+  take?: number;
+}
+
 export interface RelationshipResponse {
   status: string;
   relationship: RelationshipData;
+  message?: string;
+}
+
+export interface RelationshipWithUserResponse {
+  status: string;
+  relationship: RelationshipWithUserData;
   message?: string;
 }
 
@@ -32,6 +58,14 @@ export interface RelationshipsListResponse {
   relationships: RelationshipData[];
   count: number;
   filters?: Record<string, string>;
+}
+
+export interface RelationshipsWithUsersListResponse {
+  status: string;
+  relationships: RelationshipWithUserData[];
+  total_count: number;
+  skip: number;
+  take: number;
 }
 
 export interface RelationshipDeleteResponse {
@@ -74,13 +108,22 @@ export async function createRelationship(
 }
 
 /**
- * Get all relationships for the current user
+ * Get all relationships for the current user with pagination and user data
  */
-export async function getUserRelationships(): Promise<RelationshipsListResponse> {
+export async function getUserRelationships(
+  params?: GetRelationshipsRequest
+): Promise<RelationshipsWithUsersListResponse> {
   try {
-    const response = await get<RelationshipsListResponse>(
-      '/api/v1/relationships'
-    );
+    const queryParams = new URLSearchParams();
+    if (params?.skip !== undefined) {
+      queryParams.append('skip', params.skip.toString());
+    }
+    if (params?.take !== undefined) {
+      queryParams.append('take', params.take.toString());
+    }
+    
+    const url = `/api/v1/relationships${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+    const response = await get<RelationshipsWithUsersListResponse>(url);
     return response;
   } catch (error) {
     console.error('Error fetching user relationships:', error);
@@ -89,13 +132,13 @@ export async function getUserRelationships(): Promise<RelationshipsListResponse>
 }
 
 /**
- * Get a specific relationship by ID
+ * Get a specific relationship by ID with user data
  */
 export async function getRelationship(
   relationshipId: string
-): Promise<RelationshipResponse> {
+): Promise<RelationshipWithUserResponse> {
   try {
-    const response = await get<RelationshipResponse>(
+    const response = await get<RelationshipWithUserResponse>(
       `/api/v1/relationships/${relationshipId}`
     );
     return response;
@@ -141,36 +184,3 @@ export async function deleteRelationship(
   }
 }
 
-/**
- * Approve a pending relationship request
- */
-export async function approveRelationship(
-  relationshipId: string
-): Promise<RelationshipUpdateResponse> {
-  try {
-    const response = await post<RelationshipUpdateResponse>(
-      `/api/v1/relationships/${relationshipId}/approve`
-    );
-    return response;
-  } catch (error) {
-    console.error('Error approving relationship:', error);
-    throw new Error('Failed to approve relationship');
-  }
-}
-
-/**
- * Reject a pending relationship request
- */
-export async function rejectRelationship(
-  relationshipId: string
-): Promise<RelationshipUpdateResponse> {
-  try {
-    const response = await post<RelationshipUpdateResponse>(
-      `/api/v1/relationships/${relationshipId}/reject`
-    );
-    return response;
-  } catch (error) {
-    console.error('Error rejecting relationship:', error);
-    throw new Error('Failed to reject relationship');
-  }
-}

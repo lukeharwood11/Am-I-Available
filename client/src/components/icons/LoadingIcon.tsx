@@ -1,212 +1,33 @@
 import React from 'react';
+import styles from './LoadingIcon.module.css';
 
 interface LoadingIconProps {
     size?: number;
     className?: string;
 }
 
-const LoadingIcon: React.FC<LoadingIconProps> = ({ size = 24, className }) => {
+const LoadingIcon: React.FC<LoadingIconProps> = ({ size = 32, className }) => {
+    const combinedClassName = [styles.loadingIcon, className].filter(Boolean).join(' ');
+    
+    // Calculate font size and outline size based on size prop
+    const fontSize = size * 0.5625; // 18px when size is 32px
+    const outlineSize = size * 1.2; // Slightly larger than the text
+    
     return (
-        <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            viewBox="0 0 200 200" 
-            width={size} 
-            height={size}
-            className={className}
+        <div 
+            className={combinedClassName}
+            style={{ fontSize: `${fontSize}px`, minWidth: `${outlineSize}px`, minHeight: `${fontSize * 1.2}px` }}
         >
-            <defs>
-                <style>
-                    {`
-                        .letter {
-                            font-family: 'Arial', sans-serif;
-                            font-weight: bold;
-                            font-size: 80px;
-                            text-anchor: middle;
-                            dominant-baseline: central;
-                        }
-                        .c-letter {
-                            fill: white;
-                            animation: slideIn 3s ease-out infinite;
-                        }
-                        .g-letter {
-                            fill: white;
-                            animation: slideIn 3s ease-out 0.3s infinite;
-                            opacity: 0;
-                        }
-                        .background {
-                            fill: #FF6B6B;
-                            animation: expand 3s ease-out infinite;
-                            transform-origin: center;
-                            transform: scale(0);
-                        }
-                        .particle {
-                            fill: white;
-                            opacity: 0;
-                        }
-                        .mouth {
-                            fill: none;
-                            stroke: white;
-                            stroke-width: 8;
-                            stroke-linecap: round;
-                            animation: mouthDrop 3s ease-out infinite;
-                            transform-origin: center;
-                            opacity: 0;
-                        }
-                        .bow {
-                            fill: white;
-                            opacity: 0;
-                            animation: bowAppear 3s ease-out infinite;
-                        }
-                        @keyframes slideIn {
-                            0% {
-                                transform: translateY(-100px);
-                                opacity: 0;
-                            }
-                            15% {
-                                transform: translateY(20px);
-                                opacity: 1;
-                            }
-                            20% {
-                                transform: translateY(-10px);
-                            }
-                            25% {
-                                transform: translateY(0);
-                            }
-                            85% {
-                                transform: translateY(0);
-                                opacity: 1;
-                            }
-                            100% {
-                                transform: translateY(0);
-                                opacity: 1;
-                            }
-                        }
-                        @keyframes expand {
-                            0% {
-                                transform: scale(0);
-                            }
-                            15% {
-                                transform: scale(1.1);
-                            }
-                            25% {
-                                transform: scale(1);
-                            }
-                            85% {
-                                transform: scale(1);
-                            }
-                            100% {
-                                transform: scale(1);
-                            }
-                        }
-                        @keyframes particleFloat {
-                            0% {
-                                transform: translate(0, 0);
-                                opacity: 0;
-                            }
-                            15% {
-                                opacity: 1;
-                            }
-                            85% {
-                                transform: translate(var(--tx), var(--ty));
-                                opacity: 0;
-                            }
-                            100% {
-                                transform: translate(var(--tx), var(--ty));
-                                opacity: 0;
-                            }
-                        }
-                        @keyframes mouthDrop {
-                            0% {
-                                transform: scaleY(0);
-                                opacity: 0;
-                            }
-                            25% {
-                                transform: scaleY(0);
-                                opacity: 0;
-                            }
-                            35% {
-                                transform: scaleY(1);
-                                opacity: 1;
-                            }
-                            85% {
-                                transform: scaleY(1);
-                                opacity: 1;
-                            }
-                            100% {
-                                transform: scaleY(1);
-                                opacity: 1;
-                            }
-                        }
-                        @keyframes bowAppear {
-                            0% {
-                                opacity: 0;
-                                transform: scale(0);
-                            }
-                            15% {
-                                opacity: 0;
-                                transform: scale(0);
-                            }
-                            25% {
-                                opacity: 1;
-                                transform: scale(1);
-                            }
-                            85% {
-                                opacity: 1;
-                                transform: scale(1);
-                            }
-                            100% {
-                                opacity: 1;
-                                transform: scale(1);
-                            }
-                        }
-                    `}
-                </style>
-            </defs>
-
-            {/* Background */}
-            <rect x="20" y="20" width="160" height="160" rx="30" className="background"/>
-
-            {/* Eyes */}
-            {/* Left eye */}
-            <ellipse cx="70" cy="95" rx="25" ry="25" fill="white" className="c-letter"/>
-            <ellipse cx="70" cy="95" rx="18" ry="18" fill="#333" className="c-letter"/>
-            <ellipse cx="72" cy="79" rx="5" ry="5" fill="white" className="c-letter"/>
-            <ellipse cx="73" cy="77" rx="1" ry="2" fill="white" className="c-letter"/>
-            
-            {/* Right eye */}
-            <ellipse cx="130" cy="95" rx="25" ry="25" fill="white" className="g-letter"/>
-            <ellipse cx="130" cy="95" rx="18" ry="18" fill="#333" className="g-letter"/>
-            <ellipse cx="132" cy="79" rx="5" ry="5" fill="white" className="g-letter"/>
-            <ellipse cx="133" cy="77" rx="1" ry="2" fill="white" className="g-letter"/>
-
-            {/* Mouth */}
-            <path d="M 70 140 Q 100 160 130 140" className="mouth"/>
-
-            {/* Bow design */}
-            {/* Left loop */}
-            <path d="M 30 35
-                     C 20 35, 15 45, 20 55
-                     C 25 65, 35 65, 40 55
-                     C 45 45, 40 35, 30 35" 
-                  className="bow"/>
-            
-            {/* Right loop */}
-            <path d="M 60 35
-                     C 70 35, 75 45, 70 55
-                     C 65 65, 55 65, 50 55
-                     C 45 45, 50 35, 60 35" 
-                  className="bow"/>
-            
-            {/* Center knot */}
-            <circle cx="45" cy="45" r="8" fill="white" className="bow"/>
-
-            {/* Animated particles */}
-            <circle cx="100" cy="100" r="3" className="particle" style={{"--tx": "-50px", "--ty": "-50px", animation: "particleFloat 3s ease-out infinite"} as React.CSSProperties}/>
-            <circle cx="100" cy="100" r="2" className="particle" style={{"--tx": "50px", "--ty": "-30px", animation: "particleFloat 3s ease-out 0.3s infinite"} as React.CSSProperties}/>
-            <circle cx="100" cy="100" r="2.5" className="particle" style={{"--tx": "-40px", "--ty": "40px", animation: "particleFloat 3s ease-out 0.6s infinite"} as React.CSSProperties}/>
-            <circle cx="100" cy="100" r="2" className="particle" style={{"--tx": "60px", "--ty": "20px", animation: "particleFloat 3s ease-out 0.9s infinite"} as React.CSSProperties}/>
-        </svg>
+            <span className={styles.loadingText}>AM/A</span>
+            <div 
+                className={styles.loadingOutline}
+                style={{ 
+                    width: `${outlineSize}px`, 
+                    height: `${fontSize * 1.5}px`
+                }}
+            />
+        </div>
     );
 };
 
-export default LoadingIcon; 
+export default LoadingIcon;

@@ -6,7 +6,7 @@ from ...dependencies import get_relationship_requests_service
 from ...services.relationship_requests_service import RelationshipRequestsService
 from ...models.v1.relationship_requests import (
     CreateRelationshipRequestRequest,
-    RelationshipRequestsListResponseWithUser,
+    RelationshipRequestWithUserListResponse,
     UpdateRelationshipRequestRequest,
     GetRelationshipRequestsRequest,
     DeleteRelationshipRequestRequest,
@@ -57,12 +57,12 @@ async def get_sent_relationship_requests(
     )
 
 
-@router.get("/received", response_model=RelationshipRequestsListResponseWithUser)
+@router.get("/received", response_model=RelationshipRequestWithUserListResponse)
 async def get_received_relationship_requests(
     status: str | None = Query(None, description="Filter by request status"),
     user_data: Dict[str, Any] = Depends(get_current_user),
     service: RelationshipRequestsService = Depends(get_relationship_requests_service),
-) -> RelationshipRequestsListResponseWithUser:
+) -> RelationshipRequestWithUserListResponse:
     """
     Get all relationship requests received by the current user (by email)
 
