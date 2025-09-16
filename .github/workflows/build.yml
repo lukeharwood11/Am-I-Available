@@ -24,3 +24,6 @@ jobs:
 
       - name: Build
         run: yarn build:prod
+      
+      - name: Build Docker Image
+        run: docker build -t amia-api.test -f docker/Dockerfile .
