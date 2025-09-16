@@ -9,9 +9,11 @@ from ...models.v1.event_requests import (
     CreateEventRequestRequest,
     UpdateEventRequestRequest,
     GetEventRequestsRequest,
+    ListEventRequestsWithApprovalsRequest,
     DeleteEventRequestRequest,
     EventRequestResponse,
     EventRequestsListResponse,
+    EventRequestsWithApprovalsListResponse,
     EventRequestCreateResponse,
     EventRequestUpdateResponse,
     EventRequestDeleteResponse,
@@ -35,6 +37,7 @@ async def create_event_request(
     """
     return await service.create_event_request(
         google_event_id=request.google_event_id,
+        title=request.title,
         location=request.location,
         description=request.description,
         start_date=request.start_date,
@@ -106,6 +109,36 @@ async def get_all_event_requests(
     )
 
 
+@router.get("/with-approvals", response_model=EventRequestsWithApprovalsListResponse)
+async def list_event_requests_with_approvals(
+    status: str | None = Query(None, description="Filter by event request status"),
+    skip: int = Query(0, ge=0, description="Number of records to skip for pagination"),
+    take: int = Query(50, ge=1, le=100, description="Number of records to return (max 100)"),
+    user_id: str = Depends(get_current_user_id),
+    service: EventRequestsService = Depends(get_event_requests_service),
+) -> EventRequestsWithApprovalsListResponse:
+    """
+    List event requests with approval status aggregation
+    
+    Returns event requests with:
+    - approval_status: 'pending' if any are pending and none are rejected, 
+      'rejected' if any are rejected, 'approved' if all are approved, 
+      'no_approvals' if no approval requests exist
+    - requested_approvals: total number of approval requests
+    - completed_count: number of completed (non-pending) approvals
+    - Pagination support with skip/take and total_count
+
+    Returns:
+        List of event requests with approval status information
+    """
+    return await service.list_event_requests_with_approvals(
+        user_id=user_id,
+        status=status,
+        skip=skip,
+        take=take,
+    )
+
+
 @router.get("/{event_request_id}", response_model=EventRequestResponse)
 async def get_event_request(
     event_request_id: str,
@@ -153,6 +186,7 @@ async def update_event_request(
         event_request_id=event_request_id,
         user_id=user_id,
         google_event_id=request.google_event_id,
+        title=request.title,
         location=request.location,
         description=request.description,
         start_date=request.start_date,

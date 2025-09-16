@@ -21,7 +21,7 @@ from ..models.v1.relationships import (
 
 class RelationshipsService:
     def __init__(self, databridge: RelationshipsDatabridge):
-        self.databridge = databridge
+        self.databridge: RelationshipsDatabridge = databridge
 
     def _convert_db_to_model(
         self, db_relationship: DBRelationshipResponse
@@ -51,6 +51,12 @@ class RelationshipsService:
                 full_name=db_relationship.other_user_full_name,
             )
         )
+    
+    async def search_relationships(self, *, query: str, user_id: str) -> RelationshipsListResponse:
+        """Search for relationships by query"""
+        db_relationships = await self.databridge.search_relationships(query=query, user_id=user_id)
+        relationships = [self._convert_db_with_user_to_model(rel) for rel in db_relationships]
+        return RelationshipsListResponse(relationships=relationships, count=len(relationships), filters=None)
 
     async def create_relationship(
         self, *, user_id_1: str, user_id_2: str

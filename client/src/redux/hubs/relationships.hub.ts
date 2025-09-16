@@ -1,89 +1,14 @@
 import { get, post, patch, del } from './auth.hub';
-
-// ============================================================================
-// TYPE DEFINITIONS
-// ============================================================================
-
-export interface UserData {
-  id: string;
-  email: string;
-  full_name: string;
-}
-
-export interface RelationshipData {
-  id: string;
-  user_id_1: string;
-  user_id_2: string;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface RelationshipWithUserData {
-  id: string;
-  user_id_1: string;
-  user_id_2: string;
-  created_at: string;
-  updated_at: string;
-  other_user: UserData;
-}
-
-export interface CreateRelationshipRequest {
-  user_id_2: string;
-}
-
-export interface UpdateRelationshipRequest {
-  relationship_type?: string;
-  status?: string;
-}
-
-export interface GetRelationshipsRequest {
-  skip?: number;
-  take?: number;
-}
-
-export interface RelationshipResponse {
-  status: string;
-  relationship: RelationshipData;
-  message?: string;
-}
-
-export interface RelationshipWithUserResponse {
-  status: string;
-  relationship: RelationshipWithUserData;
-  message?: string;
-}
-
-export interface RelationshipsListResponse {
-  status: string;
-  relationships: RelationshipData[];
-  count: number;
-  filters?: Record<string, string>;
-}
-
-export interface RelationshipsWithUsersListResponse {
-  status: string;
-  relationships: RelationshipWithUserData[];
-  total_count: number;
-  skip: number;
-  take: number;
-}
-
-export interface RelationshipDeleteResponse {
-  status: string;
-  message: string;
-}
-
-export interface RelationshipCreateResponse {
-  status: string;
-  relationship: RelationshipData;
-  message: string;
-}
-
-export interface RelationshipUpdateResponse {
-  status: string;
-  relationship: RelationshipData;
-  message: string;
-}
+import {
+  CreateRelationshipRequest,
+  UpdateRelationshipRequest,
+  RelationshipWithUserResponse,
+  RelationshipsWithUsersListResponse,
+  RelationshipDeleteResponse,
+  RelationshipCreateResponse,
+  RelationshipUpdateResponse
+} from '../types/relationships.types';
+import { PaginationParams } from '../types/common.types';
 
 // ============================================================================
 // API FUNCTIONS
@@ -111,7 +36,7 @@ export async function createRelationship(
  * Get all relationships for the current user with pagination and user data
  */
 export async function getUserRelationships(
-  params?: GetRelationshipsRequest
+  params?: PaginationParams
 ): Promise<RelationshipsWithUsersListResponse> {
   try {
     const queryParams = new URLSearchParams();

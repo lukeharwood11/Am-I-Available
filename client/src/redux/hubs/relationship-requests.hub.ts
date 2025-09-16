@@ -1,77 +1,14 @@
 import { get, post, patch, del } from './auth.hub';
-
-// ============================================================================
-// TYPE DEFINITIONS
-// ============================================================================
-
-export interface RelationshipRequestData {
-  id: string;
-  requester_id: string;
-  requested_email: string;
-  status: string;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface CreateRelationshipRequestRequest {
-  requested_email: string;
-}
-
-export interface UpdateRelationshipRequestRequest {
-  status: 'pending' | 'approved' | 'rejected';
-}
-
-export interface RelationshipRequestResponse {
-  status: string;
-  relationship_request: RelationshipRequestData;
-  message?: string;
-}
-
-export interface RelationshipRequestsListResponse {
-  status: string;
-  relationship_requests: RelationshipRequestData[];
-  count: number;
-  filters?: Record<string, string>;
-}
-
-export interface UserData {
-  id: string;
-  full_name: string;
-  email: string;
-}
-
-export interface RelationshipRequestWithUserData {
-  id: string;
-  requester: UserData;
-  requested_email: string;
-  status: string;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface RelationshipRequestWithUserListResponse {
-  status: string;
-  relationship_requests: RelationshipRequestWithUserData[];
-  count: number;
-  filters?: Record<string, string>;
-}
-
-export interface RelationshipRequestDeleteResponse {
-  status: string;
-  message: string;
-}
-
-export interface RelationshipRequestCreateResponse {
-  status: string;
-  relationship_request: RelationshipRequestData;
-  message: string;
-}
-
-export interface RelationshipRequestUpdateResponse {
-  status: string;
-  relationship_request: RelationshipRequestData;
-  message: string;
-}
+import {
+  CreateRelationshipRequestRequest,
+  UpdateRelationshipRequestRequest,
+  RelationshipRequestResponse,
+  RelationshipRequestsListResponse,
+  RelationshipRequestWithUserListResponse,
+  RelationshipRequestDeleteResponse,
+  RelationshipRequestCreateResponse,
+  RelationshipRequestUpdateResponse
+} from '../types/relationship-requests.types';
 
 // ============================================================================
 // API FUNCTIONS

@@ -1,0 +1,439 @@
+.datePickerContainer {
+  position: relative;
+  display: inline-block;
+  width: auto;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--grey-800);
+  margin-bottom: 8px;
+}
+
+.required {
+  color: var(--danger-red);
+  margin-left: 4px;
+}
+
+.inputWrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--grey-300);
+  border-radius: var(--border-radius-standard);
+  background-color: white;
+  transition: all 0.2s ease-in-out;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.inputWrapper:focus-within {
+  border-color: var(--primary);
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--primary-bg);
+}
+
+.inputWrapper.open {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px var(--primary-bg);
+}
+
+.inputWrapper.error {
+  border-color: var(--danger-red);
+}
+
+.inputWrapper.error:focus-within {
+  border-color: var(--danger-red);
+  outline-color: var(--danger-red);
+  box-shadow: 0 0 0 4px var(--danger-light);
+}
+
+.inputWrapper.disabled {
+  background-color: var(--grey-100);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.input {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: inherit;
+  font-weight: 400;
+  color: var(--grey-800);
+  flex: 1;
+  cursor: pointer;
+}
+
+.input::placeholder {
+  color: var(--grey-600);
+}
+
+.input:disabled {
+  cursor: not-allowed;
+}
+
+.icons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-right: 8px;
+}
+
+.clearButton {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: var(--grey-600);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  transition: all 0.2s ease-in-out;
+}
+
+.clearButton:hover {
+  background-color: var(--grey-200);
+  color: var(--grey-800);
+}
+
+.calendarButton {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: var(--grey-600);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  transition: all 0.2s ease-in-out;
+}
+
+.calendarButton:hover {
+  background-color: var(--grey-200);
+  color: var(--primary);
+}
+
+.calendarButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.errorMessage {
+  color: var(--danger-red);
+  font-size: 12px;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.calendar {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid var(--grey-300);
+  border-radius: var(--border-radius-standard);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  margin-top: 4px;
+  padding: 16px;
+  min-width: 280px;
+}
+
+.calendarHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.navButton {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: var(--grey-600);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  transition: all 0.2s ease-in-out;
+}
+
+.navButton:hover {
+  background-color: var(--grey-200);
+  color: var(--primary);
+}
+
+.monthYear {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--grey-800);
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.weekday {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--grey-600);
+  padding: 8px 4px;
+}
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.day {
+  background: none;
+  border: none;
+  font-size: 14px;
+  color: var(--grey-800);
+  cursor: pointer;
+  padding: 8px 4px;
+  border-radius: var(--border-radius-standard);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease-in-out;
+  min-height: 32px;
+}
+
+.day:hover {
+  background-color: var(--primary-bg);
+  color: var(--primary);
+}
+
+.day.selected {
+  background-color: var(--primary);
+  color: white;
+}
+
+.day.selected:hover {
+  background-color: var(--primary-dark);
+}
+
+.day.today {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.day.today:not(.selected) {
+  background-color: var(--subtle-primary);
+}
+
+.day.disabled {
+  color: var(--grey-300);
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.day.disabled:hover {
+  background-color: transparent;
+  color: var(--grey-300);
+}
+
+.emptyDay {
+  min-height: 32px;
+}
+
+/* Sizes */
+.small {
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+.small .input {
+  font-size: 14px;
+}
+
+.small .calendar {
+  min-width: 240px;
+  padding: 12px;
+}
+
+.small .day {
+  min-height: 28px;
+  font-size: 12px;
+}
+
+.small .emptyDay {
+  min-height: 28px;
+}
+
+.medium {
+  padding: 12px 16px;
+  font-size: 16px;
+}
+
+.medium .input {
+  font-size: 16px;
+}
+
+.large {
+  padding: 16px 20px;
+  font-size: 18px;
+}
+
+.large .input {
+  font-size: 18px;
+}
+
+.large .calendar {
+  min-width: 320px;
+  padding: 20px;
+}
+
+.large .day {
+  min-height: 36px;
+  font-size: 16px;
+}
+
+.large .emptyDay {
+  min-height: 36px;
+}
+
+/* Time Section */
+.timeSection {
+  border-top: 1px solid var(--grey-200);
+  margin-top: 16px;
+  padding-top: 16px;
+}
+
+.timeInputs {
+  display: flex;
+  gap: 12px;
+  align-items: end;
+  margin-bottom: 16px;
+}
+
+.timeInputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.timeLabel {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--grey-600);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.timeSelect {
+  border: 1px solid var(--grey-300);
+  border-radius: var(--border-radius-standard);
+  padding: 8px 12px;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--grey-800);
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.timeSelect:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--primary-bg);
+}
+
+.timeSelect:hover {
+  border-color: var(--primary-light);
+}
+
+.timeActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.applyButton {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius-standard);
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.applyButton:hover {
+  background-color: var(--primary-dark);
+}
+
+.applyButton:active {
+  transform: translateY(1px);
+}
+
+/* Size adjustments for time section */
+.small .timeSection {
+  margin-top: 12px;
+  padding-top: 12px;
+}
+
+.small .timeInputs {
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.small .timeSelect {
+  padding: 6px 8px;
+  font-size: 12px;
+}
+
+.small .applyButton {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+.large .timeSection {
+  margin-top: 20px;
+  padding-top: 20px;
+}
+
+.large .timeInputs {
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.large .timeSelect {
+  padding: 12px 16px;
+  font-size: 16px;
+}
+
+.large .applyButton {
+  padding: 12px 20px;
+  font-size: 16px;
+}

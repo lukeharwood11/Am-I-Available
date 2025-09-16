@@ -43,6 +43,12 @@ export const ERROR_MESSAGES = {
     APPROVE_FAILED: 'Failed to approve relationship request.',
     REJECT_FAILED: 'Failed to reject relationship request.',
   },
+  EVENT_REQUESTS: {
+    CREATE_FAILED: 'Failed to create event request.',
+    FETCH_FAILED: 'Failed to fetch event requests.',
+    UPDATE_FAILED: 'Failed to update event request.',
+    DELETE_FAILED: 'Failed to delete event request.',
+  },
   NETWORK: {
     CONNECTION_ERROR: 'Network connection error. Please check your internet connection.',
     SERVER_ERROR: 'Server error. Please try again later.',

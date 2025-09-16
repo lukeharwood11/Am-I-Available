@@ -11,6 +11,9 @@ export * from './textarea';
 // Select components
 export * from './select';
 
+// DatePicker components
+export * from './date-picker';
+
 // Image components
 export * from './image';
 

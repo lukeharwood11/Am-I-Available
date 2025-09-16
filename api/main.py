@@ -7,6 +7,7 @@ from .settings.config import config
 from .routers.v1 import v1_router
 import api.settings.auth as auth
 from api.settings.config import config
+from mangum import Mangum
 
 import logging
 
@@ -24,7 +25,6 @@ app = FastAPI(
         "scopes": "email profile openid https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/calendar",
     },
 )
-
 
 outh2_scheme = OAuth2AuthorizationCodeBearer(
     authorizationUrl=f"{config.supabase.url}/auth/v1/authorize?provider=google",
@@ -74,3 +74,6 @@ async def get_token(request: Request):
 @app.get("/health")
 async def health():
     return {"status": "healthy"}
+
+
+handler = Mangum(app, lifespan="off")

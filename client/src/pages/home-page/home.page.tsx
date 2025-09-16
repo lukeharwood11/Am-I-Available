@@ -11,6 +11,8 @@ import { fetchUserRelationshipsThunk } from '../../redux/thunks/relationships.th
 import { approveRelationshipRequestThunk, fetchReceivedRelationshipRequestsThunk, fetchSentRelationshipRequestsThunk, rejectRelationshipRequestThunk } from '../../redux/thunks/relationship-requests.thunk';
 import Pill from '../../components/pill';
 import Skeleton from '../../components/skeleton';
+import { CreateEventRequestRequest } from '../../redux/types/event-requests.types';
+import { createEventRequestThunk, fetchEventRequestsThunk } from '../../redux/thunks/event-requests.thunk';
 
 const HomePage = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -26,6 +28,7 @@ const HomePage = () => {
         dispatch(fetchUserRelationshipsThunk({}));
         dispatch(fetchSentRelationshipRequestsThunk());
         dispatch(fetchReceivedRelationshipRequestsThunk('pending'));
+        dispatch(fetchEventRequestsThunk({}));
     }, [dispatch]);
 
 
@@ -68,6 +71,11 @@ const HomePage = () => {
         return 'secondary';
     };
 
+    const handleRequestCreated = useCallback(async (request: CreateEventRequestRequest) => {
+        await dispatch(createEventRequestThunk(request));
+        handleRefresh();
+    }, [handleRefresh, dispatch]);
+
     return (
         <div className={styles.homePage}>
             <div className={styles.centerContainer}>
@@ -103,10 +111,10 @@ const HomePage = () => {
                                     <Card key={relationship.id} contentClassName={styles.requestCard}>
                                         <Text variant="caption">
                                             {relationship.other_user.full_name || relationship.other_user.email}
-                                            {relationship.other_user.full_name && (
-                                                <Pill size="small" variant="outlined">{relationship.other_user.email}</Pill>
-                                            )}
                                         </Text>
+                                        {relationship.other_user.full_name && (
+                                            <Pill size="small" variant="outlined">{relationship.other_user.email}</Pill>
+                                        )}
                                     </Card>
                                 ))}
                             </>
@@ -167,7 +175,7 @@ const HomePage = () => {
                     <Button variant='primary-subtle' leftIcon={<MdSend />} onClick={() => {}}/>
                 </div> */}
             </div>
-            <CreateRequestModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+            <CreateRequestModal isOpen={isOpen} onClose={() => setIsOpen(false)} onRequestCreated={handleRequestCreated} />
             <CreateRelationshipModal isOpen={isRelationshipOpen} onClose={() => setIsRelationshipOpen(false)} />
         </div>
     );

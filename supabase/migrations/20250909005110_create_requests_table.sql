@@ -114,13 +114,37 @@ CREATE TABLE IF NOT EXISTS public.event_request_approvals(
 ALTER TABLE public.event_request_approvals ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "Users can view event request approvals" ON public.event_request_approvals
-  FOR SELECT USING (auth.uid() = user_id);
+  FOR SELECT USING (
+    auth.uid() = user_id OR 
+    auth.uid() IN (
+      SELECT created_by FROM public.event_requests 
+      WHERE id = event_request_approvals.event_request_id
+    )
+  );
 
 CREATE POLICY "Users can insert event request approvals" ON public.event_request_approvals
-  FOR INSERT WITH CHECK (auth.uid() = user_id);
+  FOR INSERT WITH CHECK (
+    auth.uid() = user_id OR 
+    auth.uid() IN (
+      SELECT created_by FROM public.event_requests 
+      WHERE id = event_request_approvals.event_request_id
+    )
+  );
 
 CREATE POLICY "Users can update event request approvals" ON public.event_request_approvals
-  FOR UPDATE USING (auth.uid() = user_id);
+  FOR UPDATE USING (
+    auth.uid() = user_id OR 
+    auth.uid() IN (
+      SELECT created_by FROM public.event_requests 
+      WHERE id = event_request_approvals.event_request_id
+    )
+  );
 
 CREATE POLICY "Users can delete event request approvals" ON public.event_request_approvals
-  FOR DELETE USING (auth.uid() = user_id);
+  FOR DELETE USING (
+    auth.uid() = user_id OR 
+    auth.uid() IN (
+      SELECT created_by FROM public.event_requests 
+      WHERE id = event_request_approvals.event_request_id
+    )
+  );

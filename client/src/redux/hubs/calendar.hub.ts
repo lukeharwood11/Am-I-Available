@@ -1,4 +1,4 @@
-import { CalendarEvent } from '../types';
+import { CalendarEvent } from '../types/calendar.types';
 import { get, post } from './auth.hub';
 
 export async function getEvents(): Promise<CalendarEvent[]> {

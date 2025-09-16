@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RelationshipState } from '../types/relationships.types';
-import { RelationshipWithUserData } from '../hubs/relationships.hub';
-import { RelationshipRequestData, RelationshipRequestWithUserData } from '../hubs/relationship-requests.hub';
+import { RelationshipWithUserData } from '../types/relationships.types';
+import { RelationshipRequestData, RelationshipRequestWithUserData } from '../types/relationship-requests.types';
 import {
   createRelationshipThunk,
   fetchUserRelationshipsThunk,

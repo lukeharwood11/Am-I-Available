@@ -4,11 +4,13 @@ import {
   getUserRelationships,
   getRelationship,
   updateRelationship,
-  deleteRelationship,
-  CreateRelationshipRequest,
-  UpdateRelationshipRequest,
-  GetRelationshipsRequest
+  deleteRelationship
 } from '../hubs/relationships.hub';
+import {
+  CreateRelationshipRequest,
+  UpdateRelationshipRequest
+} from '../types/relationships.types';
+import { PaginationParams } from '../types/common.types';
 import { ERROR_MESSAGES } from '../constants';
 
 // Create a new relationship
@@ -28,7 +30,7 @@ export const createRelationshipThunk = createAsyncThunk(
 // Fetch all user relationships with pagination
 export const fetchUserRelationshipsThunk = createAsyncThunk(
   'relationships/fetchAll',
-  async (params: GetRelationshipsRequest = {}, { rejectWithValue }) => {
+  async (params: PaginationParams = {}, { rejectWithValue }) => {
     try {
       const response = await getUserRelationships(params);
       return response;

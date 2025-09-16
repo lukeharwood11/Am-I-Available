@@ -35,6 +35,17 @@ class RelationshipsDatabridge:
     def __init__(self, supabase: Client):
         self.supabase = supabase
         self.relationships = self.supabase.table("relationships")
+    
+    async def search_relationships(self, *, query: str, user_id: str) -> list[DBRelationshipWithUserResponse]:
+        """Search for relationships by query"""
+        try:
+            response = self.supabase.rpc("search_relationships", {"p_query": query, "p_user_id": user_id}).execute()
+            if not response.data:
+                return []
+            return [DBRelationshipWithUserResponse(**item) for item in response.data]
+        except Exception as e:
+            logger.info(f"Error searching relationships: {e}")
+            return []
 
     async def create_relationship(
         self, *, user_id_1: str, user_id_2: str

@@ -3,13 +3,16 @@ from datetime import datetime
 from ..databridge.event_requests_databridge import (
     EventRequestsDatabridge,
     DBEventRequestResponse,
+    DBEventRequestWithApprovalsResponse,
 )
 from ..models.v1.event_requests import (
     EventRequestData,
+    EventRequestWithApprovalsData,
     EventRequestCreateResponse,
     EventRequestUpdateResponse,
     EventRequestDeleteResponse,
     EventRequestsListResponse,
+    EventRequestsWithApprovalsListResponse,
     EventRequestResponse,
 )
 
@@ -25,6 +28,7 @@ class EventRequestsService:
         return EventRequestData(
             id=db_request.id,
             google_event_id=db_request.google_event_id,
+            title=db_request.title,
             location=db_request.location,
             description=db_request.description,
             start_date=db_request.start_date,
@@ -37,10 +41,34 @@ class EventRequestsService:
             updated_at=db_request.updated_at,
         )
 
+    def _convert_db_with_approvals_to_model(
+        self, db_request: DBEventRequestWithApprovalsResponse
+    ) -> EventRequestWithApprovalsData:
+        """Convert database response with approvals to API model"""
+        return EventRequestWithApprovalsData(
+            id=db_request.id,
+            google_event_id=db_request.google_event_id,
+            title=db_request.title,
+            location=db_request.location,
+            description=db_request.description,
+            start_date=db_request.start_date,
+            end_date=db_request.end_date,
+            importance_level=db_request.importance_level,
+            status=db_request.status,
+            notes=db_request.notes,
+            created_by=db_request.created_by,
+            created_at=db_request.created_at,
+            updated_at=db_request.updated_at,
+            approval_status=db_request.approval_status,
+            requested_approvals=db_request.requested_approvals,
+            completed_count=db_request.completed_count,
+        )
+
     async def create_event_request(
         self,
         *,
         google_event_id: str | None,
+        title: str | None,
         location: str | None,
         description: str | None,
         start_date: datetime,
@@ -65,6 +93,7 @@ class EventRequestsService:
         # Create the event request
         db_request = await self.databridge.create_event_request(
             google_event_id=google_event_id,
+            title=title,
             location=location,
             description=description,
             start_date=start_date,
@@ -172,6 +201,7 @@ class EventRequestsService:
         event_request_id: str,
         user_id: str,
         google_event_id: str | None = None,
+        title: str | None = None,
         location: str | None = None,
         description: str | None = None,
         start_date: datetime | None = None,
@@ -224,6 +254,7 @@ class EventRequestsService:
         db_request = await self.databridge.update_event_request(
             event_request_id=event_request_id,
             google_event_id=google_event_id,
+            title=title,
             location=location,
             description=description,
             start_date=start_date,
@@ -304,3 +335,37 @@ class EventRequestsService:
 
         request_data = self._convert_db_to_model(db_request)
         return EventRequestResponse(event_request=request_data)
+
+    async def list_event_requests_with_approvals(
+        self,
+        *,
+        user_id: str,
+        status: str | None = None,
+        skip: int = 0,
+        take: int = 50,
+    ) -> EventRequestsWithApprovalsListResponse:
+        """List event requests with approval status aggregation"""
+        db_requests = await self.databridge.list_event_requests_with_approvals(
+            user_id=user_id,
+            status=status,
+            skip=skip,
+            take=take,
+        )
+
+        requests = [self._convert_db_with_approvals_to_model(req) for req in db_requests]
+        
+        # Get total count from the first item if available
+        total_count = db_requests[0].total_count if db_requests else 0
+
+        filters = {}
+        if status:
+            filters["status"] = status
+
+        return EventRequestsWithApprovalsListResponse(
+            event_requests=requests,
+            count=len(requests),
+            total_count=total_count,
+            skip=skip,
+            take=take,
+            filters=filters if filters else None,
+        )

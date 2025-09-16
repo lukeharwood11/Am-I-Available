@@ -7,10 +7,12 @@ import {
   updateRelationshipRequest,
   deleteRelationshipRequest,
   approveRelationshipRequest,
-  rejectRelationshipRequest,
+  rejectRelationshipRequest
+} from '../hubs/relationship-requests.hub';
+import {
   CreateRelationshipRequestRequest,
   UpdateRelationshipRequestRequest
-} from '../hubs/relationship-requests.hub';
+} from '../types/relationship-requests.types';
 import { ERROR_MESSAGES } from '../constants';
 
 // Create a new relationship request

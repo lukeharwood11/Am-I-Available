@@ -14,6 +14,7 @@ export * from './thunks';
 // Export slice actions
 export * from './slices/auth.slice';
 export * from './slices/calendar.slice';
+export * from './slices/event-requests.slice';
 
 // Export types
 export * from './types';

@@ -4,17 +4,7 @@ import axiosInstance from '../../lib/axios';
 import { HTTP_METHODS, CONTENT_TYPES } from '../constants';
 import { store } from '../store';
 import { selectAccessToken } from '../selectors/auth.selectors';
-
-export interface UserTokens {
-  id: string;
-  google_access_token: string;
-  google_refresh_token: string;
-}
-
-export interface GetAccessTokensResponse {
-  google_access_token: string;
-  google_refresh_token: string;
-}
+import { UserTokens, GetAccessTokensResponse } from '../types/auth.types';
 
 interface RequestConfig {
   method?: string;

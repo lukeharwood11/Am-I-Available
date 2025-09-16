@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
 class DBEventRequestResponse(BaseModel):
     id: str
     google_event_id: str | None
+    title: str | None
     location: str | None
     description: str | None
     start_date: datetime
@@ -22,6 +23,26 @@ class DBEventRequestResponse(BaseModel):
     updated_at: datetime
 
 
+class DBEventRequestWithApprovalsResponse(BaseModel):
+    id: str
+    google_event_id: str | None
+    title: str | None
+    location: str | None
+    description: str | None
+    start_date: datetime
+    end_date: datetime
+    importance_level: int
+    status: str
+    notes: str | None
+    created_by: str
+    created_at: datetime
+    updated_at: datetime
+    approval_status: str
+    requested_approvals: int
+    completed_count: int
+    total_count: int
+
+
 class EventRequestsDatabridge:
     def __init__(self, supabase: Client):
         self.supabase = supabase
@@ -31,6 +52,7 @@ class EventRequestsDatabridge:
         self,
         *,
         google_event_id: str | None,
+        title: str | None,
         location: str | None,
         description: str | None,
         start_date: datetime,
@@ -43,6 +65,7 @@ class EventRequestsDatabridge:
         try:
             data = {
                 "google_event_id": google_event_id,
+                "title": title,
                 "location": location,
                 "description": description,
                 "start_date": start_date.isoformat(),
@@ -151,6 +174,7 @@ class EventRequestsDatabridge:
         *,
         event_request_id: str,
         google_event_id: str | None = None,
+        title: str | None = None,
         location: str | None = None,
         description: str | None = None,
         start_date: datetime | None = None,
@@ -165,6 +189,8 @@ class EventRequestsDatabridge:
 
             if google_event_id is not None:
                 update_data["google_event_id"] = google_event_id
+            if title is not None:
+                update_data["title"] = title
             if location is not None:
                 update_data["location"] = location
             if description is not None:
@@ -220,3 +246,31 @@ class EventRequestsDatabridge:
         except Exception as e:
             logger.info(f"Error fetching event request by Google ID: {e}")
             return None
+
+    async def list_event_requests_with_approvals(
+        self,
+        *,
+        user_id: str | None = None,
+        status: str | None = None,
+        skip: int = 0,
+        take: int = 50,
+    ) -> list[DBEventRequestWithApprovalsResponse]:
+        """List event requests with approval status aggregation using SQL function"""
+        try:
+            response = self.supabase.rpc(
+                "list_event_requests_with_approvals",
+                {
+                    "p_user_id": user_id,
+                    "p_status": status,
+                    "p_skip": skip,
+                    "p_take": take,
+                }
+            ).execute()
+
+            if not response.data:
+                return []
+
+            return [DBEventRequestWithApprovalsResponse(**item) for item in response.data]
+        except Exception as e:
+            logger.info(f"Error listing event requests with approvals: {e}")
+            return []
