@@ -33,9 +33,8 @@ jobs:
       - name: Build and Push Docker Image
         run: |
           IMAGE_TAG=${{ github.sha }}
-          AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
-          ECR_REGISTRY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com
-          ECR_REPOSITORY=amia/api
+          ECR_REGISTRY=${{ vars.ECR_REGISTRY}}
+          ECR_REPOSITORY=${{ vars.ECR_REPOSITORY}}
 
           docker build -t $ECR_REPOSITORY:$IMAGE_TAG -f docker/Dockerfile .
           docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
@@ -50,6 +49,8 @@ jobs:
           cd terraform
           terraform init
           terraform plan -out=tf.plan -detailed-exitcode
+        env:
+          TF_VAR_image_uri: ${{ vars.ECR_REGISTRY }}/${{ vars.ECR_REPOSITORY }}:${{ github.sha }}
       - name: Show Plan Output
         run: |
           cd terraform
