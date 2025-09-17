@@ -113,16 +113,18 @@ async def get_all_event_requests(
 async def list_event_requests_with_approvals(
     status: str | None = Query(None, description="Filter by event request status"),
     skip: int = Query(0, ge=0, description="Number of records to skip for pagination"),
-    take: int = Query(50, ge=1, le=100, description="Number of records to return (max 100)"),
+    take: int = Query(
+        50, ge=1, le=100, description="Number of records to return (max 100)"
+    ),
     user_id: str = Depends(get_current_user_id),
     service: EventRequestsService = Depends(get_event_requests_service),
 ) -> EventRequestsWithApprovalsListResponse:
     """
     List event requests with approval status aggregation
-    
+
     Returns event requests with:
-    - approval_status: 'pending' if any are pending and none are rejected, 
-      'rejected' if any are rejected, 'approved' if all are approved, 
+    - approval_status: 'pending' if any are pending and none are rejected,
+      'rejected' if any are rejected, 'approved' if all are approved,
       'no_approvals' if no approval requests exist
     - requested_approvals: total number of approval requests
     - completed_count: number of completed (non-pending) approvals

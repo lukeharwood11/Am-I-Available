@@ -10,9 +10,13 @@ from typing import Literal
 
 class EventDateTime(BaseModel):
     """Represents date/time information matching Google API format"""
-    
-    date: str | None = Field(None, description="Date in YYYY-MM-DD format for all-day events")
-    date_time: datetime | None = Field(None, description="Date and time for timed events")
+
+    date: str | None = Field(
+        None, description="Date in YYYY-MM-DD format for all-day events"
+    )
+    date_time: datetime | None = Field(
+        None, description="Date and time for timed events"
+    )
     time_zone: str | None = Field(None, description="Time zone identifier")
 
 
@@ -86,7 +90,9 @@ class ListEventRequestsWithApprovalsRequest(BaseModel):
         None, description="Filter by event request status"
     )
     skip: int = Field(0, ge=0, description="Number of records to skip for pagination")
-    take: int = Field(50, ge=1, le=100, description="Number of records to return (max 100)")
+    take: int = Field(
+        50, ge=1, le=100, description="Number of records to return (max 100)"
+    )
 
 
 class DeleteEventRequestRequest(BaseModel):
@@ -134,9 +140,13 @@ class EventRequestWithApprovalsData(BaseModel):
     created_by: str = Field(description="UUID of the user who created the request")
     created_at: datetime = Field(description="When the request was created")
     updated_at: datetime = Field(description="When the request was last updated")
-    approval_status: str = Field(description="Aggregated approval status: pending, approved, rejected, or no_approvals")
+    approval_status: str = Field(
+        description="Aggregated approval status: pending, approved, rejected, or no_approvals"
+    )
     requested_approvals: int = Field(description="Total number of approval requests")
-    completed_count: int = Field(description="Number of completed (non-pending) approvals")
+    completed_count: int = Field(
+        description="Number of completed (non-pending) approvals"
+    )
 
 
 class EventRequestResponse(BaseModel):

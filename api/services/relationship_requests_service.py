@@ -19,12 +19,19 @@ from api.services.relationships_service import RelationshipsService
 
 
 class RelationshipRequestsService:
-    def __init__(self, databridge: RelationshipRequestsDatabridge, relationships_service: RelationshipsService):
+    def __init__(
+        self,
+        databridge: RelationshipRequestsDatabridge,
+        relationships_service: RelationshipsService,
+    ):
         self.databridge: RelationshipRequestsDatabridge = databridge
         self.relationships_service: RelationshipsService = relationships_service
 
     def _convert_db_to_model(
-        self, db_request: DBRelationshipRequestResponse | DBRelationshipRequestResponseWithUser
+        self,
+        db_request: (
+            DBRelationshipRequestResponse | DBRelationshipRequestResponseWithUser
+        ),
     ) -> RelationshipRequestData | RelationshipRequestWithUserData:
         """Convert database response to API model"""
         if isinstance(db_request, DBRelationshipRequestResponseWithUser):
@@ -218,7 +225,9 @@ class RelationshipRequestsService:
         )
 
         if not _update_response:
-            raise HTTPException(status_code=500, detail="Failed to update relationship request")
+            raise HTTPException(
+                status_code=500, detail="Failed to update relationship request"
+            )
 
         # create a relationship
         _create_response = await self.relationships_service.create_relationship(

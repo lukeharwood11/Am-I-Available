@@ -57,8 +57,10 @@ class RelationshipRequestData(BaseModel):
     created_at: datetime = Field(description="When the request was created")
     updated_at: datetime = Field(description="When the request was last updated")
 
+
 class RelationshipRequestWithUserData(BaseModel):
     """Relationship request data model with user data"""
+
     id: str = Field(description="Relationship request UUID")
     requester: users.UserData = Field(description="User who sent the request")
     requested_email: str = Field(description="Email of the person being invited")
@@ -77,13 +79,16 @@ class RelationshipRequestResponse(BaseModel):
 
 class RelationshipRequestsListResponse(BaseModel):
     """Response model for listing relationship requests"""
+
     status: str = "success"
     relationship_requests: list[RelationshipRequestData]
     count: int
     filters: dict[str, str] | None = None
 
+
 class RelationshipRequestWithUserListResponse(BaseModel):
     """Response model for listing relationship requests with user data"""
+
     status: str = "success"
     relationship_requests: list[RelationshipRequestWithUserData]
     count: int

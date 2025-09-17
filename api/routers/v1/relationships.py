@@ -76,6 +76,7 @@ async def get_relationship(
         relationship_id=relationship_id, current_user_id=user_id
     )
 
+
 @router.patch("/{relationship_id}", response_model=RelationshipUpdateResponse)
 async def update_relationship(
     relationship_id: str,
@@ -110,5 +111,3 @@ async def delete_relationship(
     return await service.delete_relationship(
         relationship_id=relationship_id, user_id=user_id
     )
-
-

@@ -49,14 +49,22 @@ class RelationshipsService:
                 id=db_relationship.other_user_id,
                 email=db_relationship.other_user_email,
                 full_name=db_relationship.other_user_full_name,
-            )
+            ),
         )
-    
-    async def search_relationships(self, *, query: str, user_id: str) -> RelationshipsListResponse:
+
+    async def search_relationships(
+        self, *, query: str, user_id: str
+    ) -> RelationshipsListResponse:
         """Search for relationships by query"""
-        db_relationships = await self.databridge.search_relationships(query=query, user_id=user_id)
-        relationships = [self._convert_db_with_user_to_model(rel) for rel in db_relationships]
-        return RelationshipsListResponse(relationships=relationships, count=len(relationships), filters=None)
+        db_relationships = await self.databridge.search_relationships(
+            query=query, user_id=user_id
+        )
+        relationships = [
+            self._convert_db_with_user_to_model(rel) for rel in db_relationships
+        ]
+        return RelationshipsListResponse(
+            relationships=relationships, count=len(relationships), filters=None
+        )
 
     async def create_relationship(
         self, *, user_id_1: str, user_id_2: str

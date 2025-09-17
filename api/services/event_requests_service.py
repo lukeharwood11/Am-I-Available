@@ -26,7 +26,11 @@ class EventRequestsService:
         """Convert EventDateTime to dict for database storage"""
         return {
             "date": event_datetime.date,
-            "dateTime": event_datetime.date_time.isoformat() if event_datetime.date_time else None,
+            "dateTime": (
+                event_datetime.date_time.isoformat()
+                if event_datetime.date_time
+                else None
+            ),
             "timeZone": event_datetime.time_zone,
         }
 
@@ -34,7 +38,11 @@ class EventRequestsService:
         """Convert dict from database to EventDateTime"""
         return EventDateTime(
             date=data.get("date"),
-            date_time=datetime.fromisoformat(data["dateTime"]) if data.get("dateTime") else None,
+            date_time=(
+                datetime.fromisoformat(data["dateTime"])
+                if data.get("dateTime")
+                else None
+            ),
             time_zone=data.get("timeZone"),
         )
 
@@ -97,7 +105,11 @@ class EventRequestsService:
         """Create a new event request"""
         # Validate dates - for now we'll do basic validation
         # More complex validation could be added based on date vs dateTime fields
-        if start_date.date_time and end_date.date_time and start_date.date_time >= end_date.date_time:
+        if (
+            start_date.date_time
+            and end_date.date_time
+            and start_date.date_time >= end_date.date_time
+        ):
             raise HTTPException(
                 status_code=400, detail="Start date must be before end date"
             )
@@ -155,8 +167,14 @@ class EventRequestsService:
             user_id=user_id,
             status=status,
             importance_level=importance_level,
-            start_date_from=self._event_datetime_to_dict(start_date_from) if start_date_from else None,
-            start_date_to=self._event_datetime_to_dict(start_date_to) if start_date_to else None,
+            start_date_from=(
+                self._event_datetime_to_dict(start_date_from)
+                if start_date_from
+                else None
+            ),
+            start_date_to=(
+                self._event_datetime_to_dict(start_date_to) if start_date_to else None
+            ),
         )
 
         requests = [self._convert_db_to_model(req) for req in db_requests]
@@ -188,8 +206,14 @@ class EventRequestsService:
         db_requests = await self.databridge.get_all_event_requests(
             status=status,
             importance_level=importance_level,
-            start_date_from=self._event_datetime_to_dict(start_date_from) if start_date_from else None,
-            start_date_to=self._event_datetime_to_dict(start_date_to) if start_date_to else None,
+            start_date_from=(
+                self._event_datetime_to_dict(start_date_from)
+                if start_date_from
+                else None
+            ),
+            start_date_to=(
+                self._event_datetime_to_dict(start_date_to) if start_date_to else None
+            ),
             created_by=created_by,
         )
 
@@ -247,20 +271,38 @@ class EventRequestsService:
         # Validate dates if provided - convert existing dates for comparison
         existing_start = self._dict_to_event_datetime(existing.start_date)
         existing_end = self._dict_to_event_datetime(existing.end_date)
-        
-        if start_date and end_date and start_date.date_time and end_date.date_time and start_date.date_time >= end_date.date_time:
+
+        if (
+            start_date
+            and end_date
+            and start_date.date_time
+            and end_date.date_time
+            and start_date.date_time >= end_date.date_time
+        ):
             raise HTTPException(
                 status_code=400, detail="Start date must be before end date"
             )
 
         # Validate start_date with existing end_date
-        if start_date and not end_date and start_date.date_time and existing_end.date_time and start_date.date_time >= existing_end.date_time:
+        if (
+            start_date
+            and not end_date
+            and start_date.date_time
+            and existing_end.date_time
+            and start_date.date_time >= existing_end.date_time
+        ):
             raise HTTPException(
                 status_code=400, detail="Start date must be before existing end date"
             )
 
         # Validate end_date with existing start_date
-        if end_date and not start_date and existing_start.date_time and end_date.date_time and existing_start.date_time >= end_date.date_time:
+        if (
+            end_date
+            and not start_date
+            and existing_start.date_time
+            and end_date.date_time
+            and existing_start.date_time >= end_date.date_time
+        ):
             raise HTTPException(
                 status_code=400, detail="End date must be after existing start date"
             )
@@ -373,8 +415,10 @@ class EventRequestsService:
             take=take,
         )
 
-        requests = [self._convert_db_with_approvals_to_model(req) for req in db_requests]
-        
+        requests = [
+            self._convert_db_with_approvals_to_model(req) for req in db_requests
+        ]
+
         # Get total count from the first item if available
         total_count = db_requests[0].total_count if db_requests else 0
 

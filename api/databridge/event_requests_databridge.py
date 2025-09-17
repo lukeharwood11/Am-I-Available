@@ -15,7 +15,7 @@ class DBEventRequestResponse(BaseModel):
     location: str | None
     description: str | None
     start_date: dict  # JSONB field
-    end_date: dict    # JSONB field
+    end_date: dict  # JSONB field
     importance_level: int
     status: str
     notes: str | None
@@ -31,7 +31,7 @@ class DBEventRequestWithApprovalsResponse(BaseModel):
     location: str | None
     description: str | None
     start_date: dict  # JSONB field
-    end_date: dict    # JSONB field
+    end_date: dict  # JSONB field
     importance_level: int
     status: str
     notes: str | None
@@ -261,13 +261,15 @@ class EventRequestsDatabridge:
                     "p_status": status,
                     "p_skip": skip,
                     "p_take": take,
-                }
+                },
             ).execute()
 
             if not response.data:
                 return []
 
-            return [DBEventRequestWithApprovalsResponse(**item) for item in response.data]
+            return [
+                DBEventRequestWithApprovalsResponse(**item) for item in response.data
+            ]
         except Exception as e:
             logger.info(f"Error listing event requests with approvals: {e}")
             return []

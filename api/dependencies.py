@@ -93,12 +93,12 @@ def get_relationship_requests_service(
     databridge: RelationshipRequestsDatabridge = Depends(
         get_relationship_requests_databridge
     ),
-    relationships_service: RelationshipsService = Depends(
-        get_relationships_service
-    )
+    relationships_service: RelationshipsService = Depends(get_relationships_service),
 ) -> RelationshipRequestsService:
     """Dependency to get relationship requests service instance"""
-    return RelationshipRequestsService(databridge=databridge, relationships_service=relationships_service)
+    return RelationshipRequestsService(
+        databridge=databridge, relationships_service=relationships_service
+    )
 
 
 def get_event_requests_service(

@@ -25,8 +25,12 @@ class UpdateRelationshipRequest(BaseModel):
 class GetRelationshipsRequest(BaseModel):
     """Request model for getting user relationships"""
 
-    skip: int = Field(default=0, ge=0, description="Number of records to skip for pagination")
-    take: int = Field(default=10, ge=1, le=100, description="Number of records to take (max 100)")
+    skip: int = Field(
+        default=0, ge=0, description="Number of records to skip for pagination"
+    )
+    take: int = Field(
+        default=10, ge=1, le=100, description="Number of records to take (max 100)"
+    )
 
 
 class DeleteRelationshipRequest(BaseModel):
@@ -42,7 +46,7 @@ class DeleteRelationshipRequest(BaseModel):
 
 class UserData(BaseModel):
     """User data model"""
-    
+
     id: str = Field(description="User UUID")
     email: str = Field(description="User email")
     full_name: str = Field(description="User full name")
@@ -66,7 +70,9 @@ class RelationshipWithUserData(BaseModel):
     user_id_2: str = Field(description="UUID of the second user")
     created_at: datetime = Field(description="When the relationship was created")
     updated_at: datetime = Field(description="When the relationship was last updated")
-    other_user: UserData = Field(description="Data of the other user in the relationship")
+    other_user: UserData = Field(
+        description="Data of the other user in the relationship"
+    )
 
 
 class RelationshipResponse(BaseModel):

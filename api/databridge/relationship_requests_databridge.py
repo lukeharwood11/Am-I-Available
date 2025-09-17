@@ -21,6 +21,7 @@ class DBRelationshipRequestResponse(BaseModel):
     created_at: datetime
     updated_at: datetime
 
+
 class DBRelationshipRequestResponseWithUser(BaseModel):
     id: str
     requested_email: str
@@ -61,31 +62,31 @@ class RelationshipRequestsDatabridge:
     ) -> DBRelationshipRequestResponse | None:
         """Get a specific relationship request by ID"""
         try:
-            response = self.supabase.rpc('get_relationship_request_with_user', {
-                'p_request_id': request_id
-            }).execute()
-            
+            response = self.supabase.rpc(
+                "get_relationship_request_with_user", {"p_request_id": request_id}
+            ).execute()
+
             if not response.data or len(response.data) == 0:
                 return None
 
             row = response.data[0]
-            
+
             # Create the user data
             user_data = DBUserData(
-                id=row['user_id'],
-                email=row['user_email'],
-                full_name=row['user_full_name']
+                id=row["user_id"],
+                email=row["user_email"],
+                full_name=row["user_full_name"],
             )
-            
+
             # Create the relationship request data
             return DBRelationshipRequestResponse(
-                id=row['id'],
-                requester_id=row['requester_id'],
-                requested_email=row['requested_email'],
-                status=row['status'],
-                created_at=row['created_at'],
-                updated_at=row['updated_at'],
-                requester=user_data
+                id=row["id"],
+                requester_id=row["requester_id"],
+                requested_email=row["requested_email"],
+                status=row["status"],
+                created_at=row["created_at"],
+                updated_at=row["updated_at"],
+                requester=user_data,
             )
         except Exception as e:
             logger.info(f"Error fetching relationship request: {e}")
@@ -96,11 +97,11 @@ class RelationshipRequestsDatabridge:
     ) -> list[DBRelationshipRequestResponse]:
         """Get all relationship requests sent by a user"""
         try:
-            response = self.supabase.rpc('get_sent_relationship_requests', {
-                'p_requester_id': requester_id,
-                'p_status': status
-            }).execute()
-            
+            response = self.supabase.rpc(
+                "get_sent_relationship_requests",
+                {"p_requester_id": requester_id, "p_status": status},
+            ).execute()
+
             if not response.data:
                 return []
 
@@ -108,20 +109,20 @@ class RelationshipRequestsDatabridge:
             for row in response.data:
                 # Create the user data
                 user_data = DBUserData(
-                    id=row['user_id'],
-                    email=row['user_email'],
-                    full_name=row['user_full_name']
+                    id=row["user_id"],
+                    email=row["user_email"],
+                    full_name=row["user_full_name"],
                 )
-                
+
                 # Create the relationship request data
                 request_data = DBRelationshipRequestResponse(
-                    id=row['id'],
-                    requester_id=row['requester_id'],
-                    requested_email=row['requested_email'],
-                    status=row['status'],
-                    created_at=row['created_at'],
-                    updated_at=row['updated_at'],
-                    requester=user_data
+                    id=row["id"],
+                    requester_id=row["requester_id"],
+                    requested_email=row["requested_email"],
+                    status=row["status"],
+                    created_at=row["created_at"],
+                    updated_at=row["updated_at"],
+                    requester=user_data,
                 )
                 result.append(request_data)
 
@@ -135,11 +136,11 @@ class RelationshipRequestsDatabridge:
     ) -> list[DBRelationshipRequestResponseWithUser]:
         """Get all relationship requests received by a user (by email)"""
         try:
-            response = self.supabase.rpc('get_received_relationship_requests', {
-                'p_requested_email': user_email,
-                'p_status': status
-            }).execute()
-            
+            response = self.supabase.rpc(
+                "get_received_relationship_requests",
+                {"p_requested_email": user_email, "p_status": status},
+            ).execute()
+
             if not response.data:
                 return []
 
@@ -147,19 +148,19 @@ class RelationshipRequestsDatabridge:
             for row in response.data:
                 # Create the user data
                 user_data = DBUserData(
-                    id=row['user_id'],
-                    email=row['user_email'],
-                    full_name=row['user_full_name']
+                    id=row["user_id"],
+                    email=row["user_email"],
+                    full_name=row["user_full_name"],
                 )
-                
+
                 # Create the relationship request data
                 request_data = DBRelationshipRequestResponseWithUser(
-                    id=row['id'],
-                    requested_email=row['requested_email'],
-                    status=row['status'],
-                    created_at=row['created_at'],
-                    updated_at=row['updated_at'],
-                    requester=user_data
+                    id=row["id"],
+                    requested_email=row["requested_email"],
+                    status=row["status"],
+                    created_at=row["created_at"],
+                    updated_at=row["updated_at"],
+                    requester=user_data,
                 )
                 result.append(request_data)
 
@@ -220,4 +221,3 @@ class RelationshipRequestsDatabridge:
         except Exception as e:
             logger.info(f"Error checking existing request: {e}")
             return None
-

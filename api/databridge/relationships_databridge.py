@@ -35,11 +35,15 @@ class RelationshipsDatabridge:
     def __init__(self, supabase: Client):
         self.supabase = supabase
         self.relationships = self.supabase.table("relationships")
-    
-    async def search_relationships(self, *, query: str, user_id: str) -> list[DBRelationshipWithUserResponse]:
+
+    async def search_relationships(
+        self, *, query: str, user_id: str
+    ) -> list[DBRelationshipWithUserResponse]:
         """Search for relationships by query"""
         try:
-            response = self.supabase.rpc("search_relationships", {"p_query": query, "p_user_id": user_id}).execute()
+            response = self.supabase.rpc(
+                "search_relationships", {"p_query": query, "p_user_id": user_id}
+            ).execute()
             if not response.data:
                 return []
             return [DBRelationshipWithUserResponse(**item) for item in response.data]
@@ -93,9 +97,9 @@ class RelationshipsDatabridge:
                 {
                     "p_relationship_id": relationship_id,
                     "p_current_user_id": current_user_id,
-                }
+                },
             ).execute()
-            
+
             if not response.data:
                 return None
 
@@ -133,22 +137,21 @@ class RelationshipsDatabridge:
                     "p_user_id": user_id,
                     "p_skip": skip,
                     "p_take": take,
-                }
+                },
             ).execute()
-            
+
             if not response.data:
                 return DBRelationshipsListResponse(relationships=[], total_count=0)
 
             relationships = []
             total_count = 0
-            
+
             for item in response.data:
                 relationships.append(DBRelationshipWithUserResponse(**item))
                 total_count = item.get("total_count", 0)
-            
+
             return DBRelationshipsListResponse(
-                relationships=relationships,
-                total_count=total_count
+                relationships=relationships, total_count=total_count
             )
         except Exception as e:
             logger.info(f"Error fetching user relationships with users: {e}")
