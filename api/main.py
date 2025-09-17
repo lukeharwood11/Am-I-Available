@@ -52,7 +52,7 @@ app.include_router(v1_router)
 
 @app.get("/")
 async def root():
-    return {"message": "Welcome to AmIA API"}
+    return {"message": "Welcome to the AM/A API"}
 
 
 auth_templates = Jinja2Templates(directory="api/api_files")
