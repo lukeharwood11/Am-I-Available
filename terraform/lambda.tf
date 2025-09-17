@@ -62,6 +62,7 @@ resource "aws_lambda_function" "api" {
     variables = {
       AWS_REGION                  = "us-east-2"
       SECRETS_MANAGER_SECRET_NAME = aws_secretsmanager_secret.api_secrets.name
+      ENVIRONMENT                 = "prod"
     }
   }
 }
