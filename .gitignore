@@ -46,3 +46,6 @@ volumes/
 .terraform
 .terraform.lock.hcl
 *.plan
+
+# TFVars
+tfvars/local.tfvars
