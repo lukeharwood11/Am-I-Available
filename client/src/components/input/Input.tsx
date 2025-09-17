@@ -4,7 +4,8 @@ import styles from './Input.module.css';
 export type InputVariant = 'default' | 'error';
 export type InputSize = 'small' | 'medium' | 'large';
 
-interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
+interface InputProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   variant?: InputVariant;
   size?: InputSize;
   fullWidth?: boolean;
@@ -28,30 +29,27 @@ const Input: React.FC<InputProps> = ({
     fullWidth ? styles.fullWidth : '',
     leftIcon ? styles.hasLeftIcon : '',
     rightIcon ? styles.hasRightIcon : '',
-    className
-  ].filter(Boolean).join(' ');
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   const wrapperClasses = [
     styles.inputWrapper,
     styles[variant],
     styles[size],
     fullWidth ? styles.fullWidth : '',
-  ].filter(Boolean).join(' ');
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <div className={wrapperClasses}>
-      {leftIcon && (
-        <span className={styles.leftIcon}>{leftIcon}</span>
-      )}
-      <input
-        className={inputClasses}
-        {...props}
-      />
-      {rightIcon && (
-        <span className={styles.rightIcon}>{rightIcon}</span>
-      )}
+      {leftIcon && <span className={styles.leftIcon}>{leftIcon}</span>}
+      <input className={inputClasses} {...props} />
+      {rightIcon && <span className={styles.rightIcon}>{rightIcon}</span>}
     </div>
   );
 };
 
-export default Input; 
+export default Input;

@@ -1,18 +1,18 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { 
+import {
   createEventRequest,
   getEventRequests,
   getEventRequestsWithApprovals,
   getEventRequest,
   getEventRequestWithApprovals,
   updateEventRequest,
-  deleteEventRequest
+  deleteEventRequest,
 } from '../hubs/event-requests.hub';
 import {
   CreateEventRequestRequest,
   UpdateEventRequestRequest,
   GetEventRequestsRequest,
-  ListEventRequestsWithApprovalsRequest
+  ListEventRequestsWithApprovalsRequest,
 } from '../types/event-requests.types';
 import { ERROR_MESSAGES } from '../constants';
 
@@ -24,7 +24,10 @@ export const createEventRequestThunk = createAsyncThunk(
       const response = await createEventRequest(request);
       return response;
     } catch (error) {
-      const message = error instanceof Error ? error.message : ERROR_MESSAGES.EVENT_REQUESTS.CREATE_FAILED;
+      const message =
+        error instanceof Error
+          ? error.message
+          : ERROR_MESSAGES.EVENT_REQUESTS.CREATE_FAILED;
       return rejectWithValue(message);
     }
   }
@@ -38,7 +41,10 @@ export const fetchEventRequestsThunk = createAsyncThunk(
       const response = await getEventRequests(params);
       return response;
     } catch (error) {
-      const message = error instanceof Error ? error.message : ERROR_MESSAGES.EVENT_REQUESTS.FETCH_FAILED;
+      const message =
+        error instanceof Error
+          ? error.message
+          : ERROR_MESSAGES.EVENT_REQUESTS.FETCH_FAILED;
       return rejectWithValue(message);
     }
   }
@@ -47,12 +53,18 @@ export const fetchEventRequestsThunk = createAsyncThunk(
 // Fetch event requests with approval status and pagination
 export const fetchEventRequestsWithApprovalsThunk = createAsyncThunk(
   'eventRequests/fetchWithApprovals',
-  async (params: ListEventRequestsWithApprovalsRequest = {}, { rejectWithValue }) => {
+  async (
+    params: ListEventRequestsWithApprovalsRequest = {},
+    { rejectWithValue }
+  ) => {
     try {
       const response = await getEventRequestsWithApprovals(params);
       return response;
     } catch (error) {
-      const message = error instanceof Error ? error.message : ERROR_MESSAGES.EVENT_REQUESTS.FETCH_FAILED;
+      const message =
+        error instanceof Error
+          ? error.message
+          : ERROR_MESSAGES.EVENT_REQUESTS.FETCH_FAILED;
       return rejectWithValue(message);
     }
   }
@@ -66,7 +78,10 @@ export const fetchEventRequestThunk = createAsyncThunk(
       const response = await getEventRequest(eventRequestId);
       return response;
     } catch (error) {
-      const message = error instanceof Error ? error.message : ERROR_MESSAGES.EVENT_REQUESTS.FETCH_FAILED;
+      const message =
+        error instanceof Error
+          ? error.message
+          : ERROR_MESSAGES.EVENT_REQUESTS.FETCH_FAILED;
       return rejectWithValue(message);
     }
   }
@@ -80,7 +95,10 @@ export const fetchEventRequestWithApprovalsThunk = createAsyncThunk(
       const response = await getEventRequestWithApprovals(eventRequestId);
       return response;
     } catch (error) {
-      const message = error instanceof Error ? error.message : ERROR_MESSAGES.EVENT_REQUESTS.FETCH_FAILED;
+      const message =
+        error instanceof Error
+          ? error.message
+          : ERROR_MESSAGES.EVENT_REQUESTS.FETCH_FAILED;
       return rejectWithValue(message);
     }
   }
@@ -90,14 +108,23 @@ export const fetchEventRequestWithApprovalsThunk = createAsyncThunk(
 export const updateEventRequestThunk = createAsyncThunk(
   'eventRequests/update',
   async (
-    { eventRequestId, request }: { eventRequestId: string; request: Omit<UpdateEventRequestRequest, 'event_request_id'> },
+    {
+      eventRequestId,
+      request,
+    }: {
+      eventRequestId: string;
+      request: Omit<UpdateEventRequestRequest, 'event_request_id'>;
+    },
     { rejectWithValue }
   ) => {
     try {
       const response = await updateEventRequest(eventRequestId, request);
       return response;
     } catch (error) {
-      const message = error instanceof Error ? error.message : ERROR_MESSAGES.EVENT_REQUESTS.UPDATE_FAILED;
+      const message =
+        error instanceof Error
+          ? error.message
+          : ERROR_MESSAGES.EVENT_REQUESTS.UPDATE_FAILED;
       return rejectWithValue(message);
     }
   }
@@ -111,7 +138,10 @@ export const deleteEventRequestThunk = createAsyncThunk(
       const response = await deleteEventRequest(eventRequestId);
       return response;
     } catch (error) {
-      const message = error instanceof Error ? error.message : ERROR_MESSAGES.EVENT_REQUESTS.DELETE_FAILED;
+      const message =
+        error instanceof Error
+          ? error.message
+          : ERROR_MESSAGES.EVENT_REQUESTS.DELETE_FAILED;
       return rejectWithValue(message);
     }
   }

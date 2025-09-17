@@ -8,7 +8,8 @@ const meta: Meta<typeof Logo> = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'A text-based logo component using HTML h1 element with CSS modules for styling.',
+        component:
+          'A text-based logo component using HTML h1 element with CSS modules for styling.',
       },
     },
   },
@@ -60,20 +61,24 @@ export const ExtraLarge: Story = {
 
 export const WithDifferentColors: Story = {
   render: () => (
-    <div style={{ 
-      display: 'flex', 
-      gap: '20px', 
-      alignItems: 'center', 
-      flexWrap: 'wrap',
-      padding: '20px'
-    }}>
+    <div
+      style={{
+        display: 'flex',
+        gap: '20px',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        padding: '20px',
+      }}
+    >
       <div style={{ textAlign: 'center', color: '#4a90e2' }}>
         <Logo size={32} />
         <p style={{ margin: '8px 0 0 0', fontSize: '12px' }}>Primary Blue</p>
       </div>
       <div style={{ textAlign: 'center', color: '#8e44ad' }}>
         <Logo size={32} />
-        <p style={{ margin: '8px 0 0 0', fontSize: '12px' }}>Secondary Purple</p>
+        <p style={{ margin: '8px 0 0 0', fontSize: '12px' }}>
+          Secondary Purple
+        </p>
       </div>
       <div style={{ textAlign: 'center', color: '#262626' }}>
         <Logo size={32} />

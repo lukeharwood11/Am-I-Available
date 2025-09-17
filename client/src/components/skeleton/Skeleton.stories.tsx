@@ -109,17 +109,24 @@ export const NoAnimation: Story = {
 
 export const SizeComparison: Story = {
   render: () => (
-    <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+    <div
+      style={{
+        display: 'flex',
+        gap: '16px',
+        alignItems: 'flex-start',
+        flexWrap: 'wrap',
+      }}
+    >
       <div style={{ textAlign: 'center' }}>
-        <Skeleton variant="default" size="small" />
+        <Skeleton variant='default' size='small' />
         <p style={{ margin: '8px 0 0 0', fontSize: '12px' }}>Small</p>
       </div>
       <div style={{ textAlign: 'center' }}>
-        <Skeleton variant="default" size="medium" />
+        <Skeleton variant='default' size='medium' />
         <p style={{ margin: '8px 0 0 0', fontSize: '12px' }}>Medium</p>
       </div>
       <div style={{ textAlign: 'center' }}>
-        <Skeleton variant="default" size="large" />
+        <Skeleton variant='default' size='large' />
         <p style={{ margin: '8px 0 0 0', fontSize: '12px' }}>Large</p>
       </div>
     </div>
@@ -128,21 +135,28 @@ export const SizeComparison: Story = {
 
 export const VariantComparison: Story = {
   render: () => (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '24px', alignItems: 'start' }}>
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+        gap: '24px',
+        alignItems: 'start',
+      }}
+    >
       <div style={{ textAlign: 'center' }}>
-        <Skeleton variant="default" size="medium" />
+        <Skeleton variant='default' size='medium' />
         <p style={{ margin: '8px 0 0 0', fontSize: '12px' }}>Default</p>
       </div>
       <div style={{ textAlign: 'center' }}>
-        <Skeleton variant="rounded" size="medium" />
+        <Skeleton variant='rounded' size='medium' />
         <p style={{ margin: '8px 0 0 0', fontSize: '12px' }}>Rounded</p>
       </div>
       <div style={{ textAlign: 'center' }}>
-        <Skeleton variant="circle" size="medium" />
+        <Skeleton variant='circle' size='medium' />
         <p style={{ margin: '8px 0 0 0', fontSize: '12px' }}>Circle</p>
       </div>
       <div style={{ textAlign: 'center' }}>
-        <Skeleton variant="text" width="100px" />
+        <Skeleton variant='text' width='100px' />
         <p style={{ margin: '8px 0 0 0', fontSize: '12px' }}>Text</p>
       </div>
     </div>
@@ -151,18 +165,20 @@ export const VariantComparison: Story = {
 
 export const CardSkeleton: Story = {
   render: () => (
-    <div style={{ 
-      padding: '16px', 
-      border: '1px solid var(--grey-200)', 
-      borderRadius: 'var(--border-radius-standard)',
-      maxWidth: '300px'
-    }}>
-      <Skeleton variant="default" width="100%" height="150px" />
+    <div
+      style={{
+        padding: '16px',
+        border: '1px solid var(--grey-200)',
+        borderRadius: 'var(--border-radius-standard)',
+        maxWidth: '300px',
+      }}
+    >
+      <Skeleton variant='default' width='100%' height='150px' />
       <div style={{ marginTop: '16px' }}>
-        <Skeleton variant="text" width="80%" size="large" />
-        <Skeleton variant="text" lines={2} size="medium" />
+        <Skeleton variant='text' width='80%' size='large' />
+        <Skeleton variant='text' lines={2} size='medium' />
         <div style={{ marginTop: '12px' }}>
-          <Skeleton variant="text" width="60%" size="small" />
+          <Skeleton variant='text' width='60%' size='small' />
         </div>
       </div>
     </div>
@@ -172,10 +188,10 @@ export const CardSkeleton: Story = {
 export const ProfileSkeleton: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-      <Skeleton variant="circle" size="small" />
+      <Skeleton variant='circle' size='small' />
       <div style={{ flex: 1 }}>
-        <Skeleton variant="text" width="120px" size="medium" />
-        <Skeleton variant="text" width="200px" size="small" />
+        <Skeleton variant='text' width='120px' size='medium' />
+        <Skeleton variant='text' width='200px' size='small' />
       </div>
     </div>
   ),
@@ -185,13 +201,16 @@ export const ListSkeleton: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
       {Array.from({ length: 4 }, (_, index) => (
-        <div key={index} style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-          <Skeleton variant="circle" width="40px" height="40px" />
+        <div
+          key={index}
+          style={{ display: 'flex', gap: '12px', alignItems: 'center' }}
+        >
+          <Skeleton variant='circle' width='40px' height='40px' />
           <div style={{ flex: 1 }}>
-            <Skeleton variant="text" width="60%" size="medium" />
-            <Skeleton variant="text" width="80%" size="small" />
+            <Skeleton variant='text' width='60%' size='medium' />
+            <Skeleton variant='text' width='80%' size='small' />
           </div>
-          <Skeleton variant="default" width="80px" height="32px" />
+          <Skeleton variant='default' width='80px' height='32px' />
         </div>
       ))}
     </div>

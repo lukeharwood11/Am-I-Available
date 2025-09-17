@@ -30,7 +30,9 @@ const calendarSlice = createSlice({
       state.events.push(action.payload);
     },
     updateEvent: (state, action: PayloadAction<CalendarEvent>) => {
-      const index = state.events.findIndex(event => event.id === action.payload.id);
+      const index = state.events.findIndex(
+        event => event.id === action.payload.id
+      );
       if (index !== -1) {
         state.events[index] = action.payload;
       }
@@ -38,10 +40,13 @@ const calendarSlice = createSlice({
     removeEvent: (state, action: PayloadAction<string>) => {
       state.events = state.events.filter(event => event.id !== action.payload);
     },
-    setGoogleTokens: (state, action: PayloadAction<{ accessToken: string; refreshToken: string }>) => {
+    setGoogleTokens: (
+      state,
+      action: PayloadAction<{ accessToken: string; refreshToken: string }>
+    ) => {
       state.googleTokens = action.payload;
     },
-    clearGoogleTokens: (state) => {
+    clearGoogleTokens: state => {
       state.googleTokens = {
         accessToken: null,
         refreshToken: null,

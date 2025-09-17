@@ -1,10 +1,19 @@
 import React from 'react';
 import styles from './Button.module.css';
 
-export type ButtonVariant = 'primary' | 'primary-subtle' | 'secondary' | 'secondary-subtle' | 'alternate' | 'alternate-subtle' | 'danger' | 'danger-subtle';
+export type ButtonVariant =
+  | 'primary'
+  | 'primary-subtle'
+  | 'secondary'
+  | 'secondary-subtle'
+  | 'alternate'
+  | 'alternate-subtle'
+  | 'danger'
+  | 'danger-subtle';
 export type ButtonSize = 'small' | 'medium' | 'large';
 
-interface ButtonLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+interface ButtonLinkProps
+  extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   variant?: ButtonVariant;
   size?: ButtonSize;
   fullWidth?: boolean;
@@ -30,17 +39,14 @@ const ButtonLink: React.FC<ButtonLinkProps> = ({
     styles[size],
     fullWidth ? styles.fullWidth : '',
     isLoading ? styles.loading : '',
-    className
-  ].filter(Boolean).join(' ');
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
-    <a
-      className={buttonClasses}
-      {...props}
-    >
-      {isLoading && (
-        <span className={styles.spinner} />
-      )}
+    <a className={buttonClasses} {...props}>
+      {isLoading && <span className={styles.spinner} />}
       {!isLoading && leftIcon && (
         <span className={styles.leftIcon}>{leftIcon}</span>
       )}
@@ -52,4 +58,4 @@ const ButtonLink: React.FC<ButtonLinkProps> = ({
   );
 };
 
-export default ButtonLink; 
+export default ButtonLink;

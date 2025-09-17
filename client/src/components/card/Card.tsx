@@ -27,7 +27,7 @@ const Card: React.FC<CardProps> = ({
   footer,
   hoverable = false,
   style,
-  contentClassName
+  contentClassName,
 }) => {
   const cardClasses = [
     styles.card,
@@ -35,8 +35,10 @@ const Card: React.FC<CardProps> = ({
     styles[`padding-${padding}`],
     onClick || hoverable ? styles.interactive : '',
     className,
-    contentClassName
-  ].filter(Boolean).join(' ');
+    contentClassName,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   const CardComponent = onClick ? 'button' : 'div';
 
@@ -47,21 +49,11 @@ const Card: React.FC<CardProps> = ({
       type={onClick ? 'button' : undefined}
       style={style}
     >
-      {header && (
-        <div className={styles.header}>
-          {header}
-        </div>
-      )}
-      
-      <div className={`${styles.content} ${contentClassName}`}>
-        {children}
-      </div>
-      
-      {footer && (
-        <div className={styles.footer}>
-          {footer}
-        </div>
-      )}
+      {header && <div className={styles.header}>{header}</div>}
+
+      <div className={`${styles.content} ${contentClassName}`}>{children}</div>
+
+      {footer && <div className={styles.footer}>{footer}</div>}
     </CardComponent>
   );
 };

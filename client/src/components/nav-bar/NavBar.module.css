@@ -98,7 +98,7 @@
   .actions {
     display: none;
   }
-  
+
   .hamburgerButton {
     display: block;
   }
@@ -109,11 +109,11 @@
   .headerContent {
     padding: 0.75rem;
   }
-  
+
   .logo h1 {
     font-size: 1.25rem;
   }
-  
+
   .logoIcon {
     width: 32px;
     height: 32px;

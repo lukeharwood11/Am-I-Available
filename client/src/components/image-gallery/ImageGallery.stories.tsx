@@ -6,38 +6,38 @@ const sampleImages: GalleryImage[] = [
     src: 'https://picsum.photos/400/300?random=1',
     alt: 'Random image 1',
     caption: 'Beautiful landscape with mountains',
-    thumbnail: 'https://picsum.photos/200/150?random=1'
+    thumbnail: 'https://picsum.photos/200/150?random=1',
   },
   {
     src: 'https://picsum.photos/400/500?random=2',
     alt: 'Random image 2',
     caption: 'Urban cityscape at sunset',
-    thumbnail: 'https://picsum.photos/200/250?random=2'
+    thumbnail: 'https://picsum.photos/200/250?random=2',
   },
   {
     src: 'https://picsum.photos/400/400?random=3',
     alt: 'Random image 3',
     caption: 'Forest path in autumn',
-    thumbnail: 'https://picsum.photos/200/200?random=3'
+    thumbnail: 'https://picsum.photos/200/200?random=3',
   },
   {
     src: 'https://picsum.photos/400/350?random=4',
     alt: 'Random image 4',
     caption: 'Ocean waves and rocky shore',
-    thumbnail: 'https://picsum.photos/200/175?random=4'
+    thumbnail: 'https://picsum.photos/200/175?random=4',
   },
   {
     src: 'https://picsum.photos/400/450?random=5',
     alt: 'Random image 5',
     caption: 'Desert landscape with cacti',
-    thumbnail: 'https://picsum.photos/200/225?random=5'
+    thumbnail: 'https://picsum.photos/200/225?random=5',
   },
   {
     src: 'https://picsum.photos/400/320?random=6',
     alt: 'Random image 6',
     caption: 'Snowy mountain peaks',
-    thumbnail: 'https://picsum.photos/200/160?random=6'
-  }
+    thumbnail: 'https://picsum.photos/200/160?random=6',
+  },
 ];
 
 const meta: Meta<typeof ImageGallery> = {
@@ -209,33 +209,39 @@ export const VariantComparison: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
       <div>
-        <h3 style={{ margin: '0 0 16px 0', color: 'var(--grey-800)' }}>Grid Layout</h3>
+        <h3 style={{ margin: '0 0 16px 0', color: 'var(--grey-800)' }}>
+          Grid Layout
+        </h3>
         <ImageGallery
           images={sampleImages.slice(0, 4)}
-          variant="grid"
+          variant='grid'
           columns={2}
-          spacing="medium"
+          spacing='medium'
           showCaptions={true}
         />
       </div>
-      
+
       <div>
-        <h3 style={{ margin: '0 0 16px 0', color: 'var(--grey-800)' }}>Masonry Layout</h3>
+        <h3 style={{ margin: '0 0 16px 0', color: 'var(--grey-800)' }}>
+          Masonry Layout
+        </h3>
         <ImageGallery
           images={sampleImages.slice(0, 4)}
-          variant="masonry"
+          variant='masonry'
           columns={2}
-          spacing="medium"
+          spacing='medium'
           showCaptions={true}
         />
       </div>
-      
+
       <div>
-        <h3 style={{ margin: '0 0 16px 0', color: 'var(--grey-800)' }}>Stack Layout</h3>
+        <h3 style={{ margin: '0 0 16px 0', color: 'var(--grey-800)' }}>
+          Stack Layout
+        </h3>
         <ImageGallery
           images={sampleImages.slice(0, 3)}
-          variant="stack"
-          size="small"
+          variant='stack'
+          size='small'
           showCaptions={true}
         />
       </div>

@@ -30,7 +30,7 @@ export const Default: Story = {
   args: {
     label: 'Email Address',
     htmlFor: 'email',
-    children: <Input id="email" type="email" placeholder="Enter your email" />,
+    children: <Input id='email' type='email' placeholder='Enter your email' />,
   },
 };
 
@@ -39,7 +39,15 @@ export const WithError: Story = {
     label: 'Email Address',
     htmlFor: 'email-error',
     error: 'Please enter a valid email address',
-    children: <Input id="email-error" type="email" placeholder="Enter your email" variant="error" value="invalid-email" />,
+    children: (
+      <Input
+        id='email-error'
+        type='email'
+        placeholder='Enter your email'
+        variant='error'
+        value='invalid-email'
+      />
+    ),
   },
 };
 
@@ -48,7 +56,9 @@ export const Required: Story = {
     label: 'Password',
     htmlFor: 'password',
     required: true,
-    children: <Input id="password" type="password" placeholder="Enter your password" />,
+    children: (
+      <Input id='password' type='password' placeholder='Enter your password' />
+    ),
   },
 };
 
@@ -58,7 +68,14 @@ export const RequiredWithError: Story = {
     htmlFor: 'confirm-password',
     required: true,
     error: 'Passwords do not match',
-    children: <Input id="confirm-password" type="password" placeholder="Confirm your password" variant="error" />,
+    children: (
+      <Input
+        id='confirm-password'
+        type='password'
+        placeholder='Confirm your password'
+        variant='error'
+      />
+    ),
   },
 };
 
@@ -66,7 +83,14 @@ export const WithIcon: Story = {
   args: {
     label: 'Email Address',
     htmlFor: 'email-icon',
-    children: <Input id="email-icon" type="email" placeholder="Enter your email" leftIcon={<MdEmail size={18} />} />,
+    children: (
+      <Input
+        id='email-icon'
+        type='email'
+        placeholder='Enter your email'
+        leftIcon={<MdEmail size={18} />}
+      />
+    ),
   },
 };
 
@@ -75,12 +99,19 @@ export const PasswordWithIcon: Story = {
     label: 'Password',
     htmlFor: 'password-icon',
     required: true,
-    children: <Input id="password-icon" type="password" placeholder="Enter your password" leftIcon={<MdLock size={18} />} />,
+    children: (
+      <Input
+        id='password-icon'
+        type='password'
+        placeholder='Enter your password'
+        leftIcon={<MdLock size={18} />}
+      />
+    ),
   },
 };
 
 export const NoLabel: Story = {
   args: {
-    children: <Input placeholder="Input without label" />,
+    children: <Input placeholder='Input without label' />,
   },
 };

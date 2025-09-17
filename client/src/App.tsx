@@ -12,7 +12,7 @@ export const routes = {
   home: '/',
   login: '/login',
   authCallback: '/auth/callback',
-  notFound: '*'
+  notFound: '*',
 };
 
 const App: React.FC = () => {
@@ -22,12 +22,12 @@ const App: React.FC = () => {
         <Routes>
           <Route path={routes.login} element={<LoginPage />} />
           <Route path={routes.authCallback} element={<AuthCallbackPage />} />
-          <Route path={""} element={<AuthWrapper />}>
-            <Route path={""} element={<Layout />}>
+          <Route path={''} element={<AuthWrapper />}>
+            <Route path={''} element={<Layout />}>
               <Route index element={<HomePage />} />
             </Route>
           </Route>
-          <Route path={""} element={<Layout />}>
+          <Route path={''} element={<Layout />}>
             {/* <Route path={routes.notFound} element={<NotFoundPage />} /> */}
           </Route>
         </Routes>

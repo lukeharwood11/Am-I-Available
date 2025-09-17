@@ -8,7 +8,8 @@ const meta: Meta<typeof AnimatedLogo> = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'An animated logo that displays "AM I AVAILABLE" initially and then transitions to "AMIA" after 3 seconds.',
+        component:
+          'An animated logo that displays "AM I AVAILABLE" initially and then transitions to "AMIA" after 3 seconds.',
       },
     },
   },
@@ -49,7 +50,8 @@ export const Interactive: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'AnimatedLogo with click interaction. Click the logo to see the alert.',
+        story:
+          'AnimatedLogo with click interaction. Click the logo to see the alert.',
       },
     },
   },

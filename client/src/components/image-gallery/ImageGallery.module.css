@@ -10,11 +10,21 @@
   gap: var(--spacing);
 }
 
-.grid.columns-1 { grid-template-columns: 1fr; }
-.grid.columns-2 { grid-template-columns: repeat(2, 1fr); }
-.grid.columns-3 { grid-template-columns: repeat(3, 1fr); }
-.grid.columns-4 { grid-template-columns: repeat(4, 1fr); }
-.grid.columns-5 { grid-template-columns: repeat(5, 1fr); }
+.grid.columns-1 {
+  grid-template-columns: 1fr;
+}
+.grid.columns-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+.grid.columns-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+.grid.columns-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+.grid.columns-5 {
+  grid-template-columns: repeat(5, 1fr);
+}
 
 @media (max-width: 768px) {
   .grid.columns-3,
@@ -148,10 +158,18 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.stackItem:nth-child(1) { transform: rotate(-2deg) translate(10px, 5px); }
-.stackItem:nth-child(2) { transform: rotate(1deg) translate(-5px, 10px); }
-.stackItem:nth-child(3) { transform: rotate(-1deg) translate(5px, -5px); }
-.stackItem:nth-child(4) { transform: rotate(2deg) translate(-10px, 8px); }
+.stackItem:nth-child(1) {
+  transform: rotate(-2deg) translate(10px, 5px);
+}
+.stackItem:nth-child(2) {
+  transform: rotate(1deg) translate(-5px, 10px);
+}
+.stackItem:nth-child(3) {
+  transform: rotate(-1deg) translate(5px, -5px);
+}
+.stackItem:nth-child(4) {
+  transform: rotate(2deg) translate(-10px, 8px);
+}
 
 .stackItem:hover,
 .activeStack {

@@ -53,13 +53,15 @@ export const ExtraLarge: Story = {
 
 export const SizeComparison: Story = {
   render: () => (
-    <div style={{ 
-      display: 'flex', 
-      gap: '20px', 
-      alignItems: 'center', 
-      flexWrap: 'wrap',
-      padding: '20px'
-    }}>
+    <div
+      style={{
+        display: 'flex',
+        gap: '20px',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        padding: '20px',
+      }}
+    >
       <div style={{ textAlign: 'center' }}>
         <GoogleIcon size={16} />
         <p style={{ margin: '8px 0 0 0', fontSize: '12px' }}>16px</p>
@@ -87,40 +89,46 @@ export const SizeComparison: Story = {
 export const InButton: Story = {
   name: 'In Button Context',
   render: () => (
-    <div style={{ 
-      display: 'flex', 
-      gap: '16px', 
-      alignItems: 'center', 
-      flexWrap: 'wrap',
-      padding: '20px'
-    }}>
-      <button style={{ 
+    <div
+      style={{
         display: 'flex',
+        gap: '16px',
         alignItems: 'center',
-        gap: '8px',
-        padding: '10px 16px',
-        border: '1px solid #ddd',
-        borderRadius: '6px',
-        background: '#fff',
-        cursor: 'pointer',
-        fontSize: '14px'
-      }}>
+        flexWrap: 'wrap',
+        padding: '20px',
+      }}
+    >
+      <button
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          padding: '10px 16px',
+          border: '1px solid #ddd',
+          borderRadius: '6px',
+          background: '#fff',
+          cursor: 'pointer',
+          fontSize: '14px',
+        }}
+      >
         <GoogleIcon size={18} />
         Sign in with Google
       </button>
-      
-      <button style={{ 
-        display: 'flex',
-        alignItems: 'center',
-        gap: '8px',
-        padding: '12px 20px',
-        border: '1px solid #4285F4',
-        borderRadius: '6px',
-        background: '#4285F4',
-        color: 'white',
-        cursor: 'pointer',
-        fontSize: '14px'
-      }}>
+
+      <button
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          padding: '12px 20px',
+          border: '1px solid #4285F4',
+          borderRadius: '6px',
+          background: '#4285F4',
+          color: 'white',
+          cursor: 'pointer',
+          fontSize: '14px',
+        }}
+      >
         <GoogleIcon size={20} />
         Continue with Google
       </button>

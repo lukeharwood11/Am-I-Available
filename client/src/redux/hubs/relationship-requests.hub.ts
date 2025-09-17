@@ -7,7 +7,7 @@ import {
   RelationshipRequestWithUserListResponse,
   RelationshipRequestDeleteResponse,
   RelationshipRequestCreateResponse,
-  RelationshipRequestUpdateResponse
+  RelationshipRequestUpdateResponse,
 } from '../types/relationship-requests.types';
 
 // ============================================================================

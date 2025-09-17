@@ -1,0 +1,57 @@
+# Dependencies
+node_modules/
+dist/
+build/
+
+# Generated files
+*.min.js
+*.min.css
+
+# Package manager files
+package-lock.json
+yarn.lock
+uv.lock
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Logs
+*.log
+
+# Database
+*.db
+*.sqlite
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Storybook
+storybook-static/
+
+# Coverage
+coverage/
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+
+# Docker
+docker-compose.override.yml

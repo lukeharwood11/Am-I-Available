@@ -2,7 +2,10 @@ import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from './redux/hooks';
 import { initializeAuth } from './redux/thunks/auth.thunk';
-import { selectAuthLoading, selectIsAuthenticated } from './redux/selectors/auth.selectors';
+import {
+  selectAuthLoading,
+  selectIsAuthenticated,
+} from './redux/selectors/auth.selectors';
 import { onAuthStateChange } from './redux/hubs/auth.hub';
 import { authActions } from './redux/slices/auth.slice';
 import LoadingIcon from './components/icons/LoadingIcon';
@@ -18,7 +21,9 @@ const AuthWrapper: React.FC = () => {
     dispatch(initializeAuth());
 
     // Subscribe to auth changes
-    const { data: { subscription } } = onAuthStateChange((_event, session) => {
+    const {
+      data: { subscription },
+    } = onAuthStateChange((_event, session) => {
       if (session) {
         dispatch(authActions.setSession({ session }));
       } else {
@@ -41,17 +46,19 @@ const AuthWrapper: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100vw',
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.1)'
-      }}>
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'rgba(0, 0, 0, 0.1)',
+        }}
+      >
         <LoadingIcon size={200} />
       </div>
     );
@@ -60,4 +67,4 @@ const AuthWrapper: React.FC = () => {
   return <Outlet />;
 };
 
-export default AuthWrapper; 
+export default AuthWrapper;

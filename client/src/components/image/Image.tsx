@@ -4,7 +4,8 @@ import { Logo } from '../icons';
 export type ImageSize = 'small' | 'medium' | 'large' | 'xlarge';
 export type ImageVariant = 'default' | 'rounded' | 'circle';
 
-interface ImageProps extends Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'size'> {
+interface ImageProps
+  extends Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'size'> {
   src: string;
   alt: string;
   size?: ImageSize;
@@ -41,7 +42,7 @@ const setCachedImage = (url: string, dataUrl: string): void => {
   try {
     const cacheData = {
       data: dataUrl,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     };
     localStorage.setItem(CACHE_PREFIX + btoa(url), JSON.stringify(cacheData));
   } catch (error) {
@@ -54,7 +55,7 @@ const fetchAndCacheImage = async (url: string): Promise<string> => {
   if (!response.ok) {
     throw new Error(`HTTP ${response.status}: ${response.statusText}`);
   }
-  
+
   const blob = await response.blob();
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -110,11 +111,11 @@ const Image: React.FC<ImageProps> = ({
 
     // If not cached, fetch and cache
     fetchAndCacheImage(src)
-      .then((dataUrl) => {
+      .then(dataUrl => {
         setCurrentSrc(dataUrl);
         setIsLoading(false);
       })
-      .catch((error) => {
+      .catch(error => {
         console.warn('Failed to load image:', error);
         if (fallbackSrc) {
           setHasError(true);
@@ -126,7 +127,9 @@ const Image: React.FC<ImageProps> = ({
       });
   }, [src, fallbackSrc]);
 
-  const handleError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
+  const handleError = (
+    event: React.SyntheticEvent<HTMLImageElement, Event>
+  ) => {
     if (!hasError && fallbackSrc) {
       setHasError(true);
       setCurrentSrc(fallbackSrc);
@@ -146,15 +149,19 @@ const Image: React.FC<ImageProps> = ({
     !width && !height && styles[size], // Only apply size classes if custom width/height not set
     styles[variant],
     styles[objectFit],
-    className
-  ].filter(Boolean).join(' ');
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   const containerClasses = [
     styles.container,
     !width && !height && styles[size], // Apply size to container if no custom dimensions
     styles[variant],
-    className
-  ].filter(Boolean).join(' ');
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   const customStyles = {
     width: width || undefined,
@@ -164,12 +171,9 @@ const Image: React.FC<ImageProps> = ({
   // Show logo fallback if there's an error and no fallback src
   if (showLogo) {
     return (
-      <div 
-        className={containerClasses}
-        style={customStyles}
-      >
+      <div className={containerClasses} style={customStyles}>
         <div className={styles.logoFallback}>
-          <Logo size={40}/>
+          <Logo size={40} />
         </div>
       </div>
     );
@@ -178,20 +182,14 @@ const Image: React.FC<ImageProps> = ({
   // Show skeleton while loading or if no src
   if (isLoading || !currentSrc) {
     return (
-      <div 
-        className={containerClasses}
-        style={customStyles}
-      >
+      <div className={containerClasses} style={customStyles}>
         <div className={styles.skeleton} />
       </div>
     );
   }
 
   return (
-    <div 
-      className={containerClasses}
-      style={customStyles}
-    >
+    <div className={containerClasses} style={customStyles}>
       <img
         src={currentSrc}
         alt={alt}

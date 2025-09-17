@@ -17,7 +17,7 @@ const meta: Meta<typeof ButtonLink> = {
         'alternate',
         'alternate-subtle',
         'danger',
-        'danger-subtle'
+        'danger-subtle',
       ],
     },
     size: {
@@ -137,4 +137,4 @@ export const FullWidth: Story = {
     href: '#',
     fullWidth: true,
   },
-}; 
+};

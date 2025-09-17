@@ -21,15 +21,17 @@ const Skeleton: React.FC<SkeletonProps> = ({
   height,
   className,
   animate = true,
-  lines = 1
+  lines = 1,
 }) => {
   const skeletonClasses = [
     styles.skeleton,
     styles[variant],
     !width && !height && styles[size],
     animate ? styles.animate : '',
-    className
-  ].filter(Boolean).join(' ');
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   const customStyles = {
     width: width || undefined,
@@ -54,12 +56,7 @@ const Skeleton: React.FC<SkeletonProps> = ({
     );
   }
 
-  return (
-    <div
-      className={skeletonClasses}
-      style={customStyles}
-    />
-  );
+  return <div className={skeletonClasses} style={customStyles} />;
 };
 
 export default Skeleton;

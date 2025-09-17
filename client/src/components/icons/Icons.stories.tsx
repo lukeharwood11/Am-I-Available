@@ -12,7 +12,7 @@ export default meta;
 
 export const GoogleIconStory: StoryObj<typeof GoogleIcon> = {
   name: 'Google Icon',
-  render: (args) => <GoogleIcon {...args} />,
+  render: args => <GoogleIcon {...args} />,
   args: {
     size: 18,
   },
@@ -28,7 +28,7 @@ export const GoogleIconStory: StoryObj<typeof GoogleIcon> = {
 
 export const LoadingIconStory: StoryObj<typeof LoadingIcon> = {
   name: 'Loading Icon',
-  render: (args) => <LoadingIcon {...args} />,
+  render: args => <LoadingIcon {...args} />,
   args: {
     size: 24,
   },
@@ -44,7 +44,7 @@ export const LoadingIconStory: StoryObj<typeof LoadingIcon> = {
 
 export const LogoStory: StoryObj<typeof Logo> = {
   name: 'Logo',
-  render: (args) => <Logo {...args} />,
+  render: args => <Logo {...args} />,
   args: {
     size: 32,
   },
@@ -58,11 +58,17 @@ export const LogoStory: StoryObj<typeof Logo> = {
   },
 };
 
-
 export const AllIconsSizes: StoryObj = {
   name: 'All Icons - Size Comparison',
   render: () => (
-    <div style={{ display: 'flex', gap: '20px', alignItems: 'center', flexWrap: 'wrap' }}>
+    <div
+      style={{
+        display: 'flex',
+        gap: '20px',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+      }}
+    >
       <div style={{ textAlign: 'center' }}>
         <GoogleIcon size={24} />
         <p style={{ margin: '8px 0 0 0', fontSize: '12px' }}>Google</p>

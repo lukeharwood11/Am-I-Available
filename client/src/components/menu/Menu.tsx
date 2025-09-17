@@ -4,7 +4,13 @@ import styles from './Menu.module.css';
 interface MenuProps {
   trigger: React.ReactNode;
   children: React.ReactNode;
-  placement?: 'bottom-start' | 'bottom-end' | 'top-start' | 'top-end' | 'left' | 'right';
+  placement?:
+    | 'bottom-start'
+    | 'bottom-end'
+    | 'top-start'
+    | 'top-end'
+    | 'left'
+    | 'right';
   offset?: number;
   disabled?: boolean;
   closeOnItemClick?: boolean;
@@ -51,7 +57,8 @@ const Menu: React.FC<MenuProps> = ({
 
     if (isOpen) {
       document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
+      return () =>
+        document.removeEventListener('mousedown', handleClickOutside);
     }
   }, [isOpen]);
 
@@ -73,7 +80,7 @@ const Menu: React.FC<MenuProps> = ({
   const handleMenuClick = (event: React.MouseEvent) => {
     const target = event.target as HTMLElement;
     const menuItem = target.closest('[data-menu-item]');
-    
+
     if (menuItem && closeOnItemClick) {
       const isDisabled = menuItem.getAttribute('data-disabled') === 'true';
       if (!isDisabled) {
@@ -86,14 +93,18 @@ const Menu: React.FC<MenuProps> = ({
     styles.menu,
     styles[placement],
     isOpen ? styles.open : '',
-    menuClassName
-  ].filter(Boolean).join(' ');
+    menuClassName,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   const containerClasses = [
     styles.menuContainer,
     disabled ? styles.disabled : '',
-    className
-  ].filter(Boolean).join(' ');
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <div className={containerClasses}>
@@ -101,15 +112,15 @@ const Menu: React.FC<MenuProps> = ({
         ref={triggerRef}
         className={styles.trigger}
         onClick={toggleMenu}
-        onKeyDown={(e) => {
+        onKeyDown={e => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
             toggleMenu();
           }
         }}
         tabIndex={disabled ? -1 : 0}
-        role="button"
-        aria-haspopup="true"
+        role='button'
+        aria-haspopup='true'
         aria-expanded={isOpen}
         aria-disabled={disabled}
       >
@@ -120,7 +131,7 @@ const Menu: React.FC<MenuProps> = ({
           ref={menuRef}
           className={menuClasses}
           style={{ '--offset': `${offset}px` } as React.CSSProperties}
-          role="menu"
+          role='menu'
           onClick={handleMenuClick}
         >
           {children}

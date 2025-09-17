@@ -27,11 +27,14 @@ interface UseReduxCalendarReturn {
     accessToken: string | null;
     refreshToken: string | null;
   };
-  
+
   // Actions
   loadEvents: () => Promise<void>;
-  syncWithGoogle: (tokens: { accessToken: string; refreshToken: string }) => Promise<void>;
-  
+  syncWithGoogle: (tokens: {
+    accessToken: string;
+    refreshToken: string;
+  }) => Promise<void>;
+
   // Selectors
   getEventById: (id: string) => CalendarEvent | undefined;
   getEventsCount: () => number;
@@ -43,7 +46,7 @@ interface UseReduxCalendarReturn {
 
 export const useReduxCalendar = (): UseReduxCalendarReturn => {
   const dispatch = useAppDispatch();
-  
+
   // State selectors
   const events = useAppSelector(selectCalendarEvents);
   const loading = useAppSelector(selectCalendarLoading);
@@ -55,9 +58,12 @@ export const useReduxCalendar = (): UseReduxCalendarReturn => {
     await dispatch(fetchCalendarEvents());
   }, [dispatch]);
 
-  const syncWithGoogle = useCallback(async (tokens: { accessToken: string; refreshToken: string }) => {
-    await dispatch(syncWithGoogleCalendar(tokens));
-  }, [dispatch]);
+  const syncWithGoogle = useCallback(
+    async (tokens: { accessToken: string; refreshToken: string }) => {
+      await dispatch(syncWithGoogleCalendar(tokens));
+    },
+    [dispatch]
+  );
 
   // Selector functions
   const getEventById = useCallback((id: string) => {
@@ -90,11 +96,11 @@ export const useReduxCalendar = (): UseReduxCalendarReturn => {
     loading,
     error,
     googleTokens,
-    
+
     // Actions
     loadEvents,
     syncWithGoogle,
-    
+
     // Selectors
     getEventById,
     getEventsCount,

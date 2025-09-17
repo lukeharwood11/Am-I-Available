@@ -6,20 +6,12 @@ interface ErrorMessageProps {
   className?: string;
 }
 
-const ErrorMessage: React.FC<ErrorMessageProps> = ({ 
-  children,
-  className 
-}) => {
-  const errorClasses = [
-    styles.errorMessage,
-    className
-  ].filter(Boolean).join(' ');
+const ErrorMessage: React.FC<ErrorMessageProps> = ({ children, className }) => {
+  const errorClasses = [styles.errorMessage, className]
+    .filter(Boolean)
+    .join(' ');
 
-  return (
-    <div className={errorClasses}>
-      {children}
-    </div>
-  );
+  return <div className={errorClasses}>{children}</div>;
 };
 
-export default ErrorMessage; 
+export default ErrorMessage;

@@ -30,7 +30,7 @@ const TimePicker: React.FC<TimePickerProps> = ({
   className,
   label,
   required = false,
-  error
+  error,
 }) => {
   const [timeValue, setTimeValue] = useState<string>('');
 
@@ -66,16 +66,20 @@ const TimePicker: React.FC<TimePickerProps> = ({
   const containerClasses = [
     styles.timePickerContainer,
     fullWidth ? styles.fullWidth : '',
-    className
-  ].filter(Boolean).join(' ');
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   const inputClasses = [
     styles.timeInput,
     styles[variant],
     styles[size],
     fullWidth ? styles.fullWidth : '',
-    disabled ? styles.disabled : ''
-  ].filter(Boolean).join(' ');
+    disabled ? styles.disabled : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <div className={containerClasses}>
@@ -85,10 +89,10 @@ const TimePicker: React.FC<TimePickerProps> = ({
           {required && <span className={styles.required}>*</span>}
         </label>
       )}
-      
+
       <input
-        type="time"
-        aria-label="Time"
+        type='time'
+        aria-label='Time'
         value={timeValue}
         onChange={handleTimeChange}
         placeholder={placeholder}

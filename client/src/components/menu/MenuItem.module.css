@@ -8,7 +8,9 @@
   font-size: 14px;
   line-height: 1.4;
   color: var(--grey-800);
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
   outline: none;
   user-select: none;
 }

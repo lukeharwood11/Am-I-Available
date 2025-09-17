@@ -17,7 +17,7 @@ const meta: Meta<typeof Button> = {
         'alternate',
         'alternate-subtle',
         'danger',
-        'danger-subtle'
+        'danger-subtle',
       ],
     },
     size: {
@@ -184,4 +184,4 @@ export const IconOnlyLarge: Story = {
     size: 'large',
     rightIcon: <MdPerson size={24} />,
   },
-}; 
+};

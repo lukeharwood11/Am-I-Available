@@ -10,7 +10,7 @@ const meta: Meta<typeof NavBar> = {
     layout: 'fullscreen',
   },
   decorators: [
-    (Story) => (
+    Story => (
       <MemoryRouter>
         <Story />
       </MemoryRouter>
@@ -23,4 +23,4 @@ type Story = StoryObj<typeof NavBar>;
 
 export const Default: Story = {
   args: {},
-}; 
+};

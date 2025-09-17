@@ -8,12 +8,15 @@ interface UseAxiosResponse<T> {
   data: T | null;
   loading: boolean;
   error: Error | null;
-  execute: (url: string, options?: {
-    method?: string;
-    data?: any;
-    params?: any;
-    headers?: Record<string, string>;
-  }) => Promise<T | null>;
+  execute: (
+    url: string,
+    options?: {
+      method?: string;
+      data?: any;
+      params?: any;
+      headers?: Record<string, string>;
+    }
+  ) => Promise<T | null>;
 }
 
 function useAxios<T = any>(): UseAxiosResponse<T> {
@@ -22,45 +25,51 @@ function useAxios<T = any>(): UseAxiosResponse<T> {
   const [error, setError] = useState<Error | null>(null);
   const { accessToken } = useAuth();
 
-  const execute = useCallback(async (url: string, options?: {
-    method?: string;
-    data?: any;
-    params?: any;
-    headers?: Record<string, string>;
-  }): Promise<T | null> => {
-    try {
-      setLoading(true);
-      setError(null);
-      
-      // Prepare headers with authentication
-      const headers = {
-        ...options?.headers,
-      };
-      
-      // Add authorization header if we have an access token
-      if (accessToken) {
-        headers.Authorization = `Bearer ${accessToken}`;
+  const execute = useCallback(
+    async (
+      url: string,
+      options?: {
+        method?: string;
+        data?: any;
+        params?: any;
+        headers?: Record<string, string>;
       }
-      
-      const response = await axiosInstance({
-        url,
-        method: options?.method || 'GET',
-        data: options?.data,
-        params: options?.params,
-        headers,
-      });
-      
-      const responseData = response.data as T;
-      setData(responseData);
-      return responseData;
-    } catch (err) {
-      const errorObj = err as Error;
-      setError(errorObj);
-      return null;
-    } finally {
-      setLoading(false);
-    }
-  }, [accessToken]);
+    ): Promise<T | null> => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        // Prepare headers with authentication
+        const headers = {
+          ...options?.headers,
+        };
+
+        // Add authorization header if we have an access token
+        if (accessToken) {
+          headers.Authorization = `Bearer ${accessToken}`;
+        }
+
+        const response = await axiosInstance({
+          url,
+          method: options?.method || 'GET',
+          data: options?.data,
+          params: options?.params,
+          headers,
+        });
+
+        const responseData = response.data as T;
+        setData(responseData);
+        return responseData;
+      } catch (err) {
+        const errorObj = err as Error;
+        setError(errorObj);
+        return null;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [accessToken]
+  );
 
   return { data, loading, error, execute };
 }

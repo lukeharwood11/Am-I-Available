@@ -36,8 +36,8 @@ const Modal: React.FC<ModalProps> = ({
   };
 
   return (
-    <div 
-      className={styles.backdrop} 
+    <div
+      className={styles.backdrop}
       onClick={handleBackdropClick}
       onKeyDown={handleKeyDown}
       tabIndex={-1}
@@ -45,25 +45,27 @@ const Modal: React.FC<ModalProps> = ({
       <div className={`${styles.modal} ${styles[size]}`}>
         {(title || showCloseButton) && (
           <div className={styles.header}>
-            {title && <Text variant='heading-small' className={styles.title}>{title}</Text>}
+            {title && (
+              <Text variant='heading-small' className={styles.title}>
+                {title}
+              </Text>
+            )}
             {showCloseButton && (
               <Button
-                variant="secondary-subtle"
-                size="small"
+                variant='secondary-subtle'
+                size='small'
                 onClick={onClose}
                 leftIcon={<MdClose size={20} />}
                 className={styles.closeButton}
-                aria-label="Close modal"
+                aria-label='Close modal'
               />
             )}
           </div>
         )}
-        <div className={styles.content}>
-          {children}
-        </div>
+        <div className={styles.content}>{children}</div>
       </div>
     </div>
   );
 };
 
-export default Modal; 
+export default Modal;

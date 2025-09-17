@@ -1,6 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
-import { MdMoreVert, MdPerson, MdSettings, MdLogout, MdEdit, MdDelete, MdShare, MdDownload, MdKeyboardArrowDown } from 'react-icons/md';
+import {
+  MdMoreVert,
+  MdPerson,
+  MdSettings,
+  MdLogout,
+  MdEdit,
+  MdDelete,
+  MdShare,
+  MdDownload,
+  MdKeyboardArrowDown,
+} from 'react-icons/md';
 import Menu from './Menu';
 import MenuItem from './MenuItem';
 import MenuDivider from './MenuDivider';
@@ -13,7 +22,14 @@ const meta: Meta<typeof Menu> = {
   argTypes: {
     placement: {
       control: 'select',
-      options: ['bottom-start', 'bottom-end', 'top-start', 'top-end', 'left', 'right'],
+      options: [
+        'bottom-start',
+        'bottom-end',
+        'top-start',
+        'top-end',
+        'left',
+        'right',
+      ],
     },
     offset: {
       control: 'number',
@@ -26,8 +42,10 @@ const meta: Meta<typeof Menu> = {
     },
   },
   decorators: [
-    (Story) => (
-      <div style={{ padding: '100px', display: 'flex', justifyContent: 'center' }}>
+    Story => (
+      <div
+        style={{ padding: '100px', display: 'flex', justifyContent: 'center' }}
+      >
         <Story />
       </div>
     ),
@@ -39,22 +57,35 @@ type Story = StoryObj<typeof Menu>;
 
 export const Default: Story = {
   args: {
-    trigger: <Button variant="secondary" rightIcon={<MdMoreVert size={16} />}>Actions</Button>,
+    trigger: (
+      <Button variant='secondary' rightIcon={<MdMoreVert size={16} />}>
+        Actions
+      </Button>
+    ),
     children: (
       <>
-        <MenuItem leftIcon={<MdEdit size={16} />} onClick={() => console.log('Edit clicked')}>
+        <MenuItem
+          leftIcon={<MdEdit size={16} />}
+          onClick={() => console.log('Edit clicked')}
+        >
           Edit
         </MenuItem>
-        <MenuItem leftIcon={<MdShare size={16} />} onClick={() => console.log('Share clicked')}>
+        <MenuItem
+          leftIcon={<MdShare size={16} />}
+          onClick={() => console.log('Share clicked')}
+        >
           Share
         </MenuItem>
-        <MenuItem leftIcon={<MdDownload size={16} />} onClick={() => console.log('Download clicked')}>
+        <MenuItem
+          leftIcon={<MdDownload size={16} />}
+          onClick={() => console.log('Download clicked')}
+        >
           Download
         </MenuItem>
         <MenuDivider />
-        <MenuItem 
-          leftIcon={<MdDelete size={16} />} 
-          destructive 
+        <MenuItem
+          leftIcon={<MdDelete size={16} />}
+          destructive
           onClick={() => console.log('Delete clicked')}
         >
           Delete
@@ -66,17 +97,31 @@ export const Default: Story = {
 
 export const WithDisabledItems: Story = {
   args: {
-    trigger: <Button variant="primary" rightIcon={<MdKeyboardArrowDown size={16} />}>Options</Button>,
+    trigger: (
+      <Button variant='primary' rightIcon={<MdKeyboardArrowDown size={16} />}>
+        Options
+      </Button>
+    ),
     children: (
       <>
-        <MenuItem leftIcon={<MdPerson size={16} />} onClick={() => console.log('Profile clicked')}>
+        <MenuItem
+          leftIcon={<MdPerson size={16} />}
+          onClick={() => console.log('Profile clicked')}
+        >
           Profile
         </MenuItem>
-        <MenuItem leftIcon={<MdSettings size={16} />} disabled onClick={() => console.log('Settings clicked')}>
+        <MenuItem
+          leftIcon={<MdSettings size={16} />}
+          disabled
+          onClick={() => console.log('Settings clicked')}
+        >
           Settings (Disabled)
         </MenuItem>
         <MenuDivider />
-        <MenuItem leftIcon={<MdLogout size={16} />} onClick={() => console.log('Logout clicked')}>
+        <MenuItem
+          leftIcon={<MdLogout size={16} />}
+          onClick={() => console.log('Logout clicked')}
+        >
           Logout
         </MenuItem>
       </>
@@ -87,7 +132,7 @@ export const WithDisabledItems: Story = {
 export const IconTrigger: Story = {
   args: {
     trigger: (
-      <Button variant="secondary-subtle" size="small">
+      <Button variant='secondary-subtle' size='small'>
         <MdMoreVert size={20} />
       </Button>
     ),
@@ -96,7 +141,9 @@ export const IconTrigger: Story = {
         <MenuItem leftIcon={<MdEdit size={16} />}>Edit</MenuItem>
         <MenuItem leftIcon={<MdShare size={16} />}>Share</MenuItem>
         <MenuDivider />
-        <MenuItem leftIcon={<MdDelete size={16} />} destructive>Delete</MenuItem>
+        <MenuItem leftIcon={<MdDelete size={16} />} destructive>
+          Delete
+        </MenuItem>
       </>
     ),
   },
@@ -104,31 +151,47 @@ export const IconTrigger: Story = {
 
 export const WithRightIcons: Story = {
   args: {
-    trigger: <Button variant="secondary">Menu with shortcuts</Button>,
+    trigger: <Button variant='secondary'>Menu with shortcuts</Button>,
     children: (
       <>
-        <MenuItem 
-          leftIcon={<MdEdit size={16} />} 
-          rightIcon={<span style={{ fontSize: '12px', color: 'var(--grey-600)' }}>⌘E</span>}
+        <MenuItem
+          leftIcon={<MdEdit size={16} />}
+          rightIcon={
+            <span style={{ fontSize: '12px', color: 'var(--grey-600)' }}>
+              ⌘E
+            </span>
+          }
         >
           Edit
         </MenuItem>
-        <MenuItem 
-          leftIcon={<MdShare size={16} />} 
-          rightIcon={<span style={{ fontSize: '12px', color: 'var(--grey-600)' }}>⌘S</span>}
+        <MenuItem
+          leftIcon={<MdShare size={16} />}
+          rightIcon={
+            <span style={{ fontSize: '12px', color: 'var(--grey-600)' }}>
+              ⌘S
+            </span>
+          }
         >
           Share
         </MenuItem>
-        <MenuItem 
-          leftIcon={<MdDownload size={16} />} 
-          rightIcon={<span style={{ fontSize: '12px', color: 'var(--grey-600)' }}>⌘D</span>}
+        <MenuItem
+          leftIcon={<MdDownload size={16} />}
+          rightIcon={
+            <span style={{ fontSize: '12px', color: 'var(--grey-600)' }}>
+              ⌘D
+            </span>
+          }
         >
           Download
         </MenuItem>
         <MenuDivider />
-        <MenuItem 
-          leftIcon={<MdDelete size={16} />} 
-          rightIcon={<span style={{ fontSize: '12px', color: 'var(--grey-600)' }}>⌫</span>}
+        <MenuItem
+          leftIcon={<MdDelete size={16} />}
+          rightIcon={
+            <span style={{ fontSize: '12px', color: 'var(--grey-600)' }}>
+              ⌫
+            </span>
+          }
           destructive
         >
           Delete
@@ -141,7 +204,7 @@ export const WithRightIcons: Story = {
 export const TopPlacement: Story = {
   args: {
     placement: 'top-start',
-    trigger: <Button variant="primary">Menu Above</Button>,
+    trigger: <Button variant='primary'>Menu Above</Button>,
     children: (
       <>
         <MenuItem leftIcon={<MdPerson size={16} />}>Profile</MenuItem>
@@ -156,14 +219,16 @@ export const TopPlacement: Story = {
 export const RightPlacement: Story = {
   args: {
     placement: 'right',
-    trigger: <Button variant="secondary">Menu Right →</Button>,
+    trigger: <Button variant='secondary'>Menu Right →</Button>,
     children: (
       <>
         <MenuItem leftIcon={<MdEdit size={16} />}>Edit Item</MenuItem>
         <MenuItem leftIcon={<MdShare size={16} />}>Share Item</MenuItem>
         <MenuItem leftIcon={<MdDownload size={16} />}>Download Item</MenuItem>
         <MenuDivider />
-        <MenuItem leftIcon={<MdDelete size={16} />} destructive>Delete Item</MenuItem>
+        <MenuItem leftIcon={<MdDelete size={16} />} destructive>
+          Delete Item
+        </MenuItem>
       </>
     ),
   },
@@ -172,14 +237,16 @@ export const RightPlacement: Story = {
 export const LeftPlacement: Story = {
   args: {
     placement: 'left',
-    trigger: <Button variant="secondary">← Menu Left</Button>,
+    trigger: <Button variant='secondary'>← Menu Left</Button>,
     children: (
       <>
         <MenuItem leftIcon={<MdEdit size={16} />}>Edit Item</MenuItem>
         <MenuItem leftIcon={<MdShare size={16} />}>Share Item</MenuItem>
         <MenuItem leftIcon={<MdDownload size={16} />}>Download Item</MenuItem>
         <MenuDivider />
-        <MenuItem leftIcon={<MdDelete size={16} />} destructive>Delete Item</MenuItem>
+        <MenuItem leftIcon={<MdDelete size={16} />} destructive>
+          Delete Item
+        </MenuItem>
       </>
     ),
   },
@@ -188,12 +255,18 @@ export const LeftPlacement: Story = {
 export const DisabledMenu: Story = {
   args: {
     disabled: true,
-    trigger: <Button variant="secondary" disabled>Disabled Menu</Button>,
+    trigger: (
+      <Button variant='secondary' disabled>
+        Disabled Menu
+      </Button>
+    ),
     children: (
       <>
         <MenuItem leftIcon={<MdEdit size={16} />}>Edit</MenuItem>
         <MenuItem leftIcon={<MdShare size={16} />}>Share</MenuItem>
-        <MenuItem leftIcon={<MdDelete size={16} />} destructive>Delete</MenuItem>
+        <MenuItem leftIcon={<MdDelete size={16} />} destructive>
+          Delete
+        </MenuItem>
       </>
     ),
   },
@@ -201,7 +274,7 @@ export const DisabledMenu: Story = {
 
 export const LongMenuItems: Story = {
   args: {
-    trigger: <Button variant="primary">Long Items</Button>,
+    trigger: <Button variant='primary'>Long Items</Button>,
     children: (
       <>
         <MenuItem leftIcon={<MdPerson size={16} />}>
@@ -225,13 +298,19 @@ export const LongMenuItems: Story = {
 export const NoCloseOnClick: Story = {
   args: {
     closeOnItemClick: false,
-    trigger: <Button variant="secondary">Persistent Menu</Button>,
+    trigger: <Button variant='secondary'>Persistent Menu</Button>,
     children: (
       <>
-        <MenuItem leftIcon={<MdEdit size={16} />}>Edit (menu stays open)</MenuItem>
-        <MenuItem leftIcon={<MdShare size={16} />}>Share (menu stays open)</MenuItem>
+        <MenuItem leftIcon={<MdEdit size={16} />}>
+          Edit (menu stays open)
+        </MenuItem>
+        <MenuItem leftIcon={<MdShare size={16} />}>
+          Share (menu stays open)
+        </MenuItem>
         <MenuDivider />
-        <MenuItem leftIcon={<MdDelete size={16} />} destructive>Delete (menu stays open)</MenuItem>
+        <MenuItem leftIcon={<MdDelete size={16} />} destructive>
+          Delete (menu stays open)
+        </MenuItem>
       </>
     ),
   },
@@ -241,15 +320,17 @@ export const NoCloseOnClick: Story = {
 export const ComplexMenu: Story = {
   args: {
     trigger: (
-      <div style={{ 
-        padding: '12px 16px', 
-        border: '1px solid var(--grey-300)', 
-        borderRadius: 'var(--border-radius-standard)', 
-        cursor: 'pointer',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '8px'
-      }}>
+      <div
+        style={{
+          padding: '12px 16px',
+          border: '1px solid var(--grey-300)',
+          borderRadius: 'var(--border-radius-standard)',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+        }}
+      >
         <MdPerson size={20} />
         <span>John Doe</span>
         <MdKeyboardArrowDown size={16} />
@@ -257,23 +338,25 @@ export const ComplexMenu: Story = {
     ),
     children: (
       <>
-        <div style={{ padding: '8px 12px', borderBottom: '1px solid var(--grey-200)', marginBottom: '4px' }}>
+        <div
+          style={{
+            padding: '8px 12px',
+            borderBottom: '1px solid var(--grey-200)',
+            marginBottom: '4px',
+          }}
+        >
           <div style={{ fontWeight: 'bold', fontSize: '14px' }}>John Doe</div>
-          <div style={{ fontSize: '12px', color: 'var(--grey-600)' }}>john.doe@example.com</div>
+          <div style={{ fontSize: '12px', color: 'var(--grey-600)' }}>
+            john.doe@example.com
+          </div>
         </div>
-        <MenuItem leftIcon={<MdPerson size={16} />}>
-          View Profile
-        </MenuItem>
+        <MenuItem leftIcon={<MdPerson size={16} />}>View Profile</MenuItem>
         <MenuItem leftIcon={<MdSettings size={16} />}>
           Account Settings
         </MenuItem>
         <MenuDivider />
-        <MenuItem leftIcon={<MdShare size={16} />}>
-          Invite Friends
-        </MenuItem>
-        <MenuItem leftIcon={<MdDownload size={16} />}>
-          Download Data
-        </MenuItem>
+        <MenuItem leftIcon={<MdShare size={16} />}>Invite Friends</MenuItem>
+        <MenuItem leftIcon={<MdDownload size={16} />}>Download Data</MenuItem>
         <MenuDivider />
         <MenuItem leftIcon={<MdLogout size={16} />} destructive>
           Sign Out

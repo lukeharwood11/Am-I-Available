@@ -36,14 +36,8 @@ type Story = StoryObj<typeof meta>;
 // Interactive wrapper component for stories that need state
 const DatePickerWithState = (args: any) => {
   const [value, setValue] = useState<string | null>(args.value || null);
-  
-  return (
-    <DatePicker
-      {...args}
-      value={value}
-      onChange={setValue}
-    />
-  );
+
+  return <DatePicker {...args} value={value} onChange={setValue} />;
 };
 
 export const Default: Story = {
@@ -147,27 +141,26 @@ export const CustomPlaceholder: Story = {
   },
 };
 
-
 // Multiple date pickers example
 export const MultipleDatePickers: Story = {
   render: () => {
     const [startDate, setStartDate] = useState<string | null>(null);
     const [endDate, setEndDate] = useState<string | null>(null);
-    
+
     return (
       <div style={{ display: 'flex', gap: '16px', flexDirection: 'column' }}>
         <DatePicker
           value={startDate}
           onChange={setStartDate}
-          placeholder="Start date"
-          label="Start Date"
+          placeholder='Start date'
+          label='Start Date'
           maxDate={endDate || undefined}
         />
         <DatePicker
           value={endDate}
           onChange={setEndDate}
-          placeholder="End date"
-          label="End Date"
+          placeholder='End date'
+          label='End Date'
           minDate={startDate || undefined}
         />
       </div>
@@ -177,4 +170,3 @@ export const MultipleDatePickers: Story = {
     layout: 'padded',
   },
 };
-

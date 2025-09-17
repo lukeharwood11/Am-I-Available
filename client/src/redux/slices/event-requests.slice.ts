@@ -1,5 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { EventRequestsState, EventRequestData, EventRequestWithApprovalsData } from '../types/event-requests.types';
+import {
+  EventRequestsState,
+  EventRequestData,
+  EventRequestWithApprovalsData,
+} from '../types/event-requests.types';
 import {
   createEventRequestThunk,
   fetchEventRequestsThunk,
@@ -37,50 +41,62 @@ const eventRequestsSlice = createSlice({
     setEventRequests: (state, action: PayloadAction<EventRequestData[]>) => {
       state.eventRequests = action.payload;
     },
-    setEventRequestsWithApprovals: (state, action: PayloadAction<EventRequestWithApprovalsData[]>) => {
+    setEventRequestsWithApprovals: (
+      state,
+      action: PayloadAction<EventRequestWithApprovalsData[]>
+    ) => {
       state.eventRequestsWithApprovals = action.payload;
     },
-    setPagination: (state, action: PayloadAction<{ skip: number; take: number; total_count: number }>) => {
+    setPagination: (
+      state,
+      action: PayloadAction<{ skip: number; take: number; total_count: number }>
+    ) => {
       state.pagination = action.payload;
     },
-    setCurrentEventRequest: (state, action: PayloadAction<EventRequestData | null>) => {
+    setCurrentEventRequest: (
+      state,
+      action: PayloadAction<EventRequestData | null>
+    ) => {
       state.currentEventRequest = action.payload;
     },
-    setCurrentEventRequestWithApprovals: (state, action: PayloadAction<EventRequestWithApprovalsData | null>) => {
+    setCurrentEventRequestWithApprovals: (
+      state,
+      action: PayloadAction<EventRequestWithApprovalsData | null>
+    ) => {
       state.currentEventRequestWithApprovals = action.payload;
     },
-    clearError: (state) => {
+    clearError: state => {
       state.error = null;
     },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
       // Generic pending handlers
-      .addCase(createEventRequestThunk.pending, (state) => {
+      .addCase(createEventRequestThunk.pending, state => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchEventRequestsThunk.pending, (state) => {
+      .addCase(fetchEventRequestsThunk.pending, state => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchEventRequestsWithApprovalsThunk.pending, (state) => {
+      .addCase(fetchEventRequestsWithApprovalsThunk.pending, state => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchEventRequestThunk.pending, (state) => {
+      .addCase(fetchEventRequestThunk.pending, state => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchEventRequestWithApprovalsThunk.pending, (state) => {
+      .addCase(fetchEventRequestWithApprovalsThunk.pending, state => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(updateEventRequestThunk.pending, (state) => {
+      .addCase(updateEventRequestThunk.pending, state => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(deleteEventRequestThunk.pending, (state) => {
+      .addCase(deleteEventRequestThunk.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -93,18 +109,24 @@ const eventRequestsSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      .addCase(fetchEventRequestsWithApprovalsThunk.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      })
+      .addCase(
+        fetchEventRequestsWithApprovalsThunk.rejected,
+        (state, action) => {
+          state.loading = false;
+          state.error = action.payload as string;
+        }
+      )
       .addCase(fetchEventRequestThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })
-      .addCase(fetchEventRequestWithApprovalsThunk.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      })
+      .addCase(
+        fetchEventRequestWithApprovalsThunk.rejected,
+        (state, action) => {
+          state.loading = false;
+          state.error = action.payload as string;
+        }
+      )
       .addCase(updateEventRequestThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
@@ -122,38 +144,50 @@ const eventRequestsSlice = createSlice({
         state.loading = false;
         state.eventRequests = action.payload.event_requests;
       })
-      .addCase(fetchEventRequestsWithApprovalsThunk.fulfilled, (state, action) => {
-        state.loading = false;
-        state.eventRequestsWithApprovals = action.payload.event_requests;
-        state.pagination = {
-          skip: action.payload.skip,
-          take: action.payload.take,
-          total_count: action.payload.total_count,
-        };
-      })
+      .addCase(
+        fetchEventRequestsWithApprovalsThunk.fulfilled,
+        (state, action) => {
+          state.loading = false;
+          state.eventRequestsWithApprovals = action.payload.event_requests;
+          state.pagination = {
+            skip: action.payload.skip,
+            take: action.payload.take,
+            total_count: action.payload.total_count,
+          };
+        }
+      )
       .addCase(fetchEventRequestThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.currentEventRequest = action.payload.event_request;
       })
-      .addCase(fetchEventRequestWithApprovalsThunk.fulfilled, (state, action) => {
-        state.loading = false;
-        state.currentEventRequestWithApprovals = action.payload.event_request;
-      })
+      .addCase(
+        fetchEventRequestWithApprovalsThunk.fulfilled,
+        (state, action) => {
+          state.loading = false;
+          state.currentEventRequestWithApprovals = action.payload.event_request;
+        }
+      )
       .addCase(updateEventRequestThunk.fulfilled, (state, action) => {
         state.loading = false;
         const updatedRequest = action.payload.event_request;
-        
+
         // Update in eventRequests array
-        const eventRequestIndex = state.eventRequests.findIndex(r => r.id === updatedRequest.id);
+        const eventRequestIndex = state.eventRequests.findIndex(
+          r => r.id === updatedRequest.id
+        );
         if (eventRequestIndex !== -1) {
           state.eventRequests[eventRequestIndex] = updatedRequest;
         }
-        
+
         // Update in eventRequestsWithApprovals array
-        const eventRequestWithApprovalsIndex = state.eventRequestsWithApprovals.findIndex(r => r.id === updatedRequest.id);
+        const eventRequestWithApprovalsIndex =
+          state.eventRequestsWithApprovals.findIndex(
+            r => r.id === updatedRequest.id
+          );
         if (eventRequestWithApprovalsIndex !== -1) {
           // Update the basic fields, keeping the approval-specific fields
-          const existingWithApprovals = state.eventRequestsWithApprovals[eventRequestWithApprovalsIndex];
+          const existingWithApprovals =
+            state.eventRequestsWithApprovals[eventRequestWithApprovalsIndex];
           if (existingWithApprovals) {
             state.eventRequestsWithApprovals[eventRequestWithApprovalsIndex] = {
               ...existingWithApprovals,
@@ -165,7 +199,7 @@ const eventRequestsSlice = createSlice({
             };
           }
         }
-        
+
         // Update current event request if it matches
         if (state.currentEventRequest?.id === updatedRequest.id) {
           state.currentEventRequest = updatedRequest;
@@ -174,13 +208,16 @@ const eventRequestsSlice = createSlice({
       .addCase(deleteEventRequestThunk.fulfilled, (state, action) => {
         state.loading = false;
         const requestId = action.meta.arg;
-        
+
         // Remove from eventRequests array
-        state.eventRequests = state.eventRequests.filter(r => r.id !== requestId);
-        
+        state.eventRequests = state.eventRequests.filter(
+          r => r.id !== requestId
+        );
+
         // Remove from eventRequestsWithApprovals array
-        state.eventRequestsWithApprovals = state.eventRequestsWithApprovals.filter(r => r.id !== requestId);
-        
+        state.eventRequestsWithApprovals =
+          state.eventRequestsWithApprovals.filter(r => r.id !== requestId);
+
         // Clear current event request if it matches
         if (state.currentEventRequest?.id === requestId) {
           state.currentEventRequest = null;

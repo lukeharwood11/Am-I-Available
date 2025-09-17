@@ -36,16 +36,25 @@ import {
   updateEventRequestThunk,
   deleteEventRequestThunk,
 } from '../redux/thunks/event-requests.thunk';
-import { CreateEventRequestRequest, UpdateEventRequestRequest, GetEventRequestsRequest, ListEventRequestsWithApprovalsRequest } from '../redux/types/event-requests.types';
+import {
+  CreateEventRequestRequest,
+  UpdateEventRequestRequest,
+  GetEventRequestsRequest,
+  ListEventRequestsWithApprovalsRequest,
+} from '../redux/types/event-requests.types';
 
 export function useReduxEventRequests() {
   const dispatch = useAppDispatch();
 
   // Selectors
   const eventRequests = useAppSelector(selectEventRequests);
-  const eventRequestsWithApprovals = useAppSelector(selectEventRequestsWithApprovals);
+  const eventRequestsWithApprovals = useAppSelector(
+    selectEventRequestsWithApprovals
+  );
   const currentEventRequest = useAppSelector(selectCurrentEventRequest);
-  const currentEventRequestWithApprovals = useAppSelector(selectCurrentEventRequestWithApprovals);
+  const currentEventRequestWithApprovals = useAppSelector(
+    selectCurrentEventRequestWithApprovals
+  );
   const loading = useAppSelector(selectEventRequestsLoading);
   const error = useAppSelector(selectEventRequestsError);
   const pagination = useAppSelector(selectEventRequestsPagination);
@@ -54,23 +63,51 @@ export function useReduxEventRequests() {
   const pendingEventRequests = useAppSelector(selectPendingEventRequests);
   const approvedEventRequests = useAppSelector(selectApprovedEventRequests);
   const rejectedEventRequests = useAppSelector(selectRejectedEventRequests);
-  const pendingEventRequestsWithApprovals = useAppSelector(selectPendingEventRequestsWithApprovals);
-  const approvedEventRequestsWithApprovals = useAppSelector(selectApprovedEventRequestsWithApprovals);
-  const rejectedEventRequestsWithApprovals = useAppSelector(selectRejectedEventRequestsWithApprovals);
-  const eventRequestsWithPendingApprovals = useAppSelector(selectEventRequestsWithPendingApprovals);
-  const eventRequestsWithApprovedApprovals = useAppSelector(selectEventRequestsWithApprovedApprovals);
-  const eventRequestsWithRejectedApprovals = useAppSelector(selectEventRequestsWithRejectedApprovals);
-  const eventRequestsWithNoApprovals = useAppSelector(selectEventRequestsWithNoApprovals);
-  const highImportanceEventRequests = useAppSelector(selectHighImportanceEventRequests);
-  const highImportanceEventRequestsWithApprovals = useAppSelector(selectHighImportanceEventRequestsWithApprovals);
+  const pendingEventRequestsWithApprovals = useAppSelector(
+    selectPendingEventRequestsWithApprovals
+  );
+  const approvedEventRequestsWithApprovals = useAppSelector(
+    selectApprovedEventRequestsWithApprovals
+  );
+  const rejectedEventRequestsWithApprovals = useAppSelector(
+    selectRejectedEventRequestsWithApprovals
+  );
+  const eventRequestsWithPendingApprovals = useAppSelector(
+    selectEventRequestsWithPendingApprovals
+  );
+  const eventRequestsWithApprovedApprovals = useAppSelector(
+    selectEventRequestsWithApprovedApprovals
+  );
+  const eventRequestsWithRejectedApprovals = useAppSelector(
+    selectEventRequestsWithRejectedApprovals
+  );
+  const eventRequestsWithNoApprovals = useAppSelector(
+    selectEventRequestsWithNoApprovals
+  );
+  const highImportanceEventRequests = useAppSelector(
+    selectHighImportanceEventRequests
+  );
+  const highImportanceEventRequestsWithApprovals = useAppSelector(
+    selectHighImportanceEventRequestsWithApprovals
+  );
 
   // Count selectors
   const eventRequestsCount = useAppSelector(selectEventRequestsCount);
-  const eventRequestsWithApprovalsCount = useAppSelector(selectEventRequestsWithApprovalsCount);
-  const pendingEventRequestsCount = useAppSelector(selectPendingEventRequestsCount);
-  const approvedEventRequestsCount = useAppSelector(selectApprovedEventRequestsCount);
-  const rejectedEventRequestsCount = useAppSelector(selectRejectedEventRequestsCount);
-  const highImportanceEventRequestsCount = useAppSelector(selectHighImportanceEventRequestsCount);
+  const eventRequestsWithApprovalsCount = useAppSelector(
+    selectEventRequestsWithApprovalsCount
+  );
+  const pendingEventRequestsCount = useAppSelector(
+    selectPendingEventRequestsCount
+  );
+  const approvedEventRequestsCount = useAppSelector(
+    selectApprovedEventRequestsCount
+  );
+  const rejectedEventRequestsCount = useAppSelector(
+    selectRejectedEventRequestsCount
+  );
+  const highImportanceEventRequestsCount = useAppSelector(
+    selectHighImportanceEventRequestsCount
+  );
 
   // Action creators
   const createEventRequest = useCallback(
@@ -109,7 +146,10 @@ export function useReduxEventRequests() {
   );
 
   const updateEventRequest = useCallback(
-    async (eventRequestId: string, request: Omit<UpdateEventRequestRequest, 'event_request_id'>) => {
+    async (
+      eventRequestId: string,
+      request: Omit<UpdateEventRequestRequest, 'event_request_id'>
+    ) => {
       return dispatch(updateEventRequestThunk({ eventRequestId, request }));
     },
     [dispatch]

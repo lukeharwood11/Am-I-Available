@@ -17,12 +17,12 @@ const SkeletonText: React.FC<SkeletonTextProps> = ({
   width = '100%',
   animate = true,
   className,
-  lastLineWidth = '70%'
+  lastLineWidth = '70%',
 }) => {
   if (lines === 1) {
     return (
       <Skeleton
-        variant="text"
+        variant='text'
         size={size}
         width={width}
         animate={animate}
@@ -36,7 +36,7 @@ const SkeletonText: React.FC<SkeletonTextProps> = ({
       {Array.from({ length: lines }, (_, index) => (
         <Skeleton
           key={index}
-          variant="text"
+          variant='text'
           size={size}
           width={index === lines - 1 ? lastLineWidth : width}
           animate={animate}

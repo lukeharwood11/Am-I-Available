@@ -31,7 +31,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
   spacing = 'medium',
   showCaptions = false,
   onImageClick,
-  className
+  className,
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -41,11 +41,11 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
   };
 
   const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % images.length);
+    setCurrentIndex(prev => (prev + 1) % images.length);
   };
 
   const handlePrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+    setCurrentIndex(prev => (prev - 1 + images.length) % images.length);
   };
 
   const galleryClasses = [
@@ -54,39 +54,49 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
     styles[size],
     styles[`spacing-${spacing}`],
     styles[`columns-${columns}`],
-    className
-  ].filter(Boolean).join(' ');
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   if (variant === 'carousel') {
     return (
       <div className={galleryClasses}>
         <div className={styles.carouselContainer}>
-          <button 
-            className={styles.carouselButton} 
+          <button
+            className={styles.carouselButton}
             onClick={handlePrev}
             disabled={images.length <= 1}
           >
             ←
           </button>
-          
+
           <div className={styles.carouselImageContainer}>
             {images[currentIndex] && (
               <>
                 <Image
                   src={images[currentIndex].src}
                   alt={images[currentIndex].alt}
-                  size={size === 'small' ? 'medium' : size === 'medium' ? 'large' : 'xlarge'}
+                  size={
+                    size === 'small'
+                      ? 'medium'
+                      : size === 'medium'
+                        ? 'large'
+                        : 'xlarge'
+                  }
                   className={styles.carouselImage}
                 />
                 {showCaptions && images[currentIndex].caption && (
-                  <p className={styles.caption}>{images[currentIndex].caption}</p>
+                  <p className={styles.caption}>
+                    {images[currentIndex].caption}
+                  </p>
                 )}
               </>
             )}
           </div>
 
-          <button 
-            className={styles.carouselButton} 
+          <button
+            className={styles.carouselButton}
             onClick={handleNext}
             disabled={images.length <= 1}
           >

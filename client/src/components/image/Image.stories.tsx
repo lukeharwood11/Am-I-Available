@@ -138,7 +138,8 @@ export const LoadingSkeleton: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'This story demonstrates the skeleton loading state. The skeleton will show briefly while the image loads.',
+        story:
+          'This story demonstrates the skeleton loading state. The skeleton will show briefly while the image loads.',
       },
     },
   },
@@ -164,17 +165,24 @@ export const ObjectFitCover: Story = {
 
 export const SizeComparison: Story = {
   render: () => (
-    <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+    <div
+      style={{
+        display: 'flex',
+        gap: '16px',
+        alignItems: 'flex-start',
+        flexWrap: 'wrap',
+      }}
+    >
       <div style={{ textAlign: 'center' }}>
-        <Image src="https://picsum.photos/300/300" alt="Small" size="small" />
+        <Image src='https://picsum.photos/300/300' alt='Small' size='small' />
         <p style={{ margin: '8px 0 0 0', fontSize: '12px' }}>Small</p>
       </div>
       <div style={{ textAlign: 'center' }}>
-        <Image src="https://picsum.photos/300/300" alt="Medium" size="medium" />
+        <Image src='https://picsum.photos/300/300' alt='Medium' size='medium' />
         <p style={{ margin: '8px 0 0 0', fontSize: '12px' }}>Medium</p>
       </div>
       <div style={{ textAlign: 'center' }}>
-        <Image src="https://picsum.photos/300/300" alt="Large" size="large" />
+        <Image src='https://picsum.photos/300/300' alt='Large' size='large' />
         <p style={{ margin: '8px 0 0 0', fontSize: '12px' }}>Large</p>
       </div>
     </div>
@@ -183,43 +191,54 @@ export const SizeComparison: Story = {
 
 export const FeatureShowcase: Story = {
   render: () => (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '24px', alignItems: 'start' }}>
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+        gap: '24px',
+        alignItems: 'start',
+      }}
+    >
       <div style={{ textAlign: 'center' }}>
-        <Image 
-          src="https://picsum.photos/300/300" 
-          alt="Standard size" 
-          size="medium" 
+        <Image
+          src='https://picsum.photos/300/300'
+          alt='Standard size'
+          size='medium'
         />
         <p style={{ margin: '8px 0 0 0', fontSize: '12px' }}>Standard Size</p>
       </div>
       <div style={{ textAlign: 'center' }}>
-        <Image 
-          src="https://picsum.photos/300/300" 
-          alt="Custom width" 
-          width="150px"
-          variant="rounded"
+        <Image
+          src='https://picsum.photos/300/300'
+          alt='Custom width'
+          width='150px'
+          variant='rounded'
         />
-        <p style={{ margin: '8px 0 0 0', fontSize: '12px' }}>Custom Width (150px)</p>
+        <p style={{ margin: '8px 0 0 0', fontSize: '12px' }}>
+          Custom Width (150px)
+        </p>
       </div>
       <div style={{ textAlign: 'center' }}>
-        <Image 
-          src="https://invalid-url.com/broken.jpg" 
-          alt="Logo fallback" 
-          size="medium"
-          variant="rounded"
+        <Image
+          src='https://invalid-url.com/broken.jpg'
+          alt='Logo fallback'
+          size='medium'
+          variant='rounded'
         />
         <p style={{ margin: '8px 0 0 0', fontSize: '12px' }}>Logo Fallback</p>
       </div>
       <div style={{ textAlign: 'center' }}>
-        <Image 
-          src="https://picsum.photos/400/200" 
-          alt="Custom dimensions" 
-          width="200px"
-          height="100px"
-          objectFit="cover"
-          variant="rounded"
+        <Image
+          src='https://picsum.photos/400/200'
+          alt='Custom dimensions'
+          width='200px'
+          height='100px'
+          objectFit='cover'
+          variant='rounded'
         />
-        <p style={{ margin: '8px 0 0 0', fontSize: '12px' }}>Custom Dimensions</p>
+        <p style={{ margin: '8px 0 0 0', fontSize: '12px' }}>
+          Custom Dimensions
+        </p>
       </div>
     </div>
   ),

@@ -29,18 +29,16 @@ const Pill: React.FC<PillProps> = ({
     styles[color],
     styles[variant],
     styles[size],
-    className
-  ].filter(Boolean).join(' ');
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <span className={pillClasses} {...props}>
-      {leftIcon && (
-        <span className={styles.leftIcon}>{leftIcon}</span>
-      )}
+      {leftIcon && <span className={styles.leftIcon}>{leftIcon}</span>}
       <span className={styles.content}>{children}</span>
-      {rightIcon && (
-        <span className={styles.rightIcon}>{rightIcon}</span>
-      )}
+      {rightIcon && <span className={styles.rightIcon}>{rightIcon}</span>}
     </span>
   );
 };

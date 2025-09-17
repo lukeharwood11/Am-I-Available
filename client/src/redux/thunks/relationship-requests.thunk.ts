@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { 
+import {
   createRelationshipRequest,
   getSentRelationshipRequests,
   getReceivedRelationshipRequests,
@@ -7,11 +7,11 @@ import {
   updateRelationshipRequest,
   deleteRelationshipRequest,
   approveRelationshipRequest,
-  rejectRelationshipRequest
+  rejectRelationshipRequest,
 } from '../hubs/relationship-requests.hub';
 import {
   CreateRelationshipRequestRequest,
-  UpdateRelationshipRequestRequest
+  UpdateRelationshipRequestRequest,
 } from '../types/relationship-requests.types';
 import { ERROR_MESSAGES } from '../constants';
 
@@ -23,7 +23,10 @@ export const createRelationshipRequestThunk = createAsyncThunk(
       const response = await createRelationshipRequest(request);
       return response;
     } catch (error) {
-      const message = error instanceof Error ? error.message : ERROR_MESSAGES.RELATIONSHIP_REQUESTS.CREATE_FAILED;
+      const message =
+        error instanceof Error
+          ? error.message
+          : ERROR_MESSAGES.RELATIONSHIP_REQUESTS.CREATE_FAILED;
       return rejectWithValue(message);
     }
   }
@@ -37,7 +40,10 @@ export const fetchSentRelationshipRequestsThunk = createAsyncThunk(
       const response = await getSentRelationshipRequests(status);
       return response;
     } catch (error) {
-      const message = error instanceof Error ? error.message : ERROR_MESSAGES.RELATIONSHIP_REQUESTS.FETCH_FAILED;
+      const message =
+        error instanceof Error
+          ? error.message
+          : ERROR_MESSAGES.RELATIONSHIP_REQUESTS.FETCH_FAILED;
       return rejectWithValue(message);
     }
   }
@@ -51,7 +57,10 @@ export const fetchReceivedRelationshipRequestsThunk = createAsyncThunk(
       const response = await getReceivedRelationshipRequests(status);
       return response;
     } catch (error) {
-      const message = error instanceof Error ? error.message : ERROR_MESSAGES.RELATIONSHIP_REQUESTS.FETCH_FAILED;
+      const message =
+        error instanceof Error
+          ? error.message
+          : ERROR_MESSAGES.RELATIONSHIP_REQUESTS.FETCH_FAILED;
       return rejectWithValue(message);
     }
   }
@@ -65,7 +74,10 @@ export const fetchRelationshipRequestThunk = createAsyncThunk(
       const response = await getRelationshipRequest(requestId);
       return response;
     } catch (error) {
-      const message = error instanceof Error ? error.message : ERROR_MESSAGES.RELATIONSHIP_REQUESTS.FETCH_FAILED;
+      const message =
+        error instanceof Error
+          ? error.message
+          : ERROR_MESSAGES.RELATIONSHIP_REQUESTS.FETCH_FAILED;
       return rejectWithValue(message);
     }
   }
@@ -75,14 +87,20 @@ export const fetchRelationshipRequestThunk = createAsyncThunk(
 export const updateRelationshipRequestThunk = createAsyncThunk(
   'relationshipRequests/update',
   async (
-    { requestId, request }: { requestId: string; request: UpdateRelationshipRequestRequest },
+    {
+      requestId,
+      request,
+    }: { requestId: string; request: UpdateRelationshipRequestRequest },
     { rejectWithValue }
   ) => {
     try {
       const response = await updateRelationshipRequest(requestId, request);
       return response;
     } catch (error) {
-      const message = error instanceof Error ? error.message : ERROR_MESSAGES.RELATIONSHIP_REQUESTS.UPDATE_FAILED;
+      const message =
+        error instanceof Error
+          ? error.message
+          : ERROR_MESSAGES.RELATIONSHIP_REQUESTS.UPDATE_FAILED;
       return rejectWithValue(message);
     }
   }
@@ -96,7 +114,10 @@ export const deleteRelationshipRequestThunk = createAsyncThunk(
       const response = await deleteRelationshipRequest(requestId);
       return response;
     } catch (error) {
-      const message = error instanceof Error ? error.message : ERROR_MESSAGES.RELATIONSHIP_REQUESTS.DELETE_FAILED;
+      const message =
+        error instanceof Error
+          ? error.message
+          : ERROR_MESSAGES.RELATIONSHIP_REQUESTS.DELETE_FAILED;
       return rejectWithValue(message);
     }
   }
@@ -110,7 +131,10 @@ export const approveRelationshipRequestThunk = createAsyncThunk(
       const response = await approveRelationshipRequest(requestId);
       return response;
     } catch (error) {
-      const message = error instanceof Error ? error.message : ERROR_MESSAGES.RELATIONSHIP_REQUESTS.APPROVE_FAILED;
+      const message =
+        error instanceof Error
+          ? error.message
+          : ERROR_MESSAGES.RELATIONSHIP_REQUESTS.APPROVE_FAILED;
       return rejectWithValue(message);
     }
   }
@@ -124,7 +148,10 @@ export const rejectRelationshipRequestThunk = createAsyncThunk(
       const response = await rejectRelationshipRequest(requestId);
       return response;
     } catch (error) {
-      const message = error instanceof Error ? error.message : ERROR_MESSAGES.RELATIONSHIP_REQUESTS.REJECT_FAILED;
+      const message =
+        error instanceof Error
+          ? error.message
+          : ERROR_MESSAGES.RELATIONSHIP_REQUESTS.REJECT_FAILED;
       return rejectWithValue(message);
     }
   }

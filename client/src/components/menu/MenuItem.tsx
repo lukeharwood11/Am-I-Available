@@ -39,17 +39,19 @@ const MenuItem: React.FC<MenuItemProps> = ({
     styles.menuItem,
     disabled ? styles.disabled : '',
     destructive ? styles.destructive : '',
-    className
-  ].filter(Boolean).join(' ');
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <div
       className={itemClasses}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
-      role="menuitem"
+      role='menuitem'
       tabIndex={disabled ? -1 : 0}
-      data-menu-item="true"
+      data-menu-item='true'
       data-disabled={disabled}
       aria-disabled={disabled}
     >

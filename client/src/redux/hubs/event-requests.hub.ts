@@ -11,7 +11,7 @@ import {
   EventRequestDeleteResponse,
   EventRequestCreateResponse,
   EventRequestUpdateResponse,
-  EventDateTime
+  EventDateTime,
 } from '../types/event-requests.types';
 
 // ============================================================================
@@ -66,18 +66,27 @@ export async function getEventRequests(
       queryParams.append('status', params.status);
     }
     if (params?.importance_level !== undefined) {
-      queryParams.append('importance_level', params.importance_level?.toString() || '');
+      queryParams.append(
+        'importance_level',
+        params.importance_level?.toString() || ''
+      );
     }
     if (params?.start_date_from) {
-      queryParams.append('start_date_from', serializeEventDateTime(params.start_date_from));
+      queryParams.append(
+        'start_date_from',
+        serializeEventDateTime(params.start_date_from)
+      );
     }
     if (params?.start_date_to) {
-      queryParams.append('start_date_to', serializeEventDateTime(params.start_date_to));
+      queryParams.append(
+        'start_date_to',
+        serializeEventDateTime(params.start_date_to)
+      );
     }
     if (params?.created_by) {
       queryParams.append('created_by', params.created_by);
     }
-    
+
     const url = `/api/v1/event-requests${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
     const response = await get<EventRequestsListResponse>(url);
     return response;
@@ -104,7 +113,7 @@ export async function getEventRequestsWithApprovals(
     if (params?.take !== undefined) {
       queryParams.append('take', params.take.toString());
     }
-    
+
     const url = `/api/v1/event-requests/with-approvals${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
     const response = await get<EventRequestsWithApprovalsListResponse>(url);
     return response;

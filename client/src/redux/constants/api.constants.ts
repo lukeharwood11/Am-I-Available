@@ -5,10 +5,10 @@ export const API_ENDPOINTS = {
   RECIPE_INGREDIENTS: (id: number) => `/api/v1/recipes/${id}/ingredients`,
   RECIPE_INGREDIENT_BY_ID: (id: number) => `/api/v1/recipes/ingredients/${id}`,
   RECIPE_SEARCH: '/api/v1/recipes/search',
-  
+
   // Calendar endpoints (if any)
   CALENDAR_EVENTS: '/api/v1/calendar/events',
-  
+
   // Auth endpoints
   AUTH_TOKENS: '/api/v1/auth/tokens',
 } as const;

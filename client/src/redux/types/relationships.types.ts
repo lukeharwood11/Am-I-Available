@@ -1,5 +1,16 @@
-import { UserData, BaseResponse, BaseListResponse, BasePaginatedListResponse, BaseCreateRequest, BaseUpdateRequest, BaseDeleteResponse } from './common.types';
-import type { RelationshipRequestData, RelationshipRequestWithUserData } from './relationship-requests.types';
+import {
+  UserData,
+  BaseResponse,
+  BaseListResponse,
+  BasePaginatedListResponse,
+  BaseCreateRequest,
+  BaseUpdateRequest,
+  BaseDeleteResponse,
+} from './common.types';
+import type {
+  RelationshipRequestData,
+  RelationshipRequestWithUserData,
+} from './relationship-requests.types';
 
 // Relationship Data Types
 export interface RelationshipData {
@@ -38,11 +49,13 @@ export interface RelationshipWithUserResponse extends BaseResponse {
   relationship: RelationshipWithUserData;
 }
 
-export interface RelationshipsListResponse extends BaseListResponse<RelationshipData> {
+export interface RelationshipsListResponse
+  extends BaseListResponse<RelationshipData> {
   relationships: RelationshipData[];
 }
 
-export interface RelationshipsWithUsersListResponse extends BasePaginatedListResponse<RelationshipWithUserData> {
+export interface RelationshipsWithUsersListResponse
+  extends BasePaginatedListResponse<RelationshipWithUserData> {
   relationships: RelationshipWithUserData[];
 }
 
@@ -75,4 +88,7 @@ export interface RelationshipState {
 }
 
 // Re-export types that are used in the state but defined in relationship-requests.types.ts
-export type { RelationshipRequestData, RelationshipRequestWithUserData } from './relationship-requests.types';
+export type {
+  RelationshipRequestData,
+  RelationshipRequestWithUserData,
+} from './relationship-requests.types';

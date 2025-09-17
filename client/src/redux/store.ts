@@ -1,5 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { authReducer, relationshipsReducer, eventRequestsReducer } from './slices';
+import {
+  authReducer,
+  relationshipsReducer,
+  eventRequestsReducer,
+} from './slices';
 import calendarSlice from './slices/calendar.slice';
 
 export const store = configureStore({
@@ -9,7 +13,7 @@ export const store = configureStore({
     relationships: relationshipsReducer,
     eventRequests: eventRequestsReducer,
   },
-  middleware: (getDefaultMiddleware) =>
+  middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],

@@ -23,7 +23,8 @@ export const Default: Story = {
 
 export const LongMessage: Story = {
   args: {
-    children: 'This is a much longer error message that demonstrates how the component handles extended text content. It might wrap to multiple lines depending on the container width.',
+    children:
+      'This is a much longer error message that demonstrates how the component handles extended text content. It might wrap to multiple lines depending on the container width.',
   },
 };
 
@@ -42,6 +43,7 @@ export const ValidationError: Story = {
 
 export const NetworkError: Story = {
   args: {
-    children: 'Unable to connect to server. Please check your internet connection and try again.',
+    children:
+      'Unable to connect to server. Please check your internet connection and try again.',
   },
 };

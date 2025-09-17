@@ -1,4 +1,11 @@
-import { UserData, BaseResponse, BaseListResponse, BaseCreateRequest, BaseUpdateRequest, BaseDeleteResponse } from './common.types';
+import {
+  UserData,
+  BaseResponse,
+  BaseListResponse,
+  BaseCreateRequest,
+  BaseUpdateRequest,
+  BaseDeleteResponse,
+} from './common.types';
 
 // Relationship Request Data Types
 export interface RelationshipRequestData {
@@ -33,11 +40,13 @@ export interface RelationshipRequestResponse extends BaseResponse {
   relationship_request: RelationshipRequestData;
 }
 
-export interface RelationshipRequestsListResponse extends BaseListResponse<RelationshipRequestData> {
+export interface RelationshipRequestsListResponse
+  extends BaseListResponse<RelationshipRequestData> {
   relationship_requests: RelationshipRequestData[];
 }
 
-export interface RelationshipRequestWithUserListResponse extends BaseListResponse<RelationshipRequestWithUserData> {
+export interface RelationshipRequestWithUserListResponse
+  extends BaseListResponse<RelationshipRequestWithUserData> {
   relationship_requests: RelationshipRequestWithUserData[];
 }
 

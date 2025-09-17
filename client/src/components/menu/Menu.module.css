@@ -33,7 +33,9 @@
   padding: 4px;
   opacity: 0;
   transform: translateY(-8px);
-  transition: opacity 0.15s ease, transform 0.15s ease;
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
   pointer-events: none;
 }
 

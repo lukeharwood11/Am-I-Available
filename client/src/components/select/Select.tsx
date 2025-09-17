@@ -49,14 +49,14 @@ const Select: React.FC<SelectProps> = ({
     styles[size],
     fullWidth ? styles.fullWidth : '',
     disabled ? styles.disabled : '',
-    className
-  ].filter(Boolean).join(' ');
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
-  const selectClasses = [
-    styles.select,
-    styles[variant],
-    styles[size]
-  ].filter(Boolean).join(' ');
+  const selectClasses = [styles.select, styles[variant], styles[size]]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <div className={wrapperClasses}>
@@ -69,11 +69,11 @@ const Select: React.FC<SelectProps> = ({
         {...props}
       >
         {placeholder && (
-          <option value="" disabled={required}>
+          <option value='' disabled={required}>
             {placeholder}
           </option>
         )}
-        {options.map((option) => (
+        {options.map(option => (
           <option
             key={option.value}
             value={option.value}
@@ -90,4 +90,4 @@ const Select: React.FC<SelectProps> = ({
   );
 };
 
-export default Select; 
+export default Select;

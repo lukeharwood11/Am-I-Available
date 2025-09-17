@@ -14,7 +14,7 @@ const InputGroup: React.FC<InputGroupProps> = ({
   label,
   htmlFor,
   error,
-  required = false
+  required = false,
 }) => {
   return (
     <div className={styles.inputGroup}>
@@ -30,4 +30,4 @@ const InputGroup: React.FC<InputGroupProps> = ({
   );
 };
 
-export default InputGroup; 
+export default InputGroup;

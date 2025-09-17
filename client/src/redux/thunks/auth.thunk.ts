@@ -1,5 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { getSession, signOut, refreshSession, storeAccessTokens, getAccessTokens } from '../hubs/auth.hub';
+import {
+  getSession,
+  signOut,
+  refreshSession,
+  storeAccessTokens,
+  getAccessTokens,
+} from '../hubs/auth.hub';
 import { authActions } from '../slices/auth.slice';
 import { ERROR_MESSAGES } from '../constants';
 
@@ -12,7 +18,10 @@ export const initializeAuth = createAsyncThunk(
       dispatch(authActions.setSession({ session }));
       return { session };
     } catch (error) {
-      const message = error instanceof Error ? error.message : ERROR_MESSAGES.AUTH.LOGIN_FAILED;
+      const message =
+        error instanceof Error
+          ? error.message
+          : ERROR_MESSAGES.AUTH.LOGIN_FAILED;
       dispatch(authActions.setAuthError(message));
       return rejectWithValue(message);
     }
@@ -28,7 +37,10 @@ export const signOutUser = createAsyncThunk(
       dispatch(authActions.clearAuth());
       return null;
     } catch (error) {
-      const message = error instanceof Error ? error.message : ERROR_MESSAGES.AUTH.LOGOUT_FAILED;
+      const message =
+        error instanceof Error
+          ? error.message
+          : ERROR_MESSAGES.AUTH.LOGOUT_FAILED;
       dispatch(authActions.setAuthError(message));
       return rejectWithValue(message);
     }
@@ -44,7 +56,10 @@ export const refreshUserSession = createAsyncThunk(
       dispatch(authActions.setSession({ session }));
       return { session };
     } catch (error) {
-      const message = error instanceof Error ? error.message : ERROR_MESSAGES.AUTH.TOKEN_REFRESH_FAILED;
+      const message =
+        error instanceof Error
+          ? error.message
+          : ERROR_MESSAGES.AUTH.TOKEN_REFRESH_FAILED;
       dispatch(authActions.setAuthError(message));
       dispatch(authActions.clearAuth());
       return rejectWithValue(message);
@@ -56,14 +71,14 @@ export const refreshUserSession = createAsyncThunk(
 export const storeGoogleTokens = createAsyncThunk(
   'auth/storeGoogleTokens',
   async (
-    { 
-      googleAccessToken, 
-      googleRefreshToken, 
-      userId 
-    }: { 
-      googleAccessToken: string; 
-      googleRefreshToken: string; 
-      userId: string; 
+    {
+      googleAccessToken,
+      googleRefreshToken,
+      userId,
+    }: {
+      googleAccessToken: string;
+      googleRefreshToken: string;
+      userId: string;
     },
     { rejectWithValue }
   ) => {
@@ -75,7 +90,10 @@ export const storeGoogleTokens = createAsyncThunk(
       );
       return result;
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to store Google tokens';
+      const message =
+        error instanceof Error
+          ? error.message
+          : 'Failed to store Google tokens';
       return rejectWithValue(message);
     }
   }
@@ -89,7 +107,8 @@ export const getGoogleTokens = createAsyncThunk(
       const result = await getAccessTokens(userId);
       return result;
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to get Google tokens';
+      const message =
+        error instanceof Error ? error.message : 'Failed to get Google tokens';
       return rejectWithValue(message);
     }
   }

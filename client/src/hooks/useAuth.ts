@@ -32,9 +32,12 @@ export const useAuth = (): UseAuthReturn => {
     // Get initial session
     const getSession = async () => {
       try {
-        const { data: { session }, error } = await supabase.auth.getSession();
+        const {
+          data: { session },
+          error,
+        } = await supabase.auth.getSession();
         if (error) throw error;
-        
+
         setSession(session);
         setUser(session?.user ?? null);
       } catch (error) {
@@ -47,13 +50,13 @@ export const useAuth = (): UseAuthReturn => {
     getSession();
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        setLoading(false);
-      }
-    );
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
 
     return () => subscription.unsubscribe();
   }, []);
@@ -66,6 +69,6 @@ export const useAuth = (): UseAuthReturn => {
     accessToken: session?.access_token ?? null,
     refreshToken: session?.refresh_token ?? null,
     signOut,
-    refreshSession
+    refreshSession,
   };
-}; 
+};

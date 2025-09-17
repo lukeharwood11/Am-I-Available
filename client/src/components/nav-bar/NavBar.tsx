@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { MdLogout, MdPerson, MdMenu, MdClose, MdSettings } from 'react-icons/md';
+import {
+  MdLogout,
+  MdPerson,
+  MdMenu,
+  MdClose,
+  MdSettings,
+} from 'react-icons/md';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { supabase } from '../../lib/supabaseClient';
 import Button from '../button/Button';
@@ -88,7 +94,7 @@ const NavBar: React.FC<NavBarProps> = ({ name }) => {
     <header className={styles.header}>
       <div className={styles.headerContent}>
         <AnimatedLogo onClick={() => navigate('/')} />
-        
+
         <div className={styles.actions}>
           <Profile
             name={name}
@@ -101,14 +107,14 @@ const NavBar: React.FC<NavBarProps> = ({ name }) => {
         <motion.button
           className={styles.hamburgerButton}
           onClick={toggleMobileMenu}
-          aria-label="Toggle menu"
+          aria-label='Toggle menu'
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
           <motion.div
             variants={hamburgerIconVariants}
-            animate={isMobileMenuOpen ? "close" : "menu"}
-            transition={{ duration: 0.2, ease: "easeInOut" }}
+            animate={isMobileMenuOpen ? 'close' : 'menu'}
+            transition={{ duration: 0.2, ease: 'easeInOut' }}
           >
             {isMobileMenuOpen ? <MdClose size={24} /> : <MdMenu size={24} />}
           </motion.div>
@@ -120,35 +126,37 @@ const NavBar: React.FC<NavBarProps> = ({ name }) => {
           <motion.div
             className={styles.mobileMenu}
             variants={mobileMenuVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
+            initial='hidden'
+            animate='visible'
+            exit='exit'
           >
             <div className={styles.mobileMenuContent}>
               <motion.div variants={menuItemVariants}>
                 <Button
-                  variant="primary"
-                  size="medium"
+                  variant='primary'
+                  size='medium'
                   onClick={handleProfileClick}
                   leftIcon={<MdPerson size={24} />}
-                  className={styles.mobileProfileButton}>
-                    Profile
+                  className={styles.mobileProfileButton}
+                >
+                  Profile
                 </Button>
               </motion.div>
               <motion.div variants={menuItemVariants}>
                 <Button
-                  variant="secondary-subtle"
-                  size="medium"
+                  variant='secondary-subtle'
+                  size='medium'
                   onClick={handleSettingsClick}
                   leftIcon={<MdSettings size={24} />}
-                  className={styles.mobileSettingsButton}>
-                    Settings
+                  className={styles.mobileSettingsButton}
+                >
+                  Settings
                 </Button>
               </motion.div>
               <motion.div variants={menuItemVariants}>
                 <Button
-                  variant="secondary-subtle"
-                  size="medium"
+                  variant='secondary-subtle'
+                  size='medium'
                   onClick={handleSignOut}
                   className={styles.mobileSignOutButton}
                   leftIcon={<MdLogout size={24} />}

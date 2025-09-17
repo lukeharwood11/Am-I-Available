@@ -13,7 +13,10 @@ export const fetchCalendarEvents = createAsyncThunk(
       dispatch(calendarSlice.actions.setEvents(events));
       return events;
     } catch (error) {
-      const message = error instanceof Error ? error.message : ERROR_MESSAGES.CALENDAR.FETCH_EVENTS_FAILED;
+      const message =
+        error instanceof Error
+          ? error.message
+          : ERROR_MESSAGES.CALENDAR.FETCH_EVENTS_FAILED;
       dispatch(calendarSlice.actions.setCalendarError(message));
       return rejectWithValue(message);
     }
@@ -34,7 +37,10 @@ export const syncWithGoogleCalendar = createAsyncThunk(
       dispatch(calendarSlice.actions.setGoogleTokens(googleTokens));
       return events;
     } catch (error) {
-      const message = error instanceof Error ? error.message : ERROR_MESSAGES.CALENDAR.SYNC_FAILED;
+      const message =
+        error instanceof Error
+          ? error.message
+          : ERROR_MESSAGES.CALENDAR.SYNC_FAILED;
       dispatch(calendarSlice.actions.setCalendarError(message));
       return rejectWithValue(message);
     }

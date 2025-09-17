@@ -4,7 +4,8 @@ import styles from './TextArea.module.css';
 export type TextAreaVariant = 'default' | 'error';
 export type TextAreaSize = 'small' | 'medium' | 'large';
 
-interface TextAreaProps extends Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'size'> {
+interface TextAreaProps
+  extends Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'size'> {
   variant?: TextAreaVariant;
   size?: TextAreaSize;
   fullWidth?: boolean;
@@ -25,21 +26,18 @@ const TextArea: React.FC<TextAreaProps> = ({
     styles[size],
     styles[`resize-${resize}`],
     fullWidth ? styles.fullWidth : '',
-    className
-  ].filter(Boolean).join(' ');
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
-  const wrapperClasses = [
-    styles.textareaWrapper,
-    styles[variant],
-    styles[size]
-  ].filter(Boolean).join(' ');
+  const wrapperClasses = [styles.textareaWrapper, styles[variant], styles[size]]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <div className={wrapperClasses}>
-      <textarea
-        className={textareaClasses}
-        {...props}
-      />
+      <textarea className={textareaClasses} {...props} />
     </div>
   );
 };

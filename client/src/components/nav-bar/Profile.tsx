@@ -1,5 +1,10 @@
 import React from 'react';
-import { MdPerson, MdSettings, MdLogout, MdAccountCircle } from 'react-icons/md';
+import {
+  MdPerson,
+  MdSettings,
+  MdLogout,
+  MdAccountCircle,
+} from 'react-icons/md';
 import { Menu, MenuItem, MenuDivider } from '../menu';
 import styles from './Profile.module.css';
 
@@ -31,26 +36,20 @@ const Profile: React.FC<ProfileProps> = ({
     <div className={`${styles.profileContainer} ${className || ''}`}>
       <Menu
         trigger={profileTrigger}
-        placement="bottom-end"
+        placement='bottom-end'
         offset={8}
         className={styles.profileMenu}
       >
-        <MenuItem
-          leftIcon={<MdPerson size={20} />}
-          onClick={onProfile}
-        >
+        <MenuItem leftIcon={<MdPerson size={20} />} onClick={onProfile}>
           Profile
         </MenuItem>
-        
-        <MenuItem
-          leftIcon={<MdSettings size={20} />}
-          onClick={onSettings}
-        >
+
+        <MenuItem leftIcon={<MdSettings size={20} />} onClick={onSettings}>
           Settings
         </MenuItem>
-        
+
         <MenuDivider />
-        
+
         <MenuItem
           leftIcon={<MdLogout size={20} />}
           onClick={onLogout}

@@ -37,14 +37,8 @@ type Story = StoryObj<typeof meta>;
 // Interactive wrapper component for stories that need state
 const TimePickerWithState = (args: any) => {
   const [value, setValue] = useState<string | null>(args.value || null);
-  
-  return (
-    <TimePicker
-      {...args}
-      value={value}
-      onChange={setValue}
-    />
-  );
+
+  return <TimePicker {...args} value={value} onChange={setValue} />;
 };
 
 export const Default: Story = {
@@ -143,20 +137,20 @@ export const MultipleTimePickers: Story = {
   render: () => {
     const [startTime, setStartTime] = useState<string | null>(null);
     const [endTime, setEndTime] = useState<string | null>(null);
-    
+
     return (
       <div style={{ display: 'flex', gap: '16px', flexDirection: 'column' }}>
         <TimePicker
           value={startTime}
           onChange={setStartTime}
-          placeholder="Start time"
-          label="Start Time"
+          placeholder='Start time'
+          label='Start Time'
         />
         <TimePicker
           value={endTime}
           onChange={setEndTime}
-          placeholder="End time"
-          label="End Time"
+          placeholder='End time'
+          label='End Time'
         />
       </div>
     );
@@ -171,11 +165,13 @@ export const DateAndTimePickers: Story = {
   render: () => {
     const [date, setDate] = useState<string | null>(null);
     const [time, setTime] = useState<string | null>(null);
-    
+
     return (
       <div style={{ display: 'flex', gap: '16px', flexDirection: 'column' }}>
         <div>
-          <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>
+          <label
+            style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}
+          >
             Date & Time Selection
           </label>
           <div style={{ display: 'flex', gap: '12px', alignItems: 'end' }}>
@@ -183,8 +179,8 @@ export const DateAndTimePickers: Story = {
               <DatePicker
                 value={date}
                 onChange={setDate}
-                placeholder="Select date"
-                label="Date"
+                placeholder='Select date'
+                label='Date'
                 fullWidth
               />
             </div>
@@ -192,20 +188,22 @@ export const DateAndTimePickers: Story = {
               <TimePicker
                 value={time}
                 onChange={setTime}
-                placeholder="Select time"
-                label="Time"
+                placeholder='Select time'
+                label='Time'
                 fullWidth
               />
             </div>
           </div>
         </div>
         {(date || time) && (
-          <div style={{ 
-            padding: '12px', 
-            backgroundColor: '#f5f5f5', 
-            borderRadius: '4px',
-            fontSize: '14px'
-          }}>
+          <div
+            style={{
+              padding: '12px',
+              backgroundColor: '#f5f5f5',
+              borderRadius: '4px',
+              fontSize: '14px',
+            }}
+          >
             <strong>Selected:</strong> {date || 'No date'} {time || 'No time'}
           </div>
         )}

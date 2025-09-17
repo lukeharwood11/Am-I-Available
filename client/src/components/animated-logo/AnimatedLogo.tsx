@@ -21,7 +21,7 @@ const AnimatedLogo: React.FC<AnimatedLogoProps> = ({ onClick, className }) => {
 
   const containerVariants: Variants = {
     initial: { opacity: 1 },
-    animate: { opacity: 1 }
+    animate: { opacity: 1 },
   };
 
   const wordVariants: Variants = {
@@ -30,96 +30,95 @@ const AnimatedLogo: React.FC<AnimatedLogoProps> = ({ onClick, className }) => {
       x: 0,
       transition: {
         duration: 0.8,
-        ease: [0.25, 0.46, 0.45, 0.94]
-      }
+        ease: [0.25, 0.46, 0.45, 0.94],
+      },
     },
     slideOut: {
       opacity: 0,
       x: 50,
       transition: {
         duration: 0.8,
-        ease: [0.25, 0.46, 0.45, 0.94]
-      }
-    }
+        ease: [0.25, 0.46, 0.45, 0.94],
+      },
+    },
   };
 
   const spaceVariants: Variants = {
     visible: {
-      width: "0.5rem",
+      width: '0.5rem',
       opacity: 1,
       transition: {
         duration: 0.8,
-        ease: [0.25, 0.46, 0.45, 0.94]
-      }
+        ease: [0.25, 0.46, 0.45, 0.94],
+      },
     },
     hidden: {
       width: 0,
       opacity: 0,
       transition: {
         duration: 0.8,
-        ease: [0.25, 0.46, 0.45, 0.94]
-      }
-    }
+        ease: [0.25, 0.46, 0.45, 0.94],
+      },
+    },
   };
 
-
   return (
-    <motion.div 
+    <motion.div
       className={`${styles.logo} ${className || ''}`}
       onClick={onClick}
       variants={containerVariants}
-      initial="initial"
-      animate="animate"
+      initial='initial'
+      animate='animate'
     >
       <h1 className={styles.logoText}>
         {/* AM - always visible */}
         <motion.span
           variants={wordVariants}
-          animate="visible"
+          animate='visible'
           className={styles.word}
         >
           AM
         </motion.span>
-        
+
         {/* Space after AM */}
         <motion.span
           variants={spaceVariants}
-          animate={showFullText ? "visible" : "hidden"}
+          animate={showFullText ? 'visible' : 'hidden'}
           className={styles.space}
         />
-        
+
         {/* I - always visible */}
         <motion.span
           variants={wordVariants}
-          animate="visible"
+          animate='visible'
           className={styles.word}
         >
           /
         </motion.span>
-        
+
         {/* Space after I */}
         <motion.span
           variants={spaceVariants}
-          animate={showFullText ? "visible" : "hidden"}
+          animate={showFullText ? 'visible' : 'hidden'}
           className={styles.space}
         />
-        
+
         {/* A from AVAILABLE - stays in place */}
         <motion.span
           variants={wordVariants}
-          animate="visible"
+          animate='visible'
           className={styles.word}
         >
           A
         </motion.span>
-        
+
         {/* VAILABLE? - slides out */}
         <AnimatePresence>
           {showFullText && (
             <motion.span
               variants={wordVariants}
-              initial="visible"
-              exit="slideOut"
+              initial='visible'
+              exit='slideOut'
               className={styles.word}
             >
               VAILABLE?

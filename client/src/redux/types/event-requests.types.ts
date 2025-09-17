@@ -1,4 +1,12 @@
-import { BaseResponse, BaseListResponse, BasePaginatedListResponse, BaseCreateRequest, BaseUpdateRequest, BaseDeleteResponse, PaginationData } from './common.types';
+import {
+  BaseResponse,
+  BaseListResponse,
+  BasePaginatedListResponse,
+  BaseCreateRequest,
+  BaseUpdateRequest,
+  BaseDeleteResponse,
+  PaginationData,
+} from './common.types';
 
 // Event DateTime Types (matching Google API format)
 export interface EventDateTime {
@@ -91,12 +99,14 @@ export interface EventRequestWithApprovalsResponse extends BaseResponse {
   event_request: EventRequestWithApprovalsData;
 }
 
-export interface EventRequestsListResponse extends BaseListResponse<EventRequestData> {
+export interface EventRequestsListResponse
+  extends BaseListResponse<EventRequestData> {
   event_requests: EventRequestData[];
-  filters?: Record<string, string | number | EventDateTime>;
+  filters?: Record<string, string | number>;
 }
 
-export interface EventRequestsWithApprovalsListResponse extends BasePaginatedListResponse<EventRequestWithApprovalsData> {
+export interface EventRequestsWithApprovalsListResponse
+  extends BasePaginatedListResponse<EventRequestWithApprovalsData> {
   event_requests: EventRequestWithApprovalsData[];
   filters?: Record<string, string | number>;
 }

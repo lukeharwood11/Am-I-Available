@@ -15,7 +15,9 @@
 .modal {
   background: white;
   border-radius: var(--border-radius-standard);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
   max-height: 90vh;
   overflow-y: auto;
   animation: modalSlideIn 0.3s ease-out;
@@ -76,24 +78,24 @@
     margin: 16px;
     max-height: calc(100vh - 32px);
   }
-  
+
   .modal.small,
   .modal.medium,
   .modal.large {
     width: calc(100% - 32px);
     max-width: none;
   }
-  
+
   .header {
     padding: 16px 16px 0 16px;
     margin-bottom: 16px;
   }
-  
+
   .content {
     padding: 0 16px 16px 16px;
   }
-  
+
   .title {
     font-size: 1.25rem;
   }
-} 
+}

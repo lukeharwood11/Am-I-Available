@@ -33,7 +33,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
   className,
   label,
   required = false,
-  error
+  error,
 }) => {
   const [dateValue, setDateValue] = useState<string>('');
 
@@ -67,16 +67,20 @@ const DatePicker: React.FC<DatePickerProps> = ({
   const containerClasses = [
     styles.datePickerContainer,
     fullWidth ? styles.fullWidth : '',
-    className
-  ].filter(Boolean).join(' ');
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   const inputClasses = [
     styles.dateInput,
     styles[variant],
     styles[size],
     fullWidth ? styles.fullWidth : '',
-    disabled ? styles.disabled : ''
-  ].filter(Boolean).join(' ');
+    disabled ? styles.disabled : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <div className={containerClasses}>
@@ -86,10 +90,10 @@ const DatePicker: React.FC<DatePickerProps> = ({
           {required && <span className={styles.required}>*</span>}
         </label>
       )}
-      
+
       <input
-        type="date"
-        aria-label="Date"
+        type='date'
+        aria-label='Date'
         value={dateValue}
         onChange={handleDateChange}
         placeholder={placeholder}

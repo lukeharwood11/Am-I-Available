@@ -34,8 +34,10 @@ const Tabs: React.FC<TabsProps> = ({
     styles[variant],
     styles[size],
     fullWidth ? styles.fullWidth : '',
-    className
-  ].filter(Boolean).join(' ');
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   const handleTabClick = (tabId: string, disabled?: boolean) => {
     if (!disabled) {
@@ -43,7 +45,11 @@ const Tabs: React.FC<TabsProps> = ({
     }
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent, tabId: string, disabled?: boolean) => {
+  const handleKeyDown = (
+    event: React.KeyboardEvent,
+    tabId: string,
+    disabled?: boolean
+  ) => {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       handleTabClick(tabId, disabled);
@@ -52,25 +58,27 @@ const Tabs: React.FC<TabsProps> = ({
 
   return (
     <div className={tabsClasses}>
-      <div className={styles.tabList} role="tablist">
-        {tabs.map((tab) => {
+      <div className={styles.tabList} role='tablist'>
+        {tabs.map(tab => {
           const isActive = tab.id === activeTabId;
           const tabClasses = [
             styles.tab,
             isActive ? styles.active : '',
-            tab.disabled ? styles.disabled : ''
-          ].filter(Boolean).join(' ');
+            tab.disabled ? styles.disabled : '',
+          ]
+            .filter(Boolean)
+            .join(' ');
 
           return (
             <button
               key={tab.id}
               className={tabClasses}
-              role="tab"
+              role='tab'
               aria-selected={isActive}
               aria-controls={`panel-${tab.id}`}
               tabIndex={tab.disabled ? -1 : 0}
               onClick={() => handleTabClick(tab.id, tab.disabled)}
-              onKeyDown={(e) => handleKeyDown(e, tab.id, tab.disabled)}
+              onKeyDown={e => handleKeyDown(e, tab.id, tab.disabled)}
               disabled={tab.disabled}
             >
               {tab.label}
@@ -82,7 +90,7 @@ const Tabs: React.FC<TabsProps> = ({
         {activeTab && (
           <div
             className={styles.tabPanel}
-            role="tabpanel"
+            role='tabpanel'
             id={`panel-${activeTab.id}`}
             aria-labelledby={activeTab.id}
           >

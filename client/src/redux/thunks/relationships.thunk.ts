@@ -1,14 +1,14 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { 
+import {
   createRelationship,
   getUserRelationships,
   getRelationship,
   updateRelationship,
-  deleteRelationship
+  deleteRelationship,
 } from '../hubs/relationships.hub';
 import {
   CreateRelationshipRequest,
-  UpdateRelationshipRequest
+  UpdateRelationshipRequest,
 } from '../types/relationships.types';
 import { PaginationParams } from '../types/common.types';
 import { ERROR_MESSAGES } from '../constants';
@@ -21,7 +21,10 @@ export const createRelationshipThunk = createAsyncThunk(
       const response = await createRelationship(request);
       return response;
     } catch (error) {
-      const message = error instanceof Error ? error.message : ERROR_MESSAGES.RELATIONSHIPS.CREATE_FAILED;
+      const message =
+        error instanceof Error
+          ? error.message
+          : ERROR_MESSAGES.RELATIONSHIPS.CREATE_FAILED;
       return rejectWithValue(message);
     }
   }
@@ -35,7 +38,10 @@ export const fetchUserRelationshipsThunk = createAsyncThunk(
       const response = await getUserRelationships(params);
       return response;
     } catch (error) {
-      const message = error instanceof Error ? error.message : ERROR_MESSAGES.RELATIONSHIPS.FETCH_FAILED;
+      const message =
+        error instanceof Error
+          ? error.message
+          : ERROR_MESSAGES.RELATIONSHIPS.FETCH_FAILED;
       return rejectWithValue(message);
     }
   }
@@ -49,7 +55,10 @@ export const fetchRelationshipThunk = createAsyncThunk(
       const response = await getRelationship(relationshipId);
       return response;
     } catch (error) {
-      const message = error instanceof Error ? error.message : ERROR_MESSAGES.RELATIONSHIPS.FETCH_FAILED;
+      const message =
+        error instanceof Error
+          ? error.message
+          : ERROR_MESSAGES.RELATIONSHIPS.FETCH_FAILED;
       return rejectWithValue(message);
     }
   }
@@ -59,14 +68,20 @@ export const fetchRelationshipThunk = createAsyncThunk(
 export const updateRelationshipThunk = createAsyncThunk(
   'relationships/update',
   async (
-    { relationshipId, request }: { relationshipId: string; request: UpdateRelationshipRequest },
+    {
+      relationshipId,
+      request,
+    }: { relationshipId: string; request: UpdateRelationshipRequest },
     { rejectWithValue }
   ) => {
     try {
       const response = await updateRelationship(relationshipId, request);
       return response;
     } catch (error) {
-      const message = error instanceof Error ? error.message : ERROR_MESSAGES.RELATIONSHIPS.UPDATE_FAILED;
+      const message =
+        error instanceof Error
+          ? error.message
+          : ERROR_MESSAGES.RELATIONSHIPS.UPDATE_FAILED;
       return rejectWithValue(message);
     }
   }
@@ -80,9 +95,11 @@ export const deleteRelationshipThunk = createAsyncThunk(
       const response = await deleteRelationship(relationshipId);
       return response;
     } catch (error) {
-      const message = error instanceof Error ? error.message : ERROR_MESSAGES.RELATIONSHIPS.DELETE_FAILED;
+      const message =
+        error instanceof Error
+          ? error.message
+          : ERROR_MESSAGES.RELATIONSHIPS.DELETE_FAILED;
       return rejectWithValue(message);
     }
   }
 );
-

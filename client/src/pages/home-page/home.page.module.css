@@ -3,7 +3,11 @@
   justify-content: center;
   flex: 1;
   padding: 2rem;
-  background: linear-gradient(135deg, var(--primary-bg) 0%, var(--secondary-bg) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary-bg) 0%,
+    var(--secondary-bg) 100%
+  );
 }
 
 .requestsHeader {
@@ -14,7 +18,7 @@
 
 .requestsHeaderButtons {
   display: flex;
-  gap: .5rem;
+  gap: 0.5rem;
 }
 
 .centerContainer {
@@ -27,7 +31,7 @@
 .requests {
   display: flex;
   flex-direction: column;
-  gap: .5rem;
+  gap: 0.5rem;
 }
 
 .nlpContainer {
@@ -41,7 +45,7 @@
 }
 
 .nlpInput {
-  width: 100% !important
+  width: 100% !important;
 }
 
 .requestCard {
@@ -54,5 +58,5 @@
 
 .requestCardButtons {
   display: flex;
-  gap: .5rem;
+  gap: 0.5rem;
 }

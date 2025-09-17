@@ -6,7 +6,7 @@ import {
   RelationshipsWithUsersListResponse,
   RelationshipDeleteResponse,
   RelationshipCreateResponse,
-  RelationshipUpdateResponse
+  RelationshipUpdateResponse,
 } from '../types/relationships.types';
 import { PaginationParams } from '../types/common.types';
 
@@ -46,7 +46,7 @@ export async function getUserRelationships(
     if (params?.take !== undefined) {
       queryParams.append('take', params.take.toString());
     }
-    
+
     const url = `/api/v1/relationships${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
     const response = await get<RelationshipsWithUsersListResponse>(url);
     return response;
@@ -108,4 +108,3 @@ export async function deleteRelationship(
     throw new Error('Failed to delete relationship');
   }
 }
-

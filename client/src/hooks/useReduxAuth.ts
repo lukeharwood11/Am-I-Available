@@ -1,10 +1,10 @@
 import { useCallback } from 'react';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { 
-  signOutUser, 
+import {
+  signOutUser,
   refreshUserSession,
   storeGoogleTokens,
-  getGoogleTokens
+  getGoogleTokens,
 } from '../redux/thunks/auth.thunk';
 import {
   selectSession,
@@ -25,8 +25,8 @@ interface UseReduxAuthReturn {
   signOut: () => Promise<void>;
   refreshSession: () => Promise<void>;
   storeGoogleAccessTokens: (
-    googleAccessToken: string, 
-    googleRefreshToken: string, 
+    googleAccessToken: string,
+    googleRefreshToken: string,
     userId: string
   ) => Promise<void>;
   getGoogleAccessTokens: (userId: string) => Promise<void>;
@@ -34,7 +34,7 @@ interface UseReduxAuthReturn {
 
 export const useReduxAuth = (): UseReduxAuthReturn => {
   const dispatch = useAppDispatch();
-  
+
   // Selectors
   const session = useAppSelector(selectSession);
   const loading = useAppSelector(selectAuthLoading);
@@ -52,21 +52,29 @@ export const useReduxAuth = (): UseReduxAuthReturn => {
     await dispatch(refreshUserSession());
   }, [dispatch]);
 
-  const storeGoogleAccessTokens = useCallback(async (
-    googleAccessToken: string,
-    googleRefreshToken: string,
-    userId: string
-  ) => {
-    await dispatch(storeGoogleTokens({
-      googleAccessToken,
-      googleRefreshToken,
-      userId
-    }));
-  }, [dispatch]);
+  const storeGoogleAccessTokens = useCallback(
+    async (
+      googleAccessToken: string,
+      googleRefreshToken: string,
+      userId: string
+    ) => {
+      await dispatch(
+        storeGoogleTokens({
+          googleAccessToken,
+          googleRefreshToken,
+          userId,
+        })
+      );
+    },
+    [dispatch]
+  );
 
-  const getGoogleAccessTokens = useCallback(async (userId: string) => {
-    await dispatch(getGoogleTokens(userId));
-  }, [dispatch]);
+  const getGoogleAccessTokens = useCallback(
+    async (userId: string) => {
+      await dispatch(getGoogleTokens(userId));
+    },
+    [dispatch]
+  );
 
   return {
     session,

@@ -50,7 +50,8 @@ export const ERROR_MESSAGES = {
     DELETE_FAILED: 'Failed to delete event request.',
   },
   NETWORK: {
-    CONNECTION_ERROR: 'Network connection error. Please check your internet connection.',
+    CONNECTION_ERROR:
+      'Network connection error. Please check your internet connection.',
     SERVER_ERROR: 'Server error. Please try again later.',
     TIMEOUT: 'Request timeout. Please try again.',
   },

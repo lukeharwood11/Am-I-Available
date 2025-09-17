@@ -1,19 +1,34 @@
 import React from 'react';
 import styles from './Text.module.css';
 
-export type TextVariant = 'caption' | 'body-small' | 'body' | 'heading-small' | 'heading' | 'heading-large';
-export type TextColor = 
-  | 'primary' 
-  | 'secondary' 
-  | 'danger' 
-  | 'grey-100' 
-  | 'grey-200' 
-  | 'grey-300' 
-  | 'grey-600' 
-  | 'grey-800' 
+export type TextVariant =
+  | 'caption'
+  | 'body-small'
+  | 'body'
+  | 'heading-small'
+  | 'heading'
+  | 'heading-large';
+export type TextColor =
+  | 'primary'
+  | 'secondary'
+  | 'danger'
+  | 'grey-100'
+  | 'grey-200'
+  | 'grey-300'
+  | 'grey-600'
+  | 'grey-800'
   | 'inherit';
 
-export type TextElement = 'p' | 'span' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'div';
+export type TextElement =
+  | 'p'
+  | 'span'
+  | 'h1'
+  | 'h2'
+  | 'h3'
+  | 'h4'
+  | 'h5'
+  | 'h6'
+  | 'div';
 
 interface TextProps {
   children: React.ReactNode;
@@ -65,8 +80,10 @@ const Text: React.FC<TextProps> = ({
     styles[`weight-${weight}`],
     styles[`align-${align}`],
     truncate ? styles.truncate : '',
-    className
-  ].filter(Boolean).join(' ');
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <Element className={textClasses} {...props}>

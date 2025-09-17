@@ -41,7 +41,8 @@ export const Default: Story = {
 export const WithValue: Story = {
   args: {
     placeholder: 'Enter your message...',
-    value: 'This is some example text that shows how the TextArea component looks with content.',
+    value:
+      'This is some example text that shows how the TextArea component looks with content.',
     variant: 'default',
     size: 'medium',
   },

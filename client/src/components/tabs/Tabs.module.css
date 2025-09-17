@@ -3,7 +3,8 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  font-family: 'Space Grotesk', Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family:
+    'Space Grotesk', Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
 /* Tab List */
@@ -207,30 +208,30 @@
     scrollbar-width: none;
     -ms-overflow-style: none;
   }
-  
+
   .tabList::-webkit-scrollbar {
     display: none;
   }
-  
+
   .tab {
     flex-shrink: 0;
   }
-  
+
   .fullWidth .tab {
     flex: none;
     min-width: max-content;
   }
-  
+
   .small .tab {
     padding: 6px 10px;
     font-size: 11px;
   }
-  
+
   .medium .tab {
     padding: 10px 14px;
     font-size: 13px;
   }
-  
+
   .large .tab {
     padding: 14px 18px;
     font-size: 15px;

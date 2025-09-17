@@ -1,7 +1,15 @@
 import React from 'react';
 import styles from './Button.module.css';
 
-export type ButtonVariant = 'primary' | 'primary-subtle' | 'secondary' | 'secondary-subtle' | 'alternate' | 'alternate-subtle' | 'danger' | 'danger-subtle';
+export type ButtonVariant =
+  | 'primary'
+  | 'primary-subtle'
+  | 'secondary'
+  | 'secondary-subtle'
+  | 'alternate'
+  | 'alternate-subtle'
+  | 'danger'
+  | 'danger-subtle';
 export type ButtonSize = 'small' | 'medium' | 'large';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -27,7 +35,7 @@ const Button: React.FC<ButtonProps> = ({
 }) => {
   const hasChildren = Boolean(children);
   const isIconOnly = !hasChildren && !isLoading && (leftIcon || rightIcon);
-  
+
   const buttonClasses = [
     styles.button,
     styles[variant],
@@ -35,8 +43,10 @@ const Button: React.FC<ButtonProps> = ({
     fullWidth ? styles.fullWidth : '',
     isLoading ? styles.loading : '',
     isIconOnly ? styles.iconOnly : '',
-    className
-  ].filter(Boolean).join(' ');
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <button
@@ -44,15 +54,11 @@ const Button: React.FC<ButtonProps> = ({
       disabled={disabled || isLoading}
       {...props}
     >
-      {isLoading && (
-        <span className={styles.spinner} />
-      )}
+      {isLoading && <span className={styles.spinner} />}
       {!isLoading && leftIcon && (
         <span className={styles.leftIcon}>{leftIcon}</span>
       )}
-      {hasChildren && (
-        <span className={styles.content}>{children}</span>
-      )}
+      {hasChildren && <span className={styles.content}>{children}</span>}
       {!isLoading && rightIcon && (
         <span className={styles.rightIcon}>{rightIcon}</span>
       )}
@@ -60,4 +66,4 @@ const Button: React.FC<ButtonProps> = ({
   );
 };
 
-export default Button; 
+export default Button;

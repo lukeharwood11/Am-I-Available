@@ -6,9 +6,11 @@ interface MenuDividerProps {
 }
 
 const MenuDivider: React.FC<MenuDividerProps> = ({ className }) => {
-  const dividerClasses = [styles.menuDivider, className].filter(Boolean).join(' ');
+  const dividerClasses = [styles.menuDivider, className]
+    .filter(Boolean)
+    .join(' ');
 
-  return <div className={dividerClasses} role="separator" />;
+  return <div className={dividerClasses} role='separator' />;
 };
 
 export default MenuDivider;
