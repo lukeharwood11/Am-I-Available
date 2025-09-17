@@ -3,6 +3,6 @@ resource "openai_project" "amia" {
 }
 
 resource "openai_project_service_account" "amia" {
-  project_id = openai_project.example.id
-  name       = "my-service-account"
+  project_id = openai_project.amia.id
+  name       = "amia-api"
 }
