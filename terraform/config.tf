@@ -4,6 +4,11 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 5.0"
     }
+
+    openai = {
+      source = "jianyuan/openai"
+      version = "0.3.2"
+    }
   }
 
   backend "s3" {
@@ -13,6 +18,10 @@ terraform {
     encrypt        = true
     dynamodb_table = "lukeharwood-dev-tf-lock"
   }
+}
+
+provider "openai" {
+  admin_key = var.admin_openai_api_key
 }
 
 # Default provider for us-east-2

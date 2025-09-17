@@ -50,7 +50,8 @@ jobs:
           terraform init
           terraform plan -out=tf.plan -detailed-exitcode
         env:
-          TF_VAR_image_uri: ${{ vars.ECR_REGISTRY }}/${{ vars.ECR_REPOSITORY }}:${{ github.sha }}
+          TF_VAR_api_image_uri: ${{ vars.ECR_REGISTRY }}/${{ vars.ECR_REPOSITORY }}:${{ github.sha }}
+          TF_VAR_admin_openai_api_key: ${{ secrets.ADMIN_OPENAI_API_KEY }}
       - name: Show Plan Output
         run: |
           cd terraform
