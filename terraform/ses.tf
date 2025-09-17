@@ -90,7 +90,7 @@ resource "aws_iam_policy" "amia_ses_policy" {
       {
         Effect   = "Allow"
         Action   = "ses:SendEmail"
-         Resource = "arn:aws:ses:${local.region}:${local.account_id}:identity/${aws_ses_domain_identity.amia_domain_identity.domain}"
+        Resource = "arn:aws:ses:${local.region}:${local.account_id}:identity/${aws_ses_domain_identity.amia_domain_identity.domain}"
       }
     ]
   })
@@ -159,7 +159,7 @@ resource "aws_ses_receipt_rule" "amia_catch_all_rule" {
   recipients    = ["amia@amiavailable.com"]
   enabled       = true
   scan_enabled  = false
-  after         = "m-184cb351d99d46eab737badfa7b19f89"  # Add after existing WorkMail rule
+  after         = "m-184cb351d99d46eab737badfa7b19f89" # Add after existing WorkMail rule
 
   s3_action {
     bucket_name       = aws_s3_bucket.amia_email_bucket.bucket

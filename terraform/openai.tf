@@ -1,5 +1,5 @@
 resource "openai_project" "amia" {
-    name = "AMIA"
+  name = "AMIA"
 }
 
 resource "openai_project_service_account" "amia" {
