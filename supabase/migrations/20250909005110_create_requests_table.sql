@@ -72,10 +72,11 @@ CREATE POLICY "Users can delete relationship requests" ON public.relationship_re
 CREATE TABLE IF NOT EXISTS public.event_requests (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     google_event_id UUID, -- the event id from google calendar, if the event is created by google calendar, this is nullable
+    title TEXT,
     location TEXT,
     description TEXT,
-    start_date TIMESTAMP WITH TIME ZONE NOT NULL,
-    end_date TIMESTAMP WITH TIME ZONE NOT NULL,
+    start_date JSONB NOT NULL, -- Google API format: {"date": str | null, "dateTime": datetime | null, "timeZone": str | null}
+    end_date JSONB NOT NULL, -- Google API format: {"date": str | null, "dateTime": datetime | null, "timeZone": str | null}
     importance_level INTEGER DEFAULT 1, -- 1 = low, 5 = critical
     -- TODO: Remove the status column, it's not needed, if the user has accepted the event request, then the status is 'accepted'
     status TEXT DEFAULT 'pending', -- 'pending', 'approved', 'rejected'

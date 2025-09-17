@@ -14,12 +14,29 @@ from ..models.v1.event_requests import (
     EventRequestsListResponse,
     EventRequestsWithApprovalsListResponse,
     EventRequestResponse,
+    EventDateTime,
 )
 
 
 class EventRequestsService:
     def __init__(self, databridge: EventRequestsDatabridge):
         self.databridge = databridge
+
+    def _event_datetime_to_dict(self, event_datetime: EventDateTime) -> dict:
+        """Convert EventDateTime to dict for database storage"""
+        return {
+            "date": event_datetime.date,
+            "dateTime": event_datetime.date_time.isoformat() if event_datetime.date_time else None,
+            "timeZone": event_datetime.time_zone,
+        }
+
+    def _dict_to_event_datetime(self, data: dict) -> EventDateTime:
+        """Convert dict from database to EventDateTime"""
+        return EventDateTime(
+            date=data.get("date"),
+            date_time=datetime.fromisoformat(data["dateTime"]) if data.get("dateTime") else None,
+            time_zone=data.get("timeZone"),
+        )
 
     def _convert_db_to_model(
         self, db_request: DBEventRequestResponse
@@ -31,8 +48,8 @@ class EventRequestsService:
             title=db_request.title,
             location=db_request.location,
             description=db_request.description,
-            start_date=db_request.start_date,
-            end_date=db_request.end_date,
+            start_date=self._dict_to_event_datetime(db_request.start_date),
+            end_date=self._dict_to_event_datetime(db_request.end_date),
             importance_level=db_request.importance_level,
             status=db_request.status,
             notes=db_request.notes,
@@ -51,8 +68,8 @@ class EventRequestsService:
             title=db_request.title,
             location=db_request.location,
             description=db_request.description,
-            start_date=db_request.start_date,
-            end_date=db_request.end_date,
+            start_date=self._dict_to_event_datetime(db_request.start_date),
+            end_date=self._dict_to_event_datetime(db_request.end_date),
             importance_level=db_request.importance_level,
             status=db_request.status,
             notes=db_request.notes,
@@ -71,15 +88,16 @@ class EventRequestsService:
         title: str | None,
         location: str | None,
         description: str | None,
-        start_date: datetime,
-        end_date: datetime,
+        start_date: EventDateTime,
+        end_date: EventDateTime,
         importance_level: int,
         notes: str | None,
         created_by: str,
     ) -> EventRequestCreateResponse:
         """Create a new event request"""
-        # Validate dates
-        if start_date >= end_date:
+        # Validate dates - for now we'll do basic validation
+        # More complex validation could be added based on date vs dateTime fields
+        if start_date.date_time and end_date.date_time and start_date.date_time >= end_date.date_time:
             raise HTTPException(
                 status_code=400, detail="Start date must be before end date"
             )
@@ -96,8 +114,8 @@ class EventRequestsService:
             title=title,
             location=location,
             description=description,
-            start_date=start_date,
-            end_date=end_date,
+            start_date=self._event_datetime_to_dict(start_date),
+            end_date=self._event_datetime_to_dict(end_date),
             importance_level=importance_level,
             notes=notes,
             created_by=created_by,
@@ -129,16 +147,16 @@ class EventRequestsService:
         user_id: str,
         status: str | None = None,
         importance_level: int | None = None,
-        start_date_from: datetime | None = None,
-        start_date_to: datetime | None = None,
+        start_date_from: EventDateTime | None = None,
+        start_date_to: EventDateTime | None = None,
     ) -> EventRequestsListResponse:
         """Get all event requests created by a user with optional filters"""
         db_requests = await self.databridge.get_user_event_requests(
             user_id=user_id,
             status=status,
             importance_level=importance_level,
-            start_date_from=start_date_from,
-            start_date_to=start_date_to,
+            start_date_from=self._event_datetime_to_dict(start_date_from) if start_date_from else None,
+            start_date_to=self._event_datetime_to_dict(start_date_to) if start_date_to else None,
         )
 
         requests = [self._convert_db_to_model(req) for req in db_requests]
@@ -162,16 +180,16 @@ class EventRequestsService:
         *,
         status: str | None = None,
         importance_level: int | None = None,
-        start_date_from: datetime | None = None,
-        start_date_to: datetime | None = None,
+        start_date_from: EventDateTime | None = None,
+        start_date_to: EventDateTime | None = None,
         created_by: str | None = None,
     ) -> EventRequestsListResponse:
         """Get all event requests with optional filters (admin/system use)"""
         db_requests = await self.databridge.get_all_event_requests(
             status=status,
             importance_level=importance_level,
-            start_date_from=start_date_from,
-            start_date_to=start_date_to,
+            start_date_from=self._event_datetime_to_dict(start_date_from) if start_date_from else None,
+            start_date_to=self._event_datetime_to_dict(start_date_to) if start_date_to else None,
             created_by=created_by,
         )
 
@@ -204,8 +222,8 @@ class EventRequestsService:
         title: str | None = None,
         location: str | None = None,
         description: str | None = None,
-        start_date: datetime | None = None,
-        end_date: datetime | None = None,
+        start_date: EventDateTime | None = None,
+        end_date: EventDateTime | None = None,
         importance_level: int | None = None,
         status: str | None = None,
         notes: str | None = None,
@@ -226,20 +244,23 @@ class EventRequestsService:
                 detail="You don't have permission to update this event request",
             )
 
-        # Validate dates if provided
-        if start_date and end_date and start_date >= end_date:
+        # Validate dates if provided - convert existing dates for comparison
+        existing_start = self._dict_to_event_datetime(existing.start_date)
+        existing_end = self._dict_to_event_datetime(existing.end_date)
+        
+        if start_date and end_date and start_date.date_time and end_date.date_time and start_date.date_time >= end_date.date_time:
             raise HTTPException(
                 status_code=400, detail="Start date must be before end date"
             )
 
         # Validate start_date with existing end_date
-        if start_date and not end_date and start_date >= existing.end_date:
+        if start_date and not end_date and start_date.date_time and existing_end.date_time and start_date.date_time >= existing_end.date_time:
             raise HTTPException(
                 status_code=400, detail="Start date must be before existing end date"
             )
 
         # Validate end_date with existing start_date
-        if end_date and not start_date and existing.start_date >= end_date:
+        if end_date and not start_date and existing_start.date_time and end_date.date_time and existing_start.date_time >= end_date.date_time:
             raise HTTPException(
                 status_code=400, detail="End date must be after existing start date"
             )
@@ -257,8 +278,8 @@ class EventRequestsService:
             title=title,
             location=location,
             description=description,
-            start_date=start_date,
-            end_date=end_date,
+            start_date=self._event_datetime_to_dict(start_date) if start_date else None,
+            end_date=self._event_datetime_to_dict(end_date) if end_date else None,
             importance_level=importance_level,
             status=status,
             notes=notes,

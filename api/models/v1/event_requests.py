@@ -4,6 +4,19 @@ from typing import Literal
 
 
 # ============================================================================
+# DATE MODELS
+# ============================================================================
+
+
+class EventDateTime(BaseModel):
+    """Represents date/time information matching Google API format"""
+    
+    date: str | None = Field(None, description="Date in YYYY-MM-DD format for all-day events")
+    date_time: datetime | None = Field(None, description="Date and time for timed events")
+    time_zone: str | None = Field(None, description="Time zone identifier")
+
+
+# ============================================================================
 # REQUEST MODELS
 # ============================================================================
 
@@ -17,8 +30,8 @@ class CreateEventRequestRequest(BaseModel):
     title: str | None = Field(None, description="Event title")
     location: str | None = Field(None, description="Event location")
     description: str | None = Field(None, description="Event description")
-    start_date: datetime = Field(description="Event start date and time")
-    end_date: datetime = Field(description="Event end date and time")
+    start_date: EventDateTime = Field(description="Event start date and time")
+    end_date: EventDateTime = Field(description="Event end date and time")
     importance_level: int = Field(
         1, ge=1, le=5, description="Importance level from 1 (low) to 5 (critical)"
     )
@@ -33,10 +46,10 @@ class UpdateEventRequestRequest(BaseModel):
     title: str | None = Field(None, description="Updated event title")
     location: str | None = Field(None, description="Updated event location")
     description: str | None = Field(None, description="Updated event description")
-    start_date: datetime | None = Field(
+    start_date: EventDateTime | None = Field(
         None, description="Updated event start date and time"
     )
-    end_date: datetime | None = Field(
+    end_date: EventDateTime | None = Field(
         None, description="Updated event end date and time"
     )
     importance_level: int | None = Field(
@@ -57,10 +70,10 @@ class GetEventRequestsRequest(BaseModel):
     importance_level: int | None = Field(
         None, ge=1, le=5, description="Filter by importance level"
     )
-    start_date_from: datetime | None = Field(
+    start_date_from: EventDateTime | None = Field(
         None, description="Filter events starting from this date"
     )
-    start_date_to: datetime | None = Field(
+    start_date_to: EventDateTime | None = Field(
         None, description="Filter events starting before this date"
     )
     created_by: str | None = Field(None, description="Filter by creator user ID")
@@ -95,8 +108,8 @@ class EventRequestData(BaseModel):
     title: str | None = Field(description="Event title")
     location: str | None = Field(description="Event location")
     description: str | None = Field(description="Event description")
-    start_date: datetime = Field(description="Event start date and time")
-    end_date: datetime = Field(description="Event end date and time")
+    start_date: EventDateTime = Field(description="Event start date and time")
+    end_date: EventDateTime = Field(description="Event end date and time")
     importance_level: int = Field(description="Importance level from 1 to 5")
     status: str = Field(description="Event request status")
     notes: str | None = Field(description="Additional notes")
@@ -113,8 +126,8 @@ class EventRequestWithApprovalsData(BaseModel):
     title: str | None = Field(description="Event title")
     location: str | None = Field(description="Event location")
     description: str | None = Field(description="Event description")
-    start_date: datetime = Field(description="Event start date and time")
-    end_date: datetime = Field(description="Event end date and time")
+    start_date: EventDateTime = Field(description="Event start date and time")
+    end_date: EventDateTime = Field(description="Event end date and time")
     importance_level: int = Field(description="Importance level from 1 to 5")
     status: str = Field(description="Event request status")
     notes: str | None = Field(description="Additional notes")
@@ -140,7 +153,7 @@ class EventRequestsListResponse(BaseModel):
     status: str = "success"
     event_requests: list[EventRequestData]
     count: int
-    filters: dict[str, str | int | datetime] | None = None
+    filters: dict[str, str | int | EventDateTime] | None = None
 
 
 class EventRequestsWithApprovalsListResponse(BaseModel):

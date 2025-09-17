@@ -1,3 +1,5 @@
+DROP FUNCTION IF EXISTS public.list_event_requests_with_approvals;
+
 -- Function to list event requests with approval status aggregation
 CREATE OR REPLACE FUNCTION public.list_event_requests_with_approvals(
     p_user_id UUID DEFAULT NULL,
@@ -11,8 +13,8 @@ RETURNS TABLE (
     title TEXT,
     location TEXT,
     description TEXT,
-    start_date TIMESTAMP WITH TIME ZONE,
-    end_date TIMESTAMP WITH TIME ZONE,
+    start_date JSONB,
+    end_date JSONB,
     importance_level INTEGER,
     status TEXT,
     notes TEXT,
@@ -72,7 +74,7 @@ BEGIN
     GROUP BY er.id, er.google_event_id, er.title, er.location, er.description, 
              er.start_date, er.end_date, er.importance_level, er.status, 
              er.notes, er.created_by, er.created_at, er.updated_at
-    ORDER BY er.start_date DESC
+    ORDER BY er.created_at DESC
     OFFSET p_skip
     LIMIT p_take;
 END;

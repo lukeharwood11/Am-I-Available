@@ -27,13 +27,6 @@ const meta: Meta<typeof DatePicker> = {
     required: {
       control: { type: 'boolean' },
     },
-    includeTime: {
-      control: { type: 'boolean' },
-    },
-    timeFormat: {
-      control: { type: 'select' },
-      options: ['12', '24'],
-    },
   },
 };
 
@@ -154,72 +147,6 @@ export const CustomPlaceholder: Story = {
   },
 };
 
-// Time selection stories
-export const WithTime24Hour: Story = {
-  render: DatePickerWithState,
-  args: {
-    includeTime: true,
-    timeFormat: '24',
-    placeholder: 'Select date and time',
-    label: 'Date & Time (24h)',
-  },
-};
-
-export const WithTime12Hour: Story = {
-  render: DatePickerWithState,
-  args: {
-    includeTime: true,
-    timeFormat: '12',
-    placeholder: 'Select date and time',
-    label: 'Date & Time (12h)',
-  },
-};
-
-export const WithTimeAndValue: Story = {
-  render: DatePickerWithState,
-  args: {
-    includeTime: true,
-    timeFormat: '24',
-    value: new Date(2024, 11, 25, 14, 30).toISOString(), // December 25, 2024 at 2:30 PM
-    placeholder: 'Select date and time',
-    label: 'Date & Time',
-  },
-};
-
-export const WithTimeSmall: Story = {
-  render: DatePickerWithState,
-  args: {
-    includeTime: true,
-    timeFormat: '12',
-    size: 'small',
-    placeholder: 'Select date and time',
-    label: 'Date & Time (Small)',
-  },
-};
-
-export const WithTimeLarge: Story = {
-  render: DatePickerWithState,
-  args: {
-    includeTime: true,
-    timeFormat: '24',
-    size: 'large',
-    placeholder: 'Select date and time',
-    label: 'Date & Time (Large)',
-  },
-};
-
-export const WithTimeError: Story = {
-  render: DatePickerWithState,
-  args: {
-    includeTime: true,
-    timeFormat: '12',
-    variant: 'error',
-    error: 'Please select a valid date and time',
-    placeholder: 'Select date and time',
-    label: 'Date & Time',
-    required: true,
-  },
-};
 
 // Multiple date pickers example
 export const MultipleDatePickers: Story = {
@@ -251,36 +178,3 @@ export const MultipleDatePickers: Story = {
   },
 };
 
-// Multiple date-time pickers example
-export const MultipleDateTimePickers: Story = {
-  render: () => {
-    const [startDateTime, setStartDateTime] = useState<string | null>(null);
-    const [endDateTime, setEndDateTime] = useState<string | null>(null);
-    
-    return (
-      <div style={{ display: 'flex', gap: '16px', flexDirection: 'column' }}>
-        <DatePicker
-          value={startDateTime}
-          onChange={setStartDateTime}
-          includeTime={true}
-          timeFormat="24"
-          placeholder="Start date and time"
-          label="Start Date & Time"
-          maxDate={endDateTime || undefined}
-        />
-        <DatePicker
-          value={endDateTime}
-          onChange={setEndDateTime}
-          includeTime={true}
-          timeFormat="24"
-          placeholder="End date and time"
-          label="End Date & Time"
-          minDate={startDateTime || undefined}
-        />
-      </div>
-    );
-  },
-  parameters: {
-    layout: 'padded',
-  },
-};

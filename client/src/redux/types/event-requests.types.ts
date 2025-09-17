@@ -1,5 +1,12 @@
 import { BaseResponse, BaseListResponse, BasePaginatedListResponse, BaseCreateRequest, BaseUpdateRequest, BaseDeleteResponse, PaginationData } from './common.types';
 
+// Event DateTime Types (matching Google API format)
+export interface EventDateTime {
+  date?: string | null; // Date in YYYY-MM-DD format for all-day events
+  dateTime?: string | null; // ISO datetime string for timed events
+  timeZone?: string | null; // Time zone identifier
+}
+
 // Event Request Data Types
 export interface EventRequestData {
   id: string;
@@ -7,8 +14,8 @@ export interface EventRequestData {
   title: string | null;
   location: string | null;
   description: string | null;
-  start_date: string;
-  end_date: string;
+  start_date: EventDateTime;
+  end_date: EventDateTime;
   importance_level: number;
   status: string;
   notes: string | null;
@@ -23,8 +30,8 @@ export interface EventRequestWithApprovalsData {
   title: string | null;
   location: string | null;
   description: string | null;
-  start_date: string;
-  end_date: string;
+  start_date: EventDateTime;
+  end_date: EventDateTime;
   importance_level: number;
   status: string;
   notes: string | null;
@@ -42,8 +49,8 @@ export interface CreateEventRequestRequest extends BaseCreateRequest {
   title?: string | null;
   location?: string | null;
   description?: string | null;
-  start_date: string;
-  end_date: string;
+  start_date: EventDateTime;
+  end_date: EventDateTime;
   importance_level: number;
   notes?: string | null;
 }
@@ -54,8 +61,8 @@ export interface UpdateEventRequestRequest extends BaseUpdateRequest {
   title?: string | null;
   location?: string | null;
   description?: string | null;
-  start_date?: string | null;
-  end_date?: string | null;
+  start_date?: EventDateTime | null;
+  end_date?: EventDateTime | null;
   importance_level?: number | null;
   status?: 'pending' | 'approved' | 'rejected' | null;
   notes?: string | null;
@@ -64,8 +71,8 @@ export interface UpdateEventRequestRequest extends BaseUpdateRequest {
 export interface GetEventRequestsRequest {
   status?: 'pending' | 'approved' | 'rejected' | null;
   importance_level?: number;
-  start_date_from?: string;
-  start_date_to?: string;
+  start_date_from?: EventDateTime;
+  start_date_to?: EventDateTime;
   created_by?: string;
 }
 
@@ -86,7 +93,7 @@ export interface EventRequestWithApprovalsResponse extends BaseResponse {
 
 export interface EventRequestsListResponse extends BaseListResponse<EventRequestData> {
   event_requests: EventRequestData[];
-  filters?: Record<string, string | number | string>;
+  filters?: Record<string, string | number | EventDateTime>;
 }
 
 export interface EventRequestsWithApprovalsListResponse extends BasePaginatedListResponse<EventRequestWithApprovalsData> {

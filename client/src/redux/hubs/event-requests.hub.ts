@@ -10,8 +10,27 @@ import {
   EventRequestsWithApprovalsListResponse,
   EventRequestDeleteResponse,
   EventRequestCreateResponse,
-  EventRequestUpdateResponse
+  EventRequestUpdateResponse,
+  EventDateTime
 } from '../types/event-requests.types';
+
+// ============================================================================
+// HELPER FUNCTIONS
+// ============================================================================
+
+/**
+ * Serialize EventDateTime to a string for query parameters
+ * For now, we'll use the dateTime field if available, otherwise the date field
+ */
+function serializeEventDateTime(dateTime: EventDateTime): string {
+  if (dateTime.dateTime) {
+    return dateTime.dateTime;
+  }
+  if (dateTime.date) {
+    return dateTime.date;
+  }
+  return '';
+}
 
 // ============================================================================
 // API FUNCTIONS
@@ -50,10 +69,10 @@ export async function getEventRequests(
       queryParams.append('importance_level', params.importance_level?.toString() || '');
     }
     if (params?.start_date_from) {
-      queryParams.append('start_date_from', params.start_date_from);
+      queryParams.append('start_date_from', serializeEventDateTime(params.start_date_from));
     }
     if (params?.start_date_to) {
-      queryParams.append('start_date_to', params.start_date_to);
+      queryParams.append('start_date_to', serializeEventDateTime(params.start_date_to));
     }
     if (params?.created_by) {
       queryParams.append('created_by', params.created_by);

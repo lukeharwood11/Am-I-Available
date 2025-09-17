@@ -1,4 +1,4 @@
-.datePickerContainer {
+.timePickerContainer {
   position: relative;
   display: inline-block;
   width: auto;
@@ -21,8 +21,7 @@
   margin-left: 4px;
 }
 
-
-.dateInput {
+.timeInput {
   border: 1px solid var(--grey-300);
   border-radius: var(--border-radius-standard);
   background-color: white;
@@ -32,39 +31,38 @@
   transition: all 0.2s ease-in-out;
   box-sizing: border-box;
   cursor: pointer;
-  flex: 1;
+  min-width: 120px;
 }
 
-.dateInput:focus {
+.timeInput:focus {
   outline: none;
   border-color: var(--primary);
   box-shadow: 0 0 0 2px var(--primary-bg);
 }
 
-.dateInput:hover:not(:disabled) {
+.timeInput:hover:not(:disabled) {
   border-color: var(--primary-light);
 }
 
-.dateInput.error {
+.timeInput.error {
   border-color: var(--danger-red);
 }
 
-.dateInput.error:focus {
+.timeInput.error:focus {
   border-color: var(--danger-red);
   box-shadow: 0 0 0 2px var(--danger-light);
 }
 
-.dateInput.disabled {
+.timeInput.disabled {
   background-color: var(--grey-100);
   cursor: not-allowed;
   opacity: 0.6;
   color: var(--grey-600);
 }
 
-.dateInput::placeholder {
+.timeInput::placeholder {
   color: var(--grey-600);
 }
-
 
 .errorMessage {
   color: var(--danger-red);

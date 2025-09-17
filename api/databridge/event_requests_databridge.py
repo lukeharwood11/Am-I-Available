@@ -3,6 +3,7 @@ from supabase import Client
 from pydantic import BaseModel
 from datetime import datetime
 import logging
+import json
 
 logger = logging.getLogger(__name__)
 
@@ -13,8 +14,8 @@ class DBEventRequestResponse(BaseModel):
     title: str | None
     location: str | None
     description: str | None
-    start_date: datetime
-    end_date: datetime
+    start_date: dict  # JSONB field
+    end_date: dict    # JSONB field
     importance_level: int
     status: str
     notes: str | None
@@ -29,8 +30,8 @@ class DBEventRequestWithApprovalsResponse(BaseModel):
     title: str | None
     location: str | None
     description: str | None
-    start_date: datetime
-    end_date: datetime
+    start_date: dict  # JSONB field
+    end_date: dict    # JSONB field
     importance_level: int
     status: str
     notes: str | None
@@ -55,8 +56,8 @@ class EventRequestsDatabridge:
         title: str | None,
         location: str | None,
         description: str | None,
-        start_date: datetime,
-        end_date: datetime,
+        start_date: dict,
+        end_date: dict,
         importance_level: int,
         notes: str | None,
         created_by: str,
@@ -68,8 +69,8 @@ class EventRequestsDatabridge:
                 "title": title,
                 "location": location,
                 "description": description,
-                "start_date": start_date.isoformat(),
-                "end_date": end_date.isoformat(),
+                "start_date": start_date,
+                "end_date": end_date,
                 "importance_level": importance_level,
                 "status": "pending",
                 "notes": notes,
@@ -111,8 +112,8 @@ class EventRequestsDatabridge:
         user_id: str,
         status: str | None = None,
         importance_level: int | None = None,
-        start_date_from: datetime | None = None,
-        start_date_to: datetime | None = None,
+        start_date_from: dict | None = None,
+        start_date_to: dict | None = None,
     ) -> list[DBEventRequestResponse]:
         """Get all event requests created by a user with optional filters"""
         try:
@@ -122,12 +123,10 @@ class EventRequestsDatabridge:
                 query = query.eq("status", status)
             if importance_level:
                 query = query.eq("importance_level", importance_level)
-            if start_date_from:
-                query = query.gte("start_date", start_date_from.isoformat())
-            if start_date_to:
-                query = query.lte("start_date", start_date_to.isoformat())
+            # Note: Date filtering on JSONB fields would require more complex queries
+            # For now, we'll filter in the application layer if needed
 
-            response = query.order("start_date").execute()
+            response = query.order("created_at", desc=True).execute()
             if not response.data:
                 return []
 
@@ -141,8 +140,8 @@ class EventRequestsDatabridge:
         *,
         status: str | None = None,
         importance_level: int | None = None,
-        start_date_from: datetime | None = None,
-        start_date_to: datetime | None = None,
+        start_date_from: dict | None = None,
+        start_date_to: dict | None = None,
         created_by: str | None = None,
     ) -> list[DBEventRequestResponse]:
         """Get all event requests with optional filters"""
@@ -153,14 +152,12 @@ class EventRequestsDatabridge:
                 query = query.eq("status", status)
             if importance_level:
                 query = query.eq("importance_level", importance_level)
-            if start_date_from:
-                query = query.gte("start_date", start_date_from.isoformat())
-            if start_date_to:
-                query = query.lte("start_date", start_date_to.isoformat())
             if created_by:
                 query = query.eq("created_by", created_by)
+            # Note: Date filtering on JSONB fields would require more complex queries
+            # For now, we'll filter in the application layer if needed
 
-            response = query.order("start_date").execute()
+            response = query.order("created_at", desc=True).execute()
             if not response.data:
                 return []
 
@@ -177,8 +174,8 @@ class EventRequestsDatabridge:
         title: str | None = None,
         location: str | None = None,
         description: str | None = None,
-        start_date: datetime | None = None,
-        end_date: datetime | None = None,
+        start_date: dict | None = None,
+        end_date: dict | None = None,
         importance_level: int | None = None,
         status: str | None = None,
         notes: str | None = None,
@@ -196,9 +193,9 @@ class EventRequestsDatabridge:
             if description is not None:
                 update_data["description"] = description
             if start_date is not None:
-                update_data["start_date"] = start_date.isoformat()
+                update_data["start_date"] = start_date
             if end_date is not None:
-                update_data["end_date"] = end_date.isoformat()
+                update_data["end_date"] = end_date
             if importance_level is not None:
                 update_data["importance_level"] = importance_level
             if status is not None:
