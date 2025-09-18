@@ -31,6 +31,26 @@ resource "aws_api_gateway_integration" "integration" {
   uri                     = aws_lambda_function.api.invoke_arn
 }
 
+resource "aws_api_gateway_deployment" "api" {
+  rest_api_id = aws_api_gateway_rest_api.api.id
+  triggers = {
+    redeployment = sha1(jsonencode([
+      aws_api_gateway_rest_api.api.body,
+      aws_api_gateway_resource.proxy.id,
+      aws_api_gateway_method.proxy.http_method
+    ]))
+  }
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_api_gateway_stage" "api" {
+  rest_api_id   = aws_api_gateway_rest_api.api.id
+  stage_name    = "prod"
+  deployment_id = aws_api_gateway_deployment.api.id
+}
+
 # Lambda
 resource "aws_lambda_permission" "apigw_lambda" {
   statement_id  = "AllowExecutionFromAPIGateway"
@@ -39,13 +59,17 @@ resource "aws_lambda_permission" "apigw_lambda" {
   principal     = "apigateway.amazonaws.com"
 
   # More: http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-control-access-using-iam-policies-to-invoke-api.html
-  source_arn = "arn:aws:execute-api:${local.region}:${local.account_id}:${aws_api_gateway_rest_api.api.id}/*/${aws_api_gateway_method.proxy.http_method}${aws_api_gateway_resource.proxy.path}"
+  source_arn = "arn:aws:execute-api:${local.region}:${local.account_id}:${aws_api_gateway_rest_api.api.id}/*/*"
 }
 
 resource "aws_route53_record" "api" {
   zone_id = data.aws_route53_zone.main.zone_id
   name    = local.api_domain_name
   type    = "A"
-  ttl     = "300"
-  records = [aws_api_gateway_domain_name.api.cloudfront_domain_name]
+
+  alias {
+    name                   = aws_api_gateway_domain_name.api.cloudfront_domain_name
+    zone_id                = aws_api_gateway_domain_name.api.cloudfront_zone_id
+    evaluate_target_health = false
+  }
 }

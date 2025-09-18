@@ -58,6 +58,9 @@ resource "aws_lambda_function" "api" {
   role          = aws_iam_role.lambda_role.arn
   image_uri     = var.api_image_uri
   package_type  = "Image"
+  timeout       = 30  # 30 seconds timeout
+  memory_size   = 512 # 512 MB memory
+
   environment {
     variables = {
       SECRETS_MANAGER_SECRET_NAME = aws_secretsmanager_secret.api_secrets.name
