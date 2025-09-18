@@ -1,7 +1,7 @@
 import styles from './home.page.module.css';
 import Card from '../../components/card/Card';
 import { Button, Text } from '../../components';
-import { MdAdd, MdCheck, MdClose, MdRefresh } from 'react-icons/md';
+import { MdAdd, MdCheck, MdClose } from 'react-icons/md';
 import { CreateRequestModal } from './CreateRequestModal';
 import { useState, useEffect, useCallback } from 'react';
 import { CreateRelationshipModal } from './CreateRelationshipModal';
@@ -19,12 +19,17 @@ import Skeleton from '../../components/skeleton';
 import { CreateEventRequestRequest } from '../../redux/types/event-requests.types';
 import {
   createEventRequestThunk,
-  fetchEventRequestsThunk,
+  fetchEventRequestsWithApprovalsThunk,
 } from '../../redux/thunks/event-requests.thunk';
 
 const HomePage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isRelationshipOpen, setIsRelationshipOpen] = useState(false);
+
+  const eventRequestsWithApprovals = useSelector(
+    (state: RootState) => state.eventRequests.eventRequestsWithApprovals
+  );
+
   const relationships = useSelector(
     (state: RootState) => state.relationships.relationships
   );
@@ -46,7 +51,7 @@ const HomePage = () => {
     dispatch(fetchUserRelationshipsThunk({}));
     dispatch(fetchSentRelationshipRequestsThunk());
     dispatch(fetchReceivedRelationshipRequestsThunk('pending'));
-    dispatch(fetchEventRequestsThunk({}));
+    dispatch(fetchEventRequestsWithApprovalsThunk({}));
   }, [dispatch]);
 
   const handleChangeStatus = useCallback(
@@ -113,7 +118,21 @@ const HomePage = () => {
               New
             </Button>
           </div>
-          <Text variant='caption'>No Requests Found</Text>
+          {eventRequestsWithApprovals.length > 0 && (
+            <div className={styles.requestsList}>
+              {eventRequestsWithApprovals.map(request => (
+                <Card key={request.id} contentClassName={styles.requestCard}>
+                  <Text variant='caption'>{request.title}</Text>
+                  <Pill size='small' variant='outlined'>
+                    {getStatusLabel(request.status)}
+                  </Pill>
+                </Card>
+              ))}
+            </div>
+          )}
+          {!loading && eventRequestsWithApprovals.length === 0 && (
+            <Text variant='caption'>No Requests Found</Text>
+          )}
         </div>
         <div className={styles.requests}>
           <div className={styles.requestsHeader}>
@@ -126,14 +145,6 @@ const HomePage = () => {
                 onClick={() => setIsRelationshipOpen(true)}
               >
                 New
-              </Button>
-              <Button
-                size='small'
-                variant='primary-subtle'
-                leftIcon={<MdRefresh />}
-                onClick={handleRefresh}
-              >
-                Refresh
               </Button>
             </div>
           </div>
@@ -150,9 +161,6 @@ const HomePage = () => {
             ))}
           {relationships.length > 0 && (
             <>
-              <div style={{ marginBottom: '8px' }}>
-                <Text variant='caption'>Your Friends</Text>
-              </div>
               {relationships.map(relationship => (
                 <Card
                   key={relationship.id}
@@ -175,16 +183,7 @@ const HomePage = () => {
         <div className={styles.requests}>
           <div className={styles.requestsHeader}>
             <Text variant='heading'>Relationship Requests</Text>
-            <div className={styles.requestsHeaderButtons}>
-              <Button
-                size='small'
-                variant='primary-subtle'
-                leftIcon={<MdRefresh />}
-                onClick={handleRefresh}
-              >
-                Refresh
-              </Button>
-            </div>
+            <div className={styles.requestsHeaderButtons}></div>
           </div>
           {loading &&
             Array.from({ length: 1 }).map((_, index) => (

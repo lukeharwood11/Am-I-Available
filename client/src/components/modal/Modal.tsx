@@ -11,6 +11,8 @@ interface ModalProps {
   children: React.ReactNode;
   size?: 'small' | 'medium' | 'large';
   showCloseButton?: boolean;
+  header?: React.ReactNode;
+  footer?: React.ReactNode;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -20,6 +22,8 @@ const Modal: React.FC<ModalProps> = ({
   children,
   size = 'medium',
   showCloseButton = true,
+  header,
+  footer,
 }) => {
   if (!isOpen) return null;
 
@@ -43,26 +47,33 @@ const Modal: React.FC<ModalProps> = ({
       tabIndex={-1}
     >
       <div className={`${styles.modal} ${styles[size]}`}>
-        {(title || showCloseButton) && (
+        {(header || title || showCloseButton) && (
           <div className={styles.header}>
-            {title && (
-              <Text variant='heading-small' className={styles.title}>
-                {title}
-              </Text>
-            )}
-            {showCloseButton && (
-              <Button
-                variant='secondary-subtle'
-                size='small'
-                onClick={onClose}
-                leftIcon={<MdClose size={20} />}
-                className={styles.closeButton}
-                aria-label='Close modal'
-              />
+            {header ? (
+              header
+            ) : (
+              <>
+                {title && (
+                  <Text variant='heading-small' className={styles.title}>
+                    {title}
+                  </Text>
+                )}
+                {showCloseButton && (
+                  <Button
+                    variant='secondary-subtle'
+                    size='small'
+                    onClick={onClose}
+                    leftIcon={<MdClose size={20} />}
+                    className={styles.closeButton}
+                    aria-label='Close modal'
+                  />
+                )}
+              </>
             )}
           </div>
         )}
         <div className={styles.content}>{children}</div>
+        {footer && <div className={styles.footer}>{footer}</div>}
       </div>
     </div>
   );

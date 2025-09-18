@@ -20,11 +20,11 @@ import {
 
 /**
  * Serialize EventDateTime to a string for query parameters
- * For now, we'll use the dateTime field if available, otherwise the date field
+ * For now, we'll use the date_time field if available, otherwise the date field
  */
 function serializeEventDateTime(dateTime: EventDateTime): string {
-  if (dateTime.dateTime) {
-    return dateTime.dateTime;
+  if (dateTime.date_time) {
+    return dateTime.date_time;
   }
   if (dateTime.date) {
     return dateTime.date;

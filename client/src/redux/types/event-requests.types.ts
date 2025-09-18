@@ -1,7 +1,5 @@
 import {
   BaseResponse,
-  BaseListResponse,
-  BasePaginatedListResponse,
   BaseCreateRequest,
   BaseUpdateRequest,
   BaseDeleteResponse,
@@ -11,8 +9,8 @@ import {
 // Event DateTime Types (matching Google API format)
 export interface EventDateTime {
   date?: string | null; // Date in YYYY-MM-DD format for all-day events
-  dateTime?: string | null; // ISO datetime string for timed events
-  timeZone?: string | null; // Time zone identifier
+  date_time?: string | null; // ISO datetime string for timed events
+  time_zone?: string | null; // Time zone identifier
 }
 
 // Event Request Data Types
@@ -53,8 +51,8 @@ export interface EventRequestWithApprovalsData {
 
 // Event Request Request Types
 export interface CreateEventRequestRequest extends BaseCreateRequest {
-  google_event_id?: string | null;
   title?: string | null;
+  google_event_id?: string | null;
   location?: string | null;
   description?: string | null;
   start_date: EventDateTime;
@@ -99,15 +97,18 @@ export interface EventRequestWithApprovalsResponse extends BaseResponse {
   event_request: EventRequestWithApprovalsData;
 }
 
-export interface EventRequestsListResponse
-  extends BaseListResponse<EventRequestData> {
+export interface EventRequestsListResponse extends BaseResponse {
   event_requests: EventRequestData[];
-  filters?: Record<string, string | number>;
+  count: number;
+  filters?: Record<string, string | number | EventDateTime>;
 }
 
-export interface EventRequestsWithApprovalsListResponse
-  extends BasePaginatedListResponse<EventRequestWithApprovalsData> {
+export interface EventRequestsWithApprovalsListResponse extends BaseResponse {
   event_requests: EventRequestWithApprovalsData[];
+  count: number;
+  total_count: number;
+  skip: number;
+  take: number;
   filters?: Record<string, string | number>;
 }
 

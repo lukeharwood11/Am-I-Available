@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "format": "prettier --write \"**/*.{ts,tsx,css}\""
+    "format": "prettier --write \"**/*.{ts,tsx,css}\"",
+    "lint": "tsc --noEmit"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^4.0.0",
