@@ -13,6 +13,7 @@ Am I Available?
 - [x] Ability to create an event request
 - [ ] Ability to request dates with your partner to request your availability
 - [ ] Ability to view all requests / approve them
+- [ ] Ability to view single request with additional details (single page)
 - [ ] Ability to specify default users for event approvals
 
 ### Drafts
