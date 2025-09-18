@@ -54,6 +54,13 @@ jobs:
         env:
           TF_VAR_api_image_uri: ${{ vars.ECR_REGISTRY }}/${{ vars.ECR_REPOSITORY }}:${{ github.sha }}
           TF_VAR_admin_openai_api_key: ${{ secrets.ADMIN_OPENAI_API_KEY }}
+          TF_VAR_google_client_id: ${{ vars.GOOGLE_CLIENT_ID }}
+          TF_VAR_google_client_secret: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          TF_VAR_supabase_anon_key: ${{ vars.SUPABASE_ANON_KEY }}
+          TF_VAR_supabase_service_role_key: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          TF_VAR_supabase_url: ${{ vars.SUPABASE_URL }}
+          TF_VAR_database_username: ${{ secrets.DATABASE_USERNAME }}
+          TF_VAR_database_password: ${{ secrets.DATABASE_PASSWORD }}
       - name: Show Plan Output
         run: |
           cd terraform

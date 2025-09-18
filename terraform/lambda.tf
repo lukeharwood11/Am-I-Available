@@ -49,7 +49,11 @@ resource "aws_secretsmanager_secret" "api_secrets" {
 resource "aws_secretsmanager_secret_version" "api_secrets_version" {
   secret_id = aws_secretsmanager_secret.api_secrets.id
   secret_string = jsonencode({
-    "OPENAI_API_KEY" = openai_project_service_account.amia.api_key
+    "OPENAI__API_KEY" = openai_project_service_account.amia.api_key
+    "GOOGLE__CLIENT_SECRET" = var.google_client_secret
+    "SUPABASE__SERVICE_ROLE_KEY" = var.supabase_service_role_key
+    "DATABASE__USERNAME" = var.database_username
+    "DATABASE__PASSWORD" = var.database_password
   })
 }
 
@@ -65,6 +69,9 @@ resource "aws_lambda_function" "api" {
     variables = {
       SECRETS_MANAGER_SECRET_NAME = aws_secretsmanager_secret.api_secrets.name
       ENVIRONMENT                 = "prod"
+      GOOGLE__CLIENT_ID           = var.google_client_id
+      SUPABASE__ANON_KEY          = var.supabase_anon_key
+      SUPABASE__URL               = var.supabase_url
     }
   }
 }

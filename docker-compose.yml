@@ -1,0 +1,12 @@
+services:
+  api:
+    image: amia/api:latest
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    ports:
+      - 9000:8080
+    env_file:
+      - .env
+    volumes:
+      - ~/.aws:/root/.aws:ro

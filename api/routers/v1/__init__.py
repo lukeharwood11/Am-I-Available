@@ -8,6 +8,7 @@ from api.routers.v1 import (
     relationship_requests,
     event_requests,
     emails,
+    diagnostics
 )
 
 protected_router = APIRouter(
@@ -22,6 +23,7 @@ protected_router.include_router(event_requests.router)
 protected_router.include_router(emails.router)
 
 unprotected_router = APIRouter()
+unprotected_router.include_router(diagnostics.router)
 
 # Create v1 API router
 v1_router = APIRouter(prefix="/api/v1")
