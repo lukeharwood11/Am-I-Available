@@ -88,6 +88,34 @@ class EventRequestsService:
             requested_approvals=db_request.requested_approvals,
             completed_count=db_request.completed_count,
         )
+    
+    async def create_event_request_with_approvals(
+        self,
+        *,
+        google_event_id: str | None,
+        title: str | None,
+        location: str | None,
+        description: str | None,
+        start_date: EventDateTime,
+        end_date: EventDateTime,
+        importance_level: int,
+        notes: str | None,
+        created_by: str,
+        approvers: list[str],
+    ) -> EventRequestCreateResponse:
+        """Create a new event request with approvals"""
+        # Create the event request
+        db_request = await self.databridge.create_event_request(
+            google_event_id=google_event_id,
+            title=title,
+            location=location,
+            description=description,
+            start_date=self._event_datetime_to_dict(start_date),
+            end_date=self._event_datetime_to_dict(end_date),
+            importance_level=importance_level,
+            notes=notes,
+            created_by=created_by,
+        )
 
     async def create_event_request(
         self,

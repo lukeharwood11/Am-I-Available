@@ -6,16 +6,18 @@ from ..databridge.event_request_approvals_databridge import (
 from ..models.v1.event_request_approvals import (
     EventRequestApprovalData,
     EventRequestApprovalCreateResponse,
+    EventRequestApprovalsBatchCreateResponse,
     EventRequestApprovalUpdateResponse,
     EventRequestApprovalDeleteResponse,
     EventRequestApprovalsListResponse,
     EventRequestApprovalResponse,
 )
+import api.models.v1.event_request_approvals as era_models
 
 
 class EventRequestApprovalsService:
     def __init__(self, databridge: EventRequestApprovalsDatabridge):
-        self.databridge = databridge
+        self.databridge: EventRequestApprovalsDatabridge = databridge
 
     def _convert_db_to_model(
         self, db_approval: DBEventRequestApprovalResponse
@@ -31,6 +33,22 @@ class EventRequestApprovalsService:
             responded_at=db_approval.responded_at,
             created_at=db_approval.created_at,
             updated_at=db_approval.updated_at,
+        )
+
+    async def create_event_request_approvals_batch(
+        self, *, event_request_id: str, approvals_request: list[era_models.EventRequestApprovalUser]
+    ) -> EventRequestApprovalsBatchCreateResponse:
+        """Create a batch of event request approvals"""
+        db_approvals = await self.databridge.create_event_request_approvals_batch(
+            event_request_id=event_request_id, approvals_request=approvals_request
+        )
+        
+        # Convert database responses to API models
+        approval_data_list = [self._convert_db_to_model(approval) for approval in db_approvals]
+        
+        return EventRequestApprovalsBatchCreateResponse(
+            event_request_approvals=approval_data_list,
+            count=len(approval_data_list)
         )
 
     async def create_event_request_approval(

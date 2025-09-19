@@ -129,6 +129,16 @@ export interface EventRequestsState {
   currentEventRequest: EventRequestData | null;
   currentEventRequestWithApprovals: EventRequestWithApprovalsData | null;
   pagination: PaginationData;
-  loading: boolean;
-  error: string | null;
+  loading: {
+    eventRequests: boolean;
+    eventRequestsWithApprovals: boolean;
+    currentEventRequest: boolean;
+    currentEventRequestWithApprovals: boolean;
+  };
+  error: {
+    eventRequests: string | null;
+    eventRequestsWithApprovals: string | null;
+    currentEventRequest: string | null;
+    currentEventRequestWithApprovals: string | null;
+  };
 }

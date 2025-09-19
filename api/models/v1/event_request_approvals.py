@@ -2,6 +2,14 @@ from pydantic import BaseModel, Field
 from datetime import datetime
 from typing import Literal
 
+# Util models
+
+class EventRequestApprovalUser(BaseModel):
+    """Request model for creating an event request approval for a user"""
+    user_id: str = Field(description="UUID of the user who needs to approve")
+    required: bool = Field(False, description="Whether this approval is required")
+
+
 
 # ============================================================================
 # REQUEST MODELS
@@ -26,7 +34,6 @@ class UpdateEventRequestApprovalRequest(BaseModel):
     response_notes: str | None = Field(
         None, description="Optional notes from the approver"
     )
-
 
 class GetEventRequestApprovalsRequest(BaseModel):
     """Request model for getting event request approvals"""
@@ -94,6 +101,15 @@ class EventRequestApprovalCreateResponse(BaseModel):
     status: str = "success"
     event_request_approval: EventRequestApprovalData
     message: str = "Event request approval created successfully"
+
+
+class EventRequestApprovalsBatchCreateResponse(BaseModel):
+    """Response model for batch event request approval creation"""
+
+    status: str = "success"
+    event_request_approvals: list[EventRequestApprovalData]
+    count: int
+    message: str = "Event request approvals created successfully"
 
 
 class EventRequestApprovalUpdateResponse(BaseModel):

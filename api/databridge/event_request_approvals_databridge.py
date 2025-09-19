@@ -2,7 +2,7 @@ from ..settings.database import get_supabase_admin_client
 from supabase import Client
 from pydantic import BaseModel
 from datetime import datetime
-
+import api.models.v1.event_request_approvals as era_models
 
 class DBEventRequestApprovalResponse(BaseModel):
     id: str
@@ -20,6 +20,27 @@ class EventRequestApprovalsDatabridge:
     def __init__(self, supabase: Client):
         self.supabase = supabase
         self.event_request_approvals = self.supabase.table("event_request_approvals")
+    
+    async def create_event_request_approvals_batch(
+        self, *, event_request_id: str, approvals_request: list[era_models.EventRequestApprovalUser]
+    ) -> list[DBEventRequestApprovalResponse]:
+        """Create a batch of event request approvals"""
+        try:
+            # Add event_request_id and status to each approval record
+            data = []
+            for approval in approvals_request:
+                approval_data = approval.model_dump()
+                approval_data["event_request_id"] = event_request_id
+                approval_data["status"] = "pending"
+                data.append(approval_data)
+            
+            response = self.event_request_approvals.insert(data).execute()
+            if not response.data:
+                return []
+            return [DBEventRequestApprovalResponse(**item) for item in response.data]
+        except Exception as e:
+            print(f"Error creating event request approvals batch: {e}")
+            return []
 
     async def create_event_request_approval(
         self, *, event_request_id: str, user_id: str, required: bool = False

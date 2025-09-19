@@ -1,16 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
-from typing import Dict, Any
 from datetime import datetime
 
 from ...settings.auth import get_current_user_id, get_current_user
-from ...dependencies import get_event_requests_service
+from ...dependencies import get_event_requests_service, get_event_request_approvals_service
 from ...services.event_requests_service import EventRequestsService
+from ...services.event_request_approvals_service import EventRequestApprovalsService
 from ...models.v1.event_requests import (
     CreateEventRequestRequest,
     UpdateEventRequestRequest,
-    GetEventRequestsRequest,
-    ListEventRequestsWithApprovalsRequest,
-    DeleteEventRequestRequest,
     EventRequestResponse,
     EventRequestsListResponse,
     EventRequestsWithApprovalsListResponse,
@@ -18,7 +15,9 @@ from ...models.v1.event_requests import (
     EventRequestUpdateResponse,
     EventRequestDeleteResponse,
 )
+import logging
 
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/event-requests", tags=["Event Requests"])
 
@@ -28,6 +27,7 @@ async def create_event_request(
     request: CreateEventRequestRequest,
     user_id: str = Depends(get_current_user_id),
     service: EventRequestsService = Depends(get_event_requests_service),
+    event_request_approvals_service: EventRequestApprovalsService = Depends(get_event_request_approvals_service),
 ) -> EventRequestCreateResponse:
     """
     Create a new event request
@@ -35,7 +35,7 @@ async def create_event_request(
     Returns:
         Created event request data
     """
-    return await service.create_event_request(
+    _event_request = await service.create_event_request(
         google_event_id=request.google_event_id,
         title=request.title,
         location=request.location,
@@ -46,7 +46,20 @@ async def create_event_request(
         notes=request.notes,
         created_by=user_id,
     )
-
+    try:
+        if request.approvers:
+            _approvers = await event_request_approvals_service.create_event_request_approvals_batch(
+                event_request_id=_event_request.event_request.id,
+                approvals_request=request.approvers,
+            )
+    except Exception as e:
+        # rollback the event request
+        await service.delete_event_request(
+            event_request_id=_event_request.event_request.id,
+            user_id=user_id,
+        )
+        logger.error(f"Error creating event request approvals: {e}")
+    return _event_request
 
 @router.get("", response_model=EventRequestsListResponse)
 async def get_user_event_requests(

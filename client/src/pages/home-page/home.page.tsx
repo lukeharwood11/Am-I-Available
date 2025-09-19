@@ -37,7 +37,7 @@ const HomePage = () => {
     (state: RootState) => state.relationships.relationshipRequests
   );
   const isLoading = useSelector(
-    (state: RootState) => state.relationships.loading
+    (state: RootState) => state.relationships.loading.relationships || state.relationships.loading.relationshipRequests || state.relationships.loading.currentRelationship || state.relationships.loading.currentRelationshipRequest || state.eventRequests.loading.eventRequestsWithApprovals
   );
 
   const loading =
@@ -196,7 +196,7 @@ const HomePage = () => {
               />
             ))}
           {relationshipRequests.received.length > 0 &&
-            relationshipRequests.received.map(request => (
+            relationshipRequests.received.map((request) => (
               <Card key={request.id} contentClassName={styles.requestCard}>
                 {request.requester.full_name ? (
                   <Text variant='caption'>

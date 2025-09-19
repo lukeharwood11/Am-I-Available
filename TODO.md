@@ -3,6 +3,12 @@
 Am I Available?
 
 ## Feature List
+
+### QOL 
+- [x] Fix styling of loading cards
+- [ ] Change slices to use loading state for all components
+- [ ] Health check while loading so you have a loading screen while the API heats up initially
+
 ### Friends / Family
 - [x] Ability to add "Friends/Relationships" by email
 - [x] Ability to approve relationships / which create a relationship
@@ -11,7 +17,7 @@ Am I Available?
 
 ### Date Requests
 - [x] Ability to create an event request
-- [ ] Ability to request dates with your partner to request your availability
+- [ ] Ability to request dates with your partner to request your availability (attach an approver to event submissions)
 - [ ] Ability to view all requests / approve them
 - [ ] Ability to view single request with additional details (single page)
 - [ ] Ability to specify default users for event approvals

@@ -24,19 +24,29 @@ const initialState: EventRequestsState = {
     take: 10,
     total_count: 0,
   },
-  loading: false,
-  error: null,
+  loading: {
+    eventRequests: false,
+    eventRequestsWithApprovals: false,
+    currentEventRequest: false,
+    currentEventRequestWithApprovals: false,
+  },
+  error: {
+    eventRequests: null,
+    eventRequestsWithApprovals: null,
+    currentEventRequest: null,
+    currentEventRequestWithApprovals: null,
+  },
 };
 
 const eventRequestsSlice = createSlice({
   name: 'eventRequests',
   initialState,
   reducers: {
-    setLoading: (state, action: PayloadAction<boolean>) => {
-      state.loading = action.payload;
+    setLoading: (state, action: PayloadAction<{ key: keyof EventRequestsState['loading']; value: boolean }>) => {
+      state.loading[action.payload.key] = action.payload.value;
     },
-    setError: (state, action: PayloadAction<string | null>) => {
-      state.error = action.payload;
+    setError: (state, action: PayloadAction<{ key: keyof EventRequestsState['error']; value: string | null }>) => {
+      state.error[action.payload.key] = action.payload.value;
     },
     setEventRequests: (state, action: PayloadAction<EventRequestData[]>) => {
       state.eventRequests = action.payload;
@@ -65,89 +75,97 @@ const eventRequestsSlice = createSlice({
     ) => {
       state.currentEventRequestWithApprovals = action.payload;
     },
-    clearError: state => {
-      state.error = null;
+    clearError: (state, action: PayloadAction<keyof EventRequestsState['error']>) => {
+      state.error[action.payload] = null;
+    },
+    clearAllErrors: state => {
+      state.error = {
+        eventRequests: null,
+        eventRequestsWithApprovals: null,
+        currentEventRequest: null,
+        currentEventRequestWithApprovals: null,
+      };
     },
   },
   extraReducers: builder => {
     builder
       // Generic pending handlers
       .addCase(createEventRequestThunk.pending, state => {
-        state.loading = true;
-        state.error = null;
+        state.loading.eventRequests = true;
+        state.error.eventRequests = null;
       })
       .addCase(fetchEventRequestsThunk.pending, state => {
-        state.loading = true;
-        state.error = null;
+        state.loading.eventRequests = true;
+        state.error.eventRequests = null;
       })
       .addCase(fetchEventRequestsWithApprovalsThunk.pending, state => {
-        state.loading = true;
-        state.error = null;
+        state.loading.eventRequestsWithApprovals = true;
+        state.error.eventRequestsWithApprovals = null;
       })
       .addCase(fetchEventRequestThunk.pending, state => {
-        state.loading = true;
-        state.error = null;
+        state.loading.currentEventRequest = true;
+        state.error.currentEventRequest = null;
       })
       .addCase(fetchEventRequestWithApprovalsThunk.pending, state => {
-        state.loading = true;
-        state.error = null;
+        state.loading.currentEventRequestWithApprovals = true;
+        state.error.currentEventRequestWithApprovals = null;
       })
       .addCase(updateEventRequestThunk.pending, state => {
-        state.loading = true;
-        state.error = null;
+        state.loading.eventRequests = true;
+        state.error.eventRequests = null;
       })
       .addCase(deleteEventRequestThunk.pending, state => {
-        state.loading = true;
-        state.error = null;
+        state.loading.eventRequests = true;
+        state.error.eventRequests = null;
       })
       // Generic rejected handlers
       .addCase(createEventRequestThunk.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
+        state.loading.eventRequests = false;
+        state.error.eventRequests = action.payload as string;
       })
       .addCase(fetchEventRequestsThunk.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
+        state.loading.eventRequests = false;
+        state.error.eventRequests = action.payload as string;
       })
       .addCase(
         fetchEventRequestsWithApprovalsThunk.rejected,
         (state, action) => {
-          state.loading = false;
-          state.error = action.payload as string;
+          state.loading.eventRequestsWithApprovals = false;
+          state.error.eventRequestsWithApprovals = action.payload as string;
         }
       )
       .addCase(fetchEventRequestThunk.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
+        state.loading.currentEventRequest = false;
+        state.error.currentEventRequest = action.payload as string;
       })
       .addCase(
         fetchEventRequestWithApprovalsThunk.rejected,
         (state, action) => {
-          state.loading = false;
-          state.error = action.payload as string;
+          state.loading.currentEventRequestWithApprovals = false;
+          state.error.currentEventRequestWithApprovals = action.payload as string;
         }
       )
       .addCase(updateEventRequestThunk.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
+        state.loading.eventRequests = false;
+        state.error.eventRequests = action.payload as string;
       })
       .addCase(deleteEventRequestThunk.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
+        state.loading.eventRequests = false;
+        state.error.eventRequests = action.payload as string;
       })
       // Fulfilled handlers with data updates
       .addCase(createEventRequestThunk.fulfilled, (state, action) => {
-        state.loading = false;
+        state.loading.eventRequests = false;
         state.eventRequests.push(action.payload.event_request);
       })
       .addCase(fetchEventRequestsThunk.fulfilled, (state, action) => {
-        state.loading = false;
+        state.loading.eventRequests = false;
         state.eventRequests = action.payload.event_requests;
       })
       .addCase(
         fetchEventRequestsWithApprovalsThunk.fulfilled,
         (state, action) => {
-          state.loading = false;
+          state.loading.eventRequestsWithApprovals = false;
           state.eventRequestsWithApprovals = action.payload.event_requests;
           state.pagination = {
             skip: action.payload.skip,
@@ -157,18 +175,18 @@ const eventRequestsSlice = createSlice({
         }
       )
       .addCase(fetchEventRequestThunk.fulfilled, (state, action) => {
-        state.loading = false;
+        state.loading.currentEventRequest = false;
         state.currentEventRequest = action.payload.event_request;
       })
       .addCase(
         fetchEventRequestWithApprovalsThunk.fulfilled,
         (state, action) => {
-          state.loading = false;
+          state.loading.currentEventRequestWithApprovals = false;
           state.currentEventRequestWithApprovals = action.payload.event_request;
         }
       )
       .addCase(updateEventRequestThunk.fulfilled, (state, action) => {
-        state.loading = false;
+        state.loading.eventRequests = false;
         const updatedRequest = action.payload.event_request;
 
         // Update in eventRequests array
@@ -206,7 +224,7 @@ const eventRequestsSlice = createSlice({
         }
       })
       .addCase(deleteEventRequestThunk.fulfilled, (state, action) => {
-        state.loading = false;
+        state.loading.eventRequests = false;
         const requestId = action.meta.arg;
 
         // Remove from eventRequests array

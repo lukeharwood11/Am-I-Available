@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field
 from datetime import datetime
 from typing import Literal
+import api.models.v1.event_request_approvals as era_models
 
 
 # ============================================================================
@@ -40,6 +41,7 @@ class CreateEventRequestRequest(BaseModel):
         1, ge=1, le=5, description="Importance level from 1 (low) to 5 (critical)"
     )
     notes: str | None = Field(None, description="Additional notes for the event")
+    approvers: list[era_models.EventRequestApprovalUser] | None = Field(default_factory=list, description="List of user IDs that are approvers")
 
 
 class UpdateEventRequestRequest(BaseModel):
