@@ -4,7 +4,6 @@ import {
   MdPerson,
   MdMenu,
   MdClose,
-  MdSettings,
 } from 'react-icons/md';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { supabase } from '../../lib/supabaseClient';
@@ -30,11 +29,6 @@ const NavBar: React.FC<NavBarProps> = ({ name }) => {
 
   const handleProfileClick = () => {
     navigate('/profile');
-    setIsMobileMenuOpen(false);
-  };
-
-  const handleSettingsClick = () => {
-    navigate('/settings');
     setIsMobileMenuOpen(false);
   };
 
@@ -99,7 +93,6 @@ const NavBar: React.FC<NavBarProps> = ({ name }) => {
           <Profile
             name={name}
             onProfile={handleProfileClick}
-            onSettings={handleSettingsClick}
             onLogout={handleSignOut}
           />
         </div>
@@ -140,17 +133,6 @@ const NavBar: React.FC<NavBarProps> = ({ name }) => {
                   className={styles.mobileProfileButton}
                 >
                   Profile
-                </Button>
-              </motion.div>
-              <motion.div variants={menuItemVariants}>
-                <Button
-                  variant='secondary-subtle'
-                  size='medium'
-                  onClick={handleSettingsClick}
-                  leftIcon={<MdSettings size={24} />}
-                  className={styles.mobileSettingsButton}
-                >
-                  Settings
                 </Button>
               </motion.div>
               <motion.div variants={menuItemVariants}>

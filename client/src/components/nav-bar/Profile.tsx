@@ -19,7 +19,6 @@ interface ProfileProps {
 const Profile: React.FC<ProfileProps> = ({
   name,
   onProfile,
-  onSettings,
   onLogout,
   className,
 }) => {
@@ -43,11 +42,6 @@ const Profile: React.FC<ProfileProps> = ({
         <MenuItem leftIcon={<MdPerson size={20} />} onClick={onProfile}>
           Profile
         </MenuItem>
-
-        <MenuItem leftIcon={<MdSettings size={20} />} onClick={onSettings}>
-          Settings
-        </MenuItem>
-
         <MenuDivider />
 
         <MenuItem

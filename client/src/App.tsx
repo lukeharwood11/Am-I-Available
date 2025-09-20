@@ -12,10 +12,12 @@ import EditRequestPage from './pages/requests-page/edit-request.page';
 import AuthWrapper from './AuthWrapper';
 import Layout from './components/layout/Layout';
 import LandingPage from './pages/landing-page/landing.page';
+import ProfilePage from './pages/profile-page/profile.page';
 
 export const routes = {
   landing: '/',
   home: '/dashboard',
+  profile: '/profile',
   requests: {
     all: '/requests',
     new: '/requests/new',
@@ -42,6 +44,7 @@ const App: React.FC = () => {
               <Route path={routes.requests.new} element={<CreateRequestPage />} />
               <Route path={routes.requests.by_id} element={<RequestDetailPage />} />
               <Route path={routes.requests.edit} element={<EditRequestPage />} />
+              <Route path={routes.profile} element={<ProfilePage />} />
             </Route>
           </Route>
           <Route path={''} element={<Layout />}>

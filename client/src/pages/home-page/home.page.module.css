@@ -1,62 +1,39 @@
-.homePage {
+.dashboard {
+  padding: 20px;
+  background: linear-gradient(135deg, var(--primary-bg) 0%, var(--secondary-bg) 100%);
+  height: 100%;
   display: flex;
   justify-content: center;
   flex: 1;
-  padding: 2rem;
-  background: linear-gradient(
-    135deg,
-    var(--primary-bg) 0%,
-    var(--secondary-bg) 100%
-  );
 }
 
-.requestsHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.mainContent {
+  display: grid;
+  width: min(1200px, 100%);
+  grid-template-columns: 1fr 400px;
+  gap: 24px;
+  height: 100%;
+  align-content: start;
 }
 
-.requestsHeaderButtons {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.centerContainer {
-  width: min(100%, 900px);
+.leftColumn {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 24px;
 }
 
-.requests {
+.rightColumn {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 24px;
 }
 
-.nlpContainer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  width: 100%;
-  margin-bottom: 2rem;
-  box-sizing: border-box;
-}
-
-.nlpInput {
-  width: 100% !important;
-}
-
-.requestCard {
-  display: flex;
-  flex-direction: row !important;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-}
-
-.requestCardButtons {
-  display: flex;
-  gap: 0.5rem;
+@media (max-width: 1200px) {
+  .mainContent {
+    grid-template-columns: 1fr;
+  }
+  
+  .dashboard {
+    padding: 16px;
+  }
 }

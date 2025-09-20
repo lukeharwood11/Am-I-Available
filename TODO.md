@@ -18,6 +18,10 @@ Am I Available?
 - [ ] Create Terms of Service
 - [ ] Create Cookie Policy
 
+### Settings / Settings
+- [ ] Ability to view profile
+- [ ] Ability to specify natural language preferences
+
 ### Friends / Family
 - [x] Ability to add "Friends/Relationships" by email
 - [x] Ability to approve relationships / which create a relationship
@@ -26,6 +30,7 @@ Am I Available?
 
 ### Date Requests
 - [x] Ability to create an event request
+- [ ] Ability to edit event requets
 - [ ] Ability to request dates with your partner to request your availability (attach an approver to event submissions)
 - [ ] Ability to view all requests / approve them
 - [ ] Ability to view single request with additional details (single page)

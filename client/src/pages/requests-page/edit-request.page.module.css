@@ -1,11 +1,9 @@
 .editRequestPage {
-  max-width: 800px;
-  margin: 0 auto;
   padding: 2rem;
 }
 
 .pageHeader {
-  margin-bottom: 2rem;
+  margin-bottom: .5rem;
 }
 
 .pageHeader h1 {
