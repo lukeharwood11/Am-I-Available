@@ -6,6 +6,7 @@ Am I Available?
 
 ### QOL 
 - [x] Fix styling of loading cards
+- [ ] Create a Landing/Marketing page
 - [ ] Change slices to use loading state for all components
 - [ ] Health check while loading so you have a loading screen while the API heats up initially
 

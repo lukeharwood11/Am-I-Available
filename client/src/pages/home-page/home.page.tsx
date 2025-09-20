@@ -2,7 +2,6 @@ import styles from './home.page.module.css';
 import Card from '../../components/card/Card';
 import { Button, Text } from '../../components';
 import { MdAdd, MdCheck, MdClose } from 'react-icons/md';
-import { CreateRequestModal } from './CreateRequestModal';
 import { useState, useEffect, useCallback } from 'react';
 import { CreateRelationshipModal } from './CreateRelationshipModal';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,15 +15,12 @@ import {
 } from '../../redux/thunks/relationship-requests.thunk';
 import Pill from '../../components/pill';
 import Skeleton from '../../components/skeleton';
-import { CreateEventRequestRequest } from '../../redux/types/event-requests.types';
-import {
-  createEventRequestThunk,
-  fetchEventRequestsWithApprovalsThunk,
-} from '../../redux/thunks/event-requests.thunk';
+import { fetchEventRequestsWithApprovalsThunk } from '../../redux/thunks/event-requests.thunk';
+import { useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const [isRelationshipOpen, setIsRelationshipOpen] = useState(false);
+  const navigate = useNavigate();
 
   const eventRequestsWithApprovals = useSelector(
     (state: RootState) => state.eventRequests.eventRequestsWithApprovals
@@ -95,13 +91,9 @@ const HomePage = () => {
     return 'secondary';
   };
 
-  const handleRequestCreated = useCallback(
-    async (request: CreateEventRequestRequest) => {
-      await dispatch(createEventRequestThunk(request));
-      handleRefresh();
-    },
-    [handleRefresh, dispatch]
-  );
+  const handleCreateRequest = useCallback(() => {
+    navigate('/requests/new');
+  }, [navigate]);
 
   return (
     <div className={styles.homePage}>
@@ -109,14 +101,23 @@ const HomePage = () => {
         <div className={styles.requests}>
           <div className={styles.requestsHeader}>
             <Text variant='heading'>Event Requests</Text>
-            <Button
-              size='small'
-              variant='primary-subtle'
-              leftIcon={<MdAdd />}
-              onClick={() => setIsOpen(true)}
-            >
-              New
-            </Button>
+            <div className={styles.requestsHeaderButtons}>
+              <Button
+                size='small'
+                variant='secondary-subtle'
+                onClick={() => navigate('/requests')}
+              >
+                View All
+              </Button>
+              <Button
+                size='small'
+                variant='primary-subtle'
+                leftIcon={<MdAdd />}
+                onClick={handleCreateRequest}
+              >
+                New
+              </Button>
+            </div>
           </div>
           {eventRequestsWithApprovals.length > 0 && (
             <div className={styles.requestsList}>
@@ -254,11 +255,6 @@ const HomePage = () => {
                     <Button variant='primary-subtle' leftIcon={<MdSend />} onClick={() => {}}/>
                 </div> */}
       </div>
-      <CreateRequestModal
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        onRequestCreated={handleRequestCreated}
-      />
       <CreateRelationshipModal
         isOpen={isRelationshipOpen}
         onClose={() => setIsRelationshipOpen(false)}

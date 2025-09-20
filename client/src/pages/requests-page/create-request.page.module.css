@@ -1,0 +1,33 @@
+.createRequestPage {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.pageHeader {
+  margin-bottom: 2rem;
+}
+
+.pageHeader h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--grey-900);
+  margin: 0;
+}
+
+.pageContent {
+  background: var(--white);
+  border-radius: 0.5rem;
+  padding: 2rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+@media (max-width: 768px) {
+  .createRequestPage {
+    padding: 1rem;
+  }
+  
+  .pageContent {
+    padding: 1rem;
+  }
+}

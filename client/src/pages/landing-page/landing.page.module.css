@@ -1,0 +1,8 @@
+.landingPage {
+  min-height: 100vh;
+  background: white;
+}
+
+.landingPage main {
+  overflow-x: hidden;
+}

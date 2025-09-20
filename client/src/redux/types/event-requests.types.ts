@@ -49,6 +49,11 @@ export interface EventRequestWithApprovalsData {
   completed_count: number;
 }
 
+export interface Approver {
+  user_id: string;
+  required: boolean;
+}
+
 // Event Request Request Types
 export interface CreateEventRequestRequest extends BaseCreateRequest {
   title?: string | null;
@@ -59,6 +64,7 @@ export interface CreateEventRequestRequest extends BaseCreateRequest {
   end_date: EventDateTime;
   importance_level: number;
   notes?: string | null;
+  approvers?: Approver[];
 }
 
 export interface UpdateEventRequestRequest extends BaseUpdateRequest {

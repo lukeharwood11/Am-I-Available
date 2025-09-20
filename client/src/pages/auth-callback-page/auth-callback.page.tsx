@@ -52,7 +52,7 @@ const AuthCallbackPage: React.FC = () => {
         }
 
         // Redirect to home page
-        navigate('/', { replace: true });
+        navigate('/dashboard', { replace: true });
       } catch (err) {
         console.error('Auth callback error:', err);
         setError(
