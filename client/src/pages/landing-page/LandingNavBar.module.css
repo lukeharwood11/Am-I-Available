@@ -21,6 +21,45 @@
   gap: 1rem;
 }
 
+.hamburgerButton {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  color: #374151;
+  transition: background-color 0.2s ease;
+}
+
+.hamburgerButton:hover {
+  background-color: #f3f4f6;
+}
+
+.mobileMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: white;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border-top: 1px solid #e5e7eb;
+  z-index: 50;
+}
+
+.mobileMenuContent {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.mobileLoginButton,
+.mobileJoinButton {
+  width: 100%;
+  justify-content: center;
+}
+
 .aboutButton {
   font-weight: 500;
 }
@@ -33,10 +72,15 @@
 @media screen and (max-width: 768px) {
   .headerContent {
     padding: 0.75rem 1rem;
+    position: relative;
   }
 
   .actions {
-    gap: 0.75rem;
+    display: none;
+  }
+
+  .hamburgerButton {
+    display: block;
   }
 }
 
