@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '../../components';
 import AnimatedLogo from '../../components/animated-logo/AnimatedLogo';
 import styles from './LandingNavBar.module.css';
+import { MdAutoAwesome } from 'react-icons/md';
 
 const LandingNavBar: React.FC = () => {
   const navigate = useNavigate();
@@ -13,10 +14,7 @@ const LandingNavBar: React.FC = () => {
 
   const handleAboutClick = () => {
     // Scroll to about section or navigate to about page
-    const aboutSection = document.getElementById('about');
-    if (aboutSection) {
-      aboutSection.scrollIntoView({ behavior: 'smooth' });
-    }
+    navigate('/login');
   };
 
   return (
@@ -29,17 +27,18 @@ const LandingNavBar: React.FC = () => {
             variant="secondary-subtle"
             size="medium"
             onClick={handleAboutClick}
-            className={styles.aboutButton}
+            className={styles.loginButton}
           >
-            About
+            Log In
           </Button>
           <Button
             variant="primary"
             size="medium"
             onClick={handleJoinClick}
             className={styles.joinButton}
+            leftIcon={<MdAutoAwesome size={18} />}
           >
-            Join
+            Start Free Trial
           </Button>
         </div>
       </div>
