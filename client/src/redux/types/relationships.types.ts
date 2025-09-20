@@ -7,10 +7,6 @@ import {
   BaseUpdateRequest,
   BaseDeleteResponse,
 } from './common.types';
-import type {
-  RelationshipRequestData,
-  RelationshipRequestWithUserData,
-} from './relationship-requests.types';
 
 // Relationship Data Types
 export interface RelationshipData {

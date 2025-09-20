@@ -95,20 +95,20 @@
   .requestDetailPage {
     padding: 1rem;
   }
-  
+
   .headerContent {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .headerActions {
     justify-content: stretch;
   }
-  
+
   .dateTimeInfo {
     grid-template-columns: 1fr;
   }
-  
+
   .approverItem {
     flex-direction: column;
     align-items: stretch;

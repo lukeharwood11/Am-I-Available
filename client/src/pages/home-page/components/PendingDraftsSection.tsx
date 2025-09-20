@@ -29,20 +29,18 @@ const PendingDraftsSection = () => {
     <Card contentClassName={styles.card}>
       <div className={styles.sectionTitle}>
         <MdDescription />
-        <Text variant="heading-small">Pending Drafts</Text>
+        <Text variant='heading-small'>Pending Drafts</Text>
       </div>
       <div className={styles.drafts}>
-        {drafts.map((draft) => (
+        {drafts.map(draft => (
           <div key={draft.id} className={styles.draftItem}>
-            <Text variant="body">{draft.title}</Text>
-            <Text variant="caption">{draft.status}</Text>
+            <Text variant='body'>{draft.title}</Text>
+            <Text variant='caption'>{draft.status}</Text>
           </div>
         ))}
-        {
-            drafts.length === 0 && (
-                <Text variant="caption">No pending drafts</Text>
-            )
-        }
+        {drafts.length === 0 && (
+          <Text variant='caption'>No pending drafts</Text>
+        )}
       </div>
     </Card>
   );

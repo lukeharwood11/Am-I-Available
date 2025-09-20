@@ -11,11 +11,14 @@ interface SmartCreateSectionProps {
 const SmartCreateSection = ({ onSmartCreate }: SmartCreateSectionProps) => {
   return (
     <Card contentClassName={styles.smartCreate}>
-      <Text className={styles.title} variant="heading-small">
-        <Pill color="primary" variant="outlined" size="medium">Beta</Pill>
-        Smart Create with AM/A</Text>
+      <Text className={styles.title} variant='heading-small'>
+        <Pill color='primary' variant='outlined' size='medium'>
+          Beta
+        </Pill>
+        Smart Create with AM/A
+      </Text>
       <Button
-        variant="primary"
+        variant='primary'
         leftIcon={<MdAutoAwesome />}
         onClick={onSmartCreate}
         disabled={true}

@@ -80,16 +80,16 @@ const LandingNavBar: React.FC = () => {
 
         <div className={styles.actions}>
           <Button
-            variant="secondary-subtle"
-            size="medium"
+            variant='secondary-subtle'
+            size='medium'
             onClick={handleAboutClick}
             className={styles.loginButton}
           >
             Log In
           </Button>
           <Button
-            variant="primary"
-            size="medium"
+            variant='primary'
+            size='medium'
             onClick={handleJoinClick}
             className={styles.joinButton}
             leftIcon={<MdAutoAwesome size={18} />}

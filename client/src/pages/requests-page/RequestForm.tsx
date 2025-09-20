@@ -51,7 +51,9 @@ export const RequestForm = ({
   const [allDay, setAllDay] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
-  const relationships = useSelector((state: RootState) => state.relationships.relationships);
+  const relationships = useSelector(
+    (state: RootState) => state.relationships.relationships
+  );
   const [formData, setFormData] = useState<CreateRequestFormData>({
     title: '',
     location: '',
@@ -65,7 +67,10 @@ export const RequestForm = ({
     ...initialData,
   });
   const selectedApprover = useMemo(() => {
-    return relationships.find(relationship => relationship.other_user.id === formData.approvers[0]?.user_id);
+    return relationships.find(
+      relationship =>
+        relationship.other_user.id === formData.approvers[0]?.user_id
+    );
   }, [relationships, formData.approvers, formData.approvers[0]?.user_id]);
 
   const handleStartDateChange = useCallback(
@@ -250,9 +255,17 @@ export const RequestForm = ({
   };
 
   const handleApproversChange = (value: string | null, required: boolean) => {
-    setFormData(prev => (
-      { ...prev, approvers: value ? [{ user_id: value, required: required || prev.approvers.length === 0 }] : [] }
-    ));
+    setFormData(prev => ({
+      ...prev,
+      approvers: value
+        ? [
+            {
+              user_id: value,
+              required: required || prev.approvers.length === 0,
+            },
+          ]
+        : [],
+    }));
   };
 
   return (
@@ -386,26 +399,42 @@ export const RequestForm = ({
       </div>
       <div className={styles.formGroup}>
         <label className={styles.label}>Approvers</label>
-        <Select 
+        <Select
           fullWidth
           options={relationships.map(relationship => ({
             value: relationship.other_user.id,
             label: `${relationship.other_user.full_name} (${relationship.other_user.email})`,
           }))}
           value={formData.approvers[0]?.user_id || ''}
-          onChange={value => handleApproversChange(value, formData.approvers[0]?.required || false)}
+          onChange={value =>
+            handleApproversChange(
+              value,
+              formData.approvers[0]?.required || false
+            )
+          }
         />
-        {
-          formData.approvers.length > 0 && selectedApprover && (
-            <>
-              <Text variant='caption'>{selectedApprover?.other_user.full_name} will be notified of this event. {formData.approvers[0]?.required ? '(Required)' : '(Optional)'}</Text>
-              <div className={styles.checkboxRow}>
-                <input type="checkbox" checked={formData.approvers[0]?.required || false} onChange={e => handleApproversChange(formData.approvers[0]?.user_id || null, e.target.checked)} />
-                <label className={styles.checkboxLabel}>Required Approval</label>
-              </div>
-            </>
-          )
-        }
+        {formData.approvers.length > 0 && selectedApprover && (
+          <>
+            <Text variant='caption'>
+              {selectedApprover?.other_user.full_name} will be notified of this
+              event.{' '}
+              {formData.approvers[0]?.required ? '(Required)' : '(Optional)'}
+            </Text>
+            <div className={styles.checkboxRow}>
+              <input
+                type='checkbox'
+                checked={formData.approvers[0]?.required || false}
+                onChange={e =>
+                  handleApproversChange(
+                    formData.approvers[0]?.user_id || null,
+                    e.target.checked
+                  )
+                }
+              />
+              <label className={styles.checkboxLabel}>Required Approval</label>
+            </div>
+          </>
+        )}
       </div>
 
       <div className={styles.formActions}>
@@ -422,7 +451,13 @@ export const RequestForm = ({
           isLoading={isSubmitting}
           disabled={isSubmitting}
         >
-          {isSubmitting ? (isNew ? 'Creating...' : 'Saving...') : (isNew ? 'Create Request' : 'Save Changes')}
+          {isSubmitting
+            ? isNew
+              ? 'Creating...'
+              : 'Saving...'
+            : isNew
+              ? 'Create Request'
+              : 'Save Changes'}
         </Button>
       </div>
     </div>

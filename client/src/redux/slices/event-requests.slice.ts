@@ -42,10 +42,22 @@ const eventRequestsSlice = createSlice({
   name: 'eventRequests',
   initialState,
   reducers: {
-    setLoading: (state, action: PayloadAction<{ key: keyof EventRequestsState['loading']; value: boolean }>) => {
+    setLoading: (
+      state,
+      action: PayloadAction<{
+        key: keyof EventRequestsState['loading'];
+        value: boolean;
+      }>
+    ) => {
       state.loading[action.payload.key] = action.payload.value;
     },
-    setError: (state, action: PayloadAction<{ key: keyof EventRequestsState['error']; value: string | null }>) => {
+    setError: (
+      state,
+      action: PayloadAction<{
+        key: keyof EventRequestsState['error'];
+        value: string | null;
+      }>
+    ) => {
       state.error[action.payload.key] = action.payload.value;
     },
     setEventRequests: (state, action: PayloadAction<EventRequestData[]>) => {
@@ -75,7 +87,10 @@ const eventRequestsSlice = createSlice({
     ) => {
       state.currentEventRequestWithApprovals = action.payload;
     },
-    clearError: (state, action: PayloadAction<keyof EventRequestsState['error']>) => {
+    clearError: (
+      state,
+      action: PayloadAction<keyof EventRequestsState['error']>
+    ) => {
       state.error[action.payload] = null;
     },
     clearAllErrors: state => {
@@ -142,7 +157,8 @@ const eventRequestsSlice = createSlice({
         fetchEventRequestWithApprovalsThunk.rejected,
         (state, action) => {
           state.loading.currentEventRequestWithApprovals = false;
-          state.error.currentEventRequestWithApprovals = action.payload as string;
+          state.error.currentEventRequestWithApprovals =
+            action.payload as string;
         }
       )
       .addCase(updateEventRequestThunk.rejected, (state, action) => {

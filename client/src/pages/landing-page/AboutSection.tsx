@@ -1,7 +1,12 @@
 import React from 'react';
 import { motion, Variants } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { MdRocket, MdAccessTime, MdTrendingUp, MdSentimentSatisfied } from 'react-icons/md';
+import {
+  MdRocket,
+  MdAccessTime,
+  MdTrendingUp,
+  MdSentimentSatisfied,
+} from 'react-icons/md';
 import { Button } from '../../components';
 import styles from './AboutSection.module.css';
 
@@ -19,7 +24,7 @@ const AboutSection: React.FC = () => {
       transition: {
         duration: 0.8,
         staggerChildren: 0.2,
-        ease: "easeOut",
+        ease: 'easeOut',
       },
     },
   };
@@ -31,20 +36,20 @@ const AboutSection: React.FC = () => {
       y: 0,
       transition: {
         duration: 0.6,
-        ease: "easeOut",
+        ease: 'easeOut',
       },
     },
   };
 
   return (
-    <section id="about" className={styles.about}>
+    <section id='about' className={styles.about}>
       <div className={styles.aboutContent}>
         <motion.div
           className={styles.aboutText}
           variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          initial='hidden'
+          whileInView='visible'
+          viewport={{ once: true, margin: '-100px' }}
         >
           <motion.div className={styles.badge} variants={itemVariants}>
             <MdRocket className={styles.badgeIcon} />
@@ -58,8 +63,8 @@ const AboutSection: React.FC = () => {
           </motion.h2>
 
           <motion.p className={styles.description} variants={itemVariants}>
-            AM/A is your intelligent scheduling assistant that transforms
-            how you manage your calendar. 
+            AM/A is your intelligent scheduling assistant that transforms how
+            you manage your calendar.
           </motion.p>
 
           <motion.div className={styles.benefits} variants={itemVariants}>
@@ -67,14 +72,20 @@ const AboutSection: React.FC = () => {
               <MdAccessTime className={styles.benefitIcon} />
               <div className={styles.benefitText}>
                 <h4>Save Time</h4>
-                <p>Reduce scheduling time by up to 90% with intelligent automation</p>
+                <p>
+                  Reduce scheduling time by up to 90% with intelligent
+                  automation
+                </p>
               </div>
             </motion.div>
             <motion.div className={styles.benefit} variants={itemVariants}>
               <MdTrendingUp className={styles.benefitIcon} />
               <div className={styles.benefitText}>
                 <h4>Increase Productivity</h4>
-                <p>Focus on what matters while AI handles the scheduling complexity</p>
+                <p>
+                  Focus on what matters while AI handles the scheduling
+                  complexity
+                </p>
               </div>
             </motion.div>
             <motion.div className={styles.benefit} variants={itemVariants}>
@@ -88,8 +99,8 @@ const AboutSection: React.FC = () => {
 
           <motion.div className={styles.cta} variants={itemVariants}>
             <Button
-              variant="primary"
-              size="large"
+              variant='primary'
+              size='large'
               onClick={handleGetStartedClick}
               className={styles.ctaButton}
             >
@@ -101,9 +112,9 @@ const AboutSection: React.FC = () => {
         <motion.div
           className={styles.aboutVisual}
           variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          initial='hidden'
+          whileInView='visible'
+          viewport={{ once: true, margin: '-100px' }}
         >
           <motion.div className={styles.visualCard} variants={itemVariants}>
             <div className={styles.cardHeader}>
@@ -116,7 +127,8 @@ const AboutSection: React.FC = () => {
             <div className={styles.cardContent}>
               <div className={styles.aiMessage}>
                 <div className={styles.messageBubble}>
-                  "I've analyzed your calendar patterns and found 3 optimal time slots for your team meeting next week."
+                  "I've analyzed your calendar patterns and found 3 optimal time
+                  slots for your team meeting next week."
                 </div>
                 <div className={styles.messageTime}>2 minutes ago</div>
               </div>

@@ -102,26 +102,26 @@
   .requestsPage {
     padding: 1rem;
   }
-  
+
   .headerContent {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .requestHeader {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .requestDetails {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .requestActions {
     justify-content: stretch;
   }
-  
+
   .requestActions button {
     flex: 1;
   }

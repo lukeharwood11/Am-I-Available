@@ -31,38 +31,36 @@ const TasksSection = () => {
   // ]);
 
   const handleTaskToggle = (taskId: string) => {
-    setTasks(tasks.map(task => 
-      task.id === taskId 
-        ? { ...task, completed: !task.completed }
-        : task
-    ));
+    setTasks(
+      tasks.map(task =>
+        task.id === taskId ? { ...task, completed: !task.completed } : task
+      )
+    );
   };
 
   return (
     <Card contentClassName={styles.card}>
       <div className={styles.sectionTitle}>
         <MdCheckCircle />
-        <Text variant="heading-small">Today's Tasks</Text>
+        <Text variant='heading-small'>Today's Tasks</Text>
       </div>
       <div className={styles.tasks}>
-        {tasks.map((task) => (
+        {tasks.map(task => (
           <div key={task.id} className={styles.taskItem}>
             <input
-              type="checkbox"
+              type='checkbox'
               checked={task.completed}
               onChange={() => handleTaskToggle(task.id)}
               className={styles.checkbox}
             />
-            <span className={`${styles.taskText} ${task.completed ? styles.completed : ''}`}>
+            <span
+              className={`${styles.taskText} ${task.completed ? styles.completed : ''}`}
+            >
               {task.text}
             </span>
           </div>
         ))}
-        {
-            tasks.length === 0 && (
-                <Text variant="caption">No tasks</Text>
-            )
-        }
+        {tasks.length === 0 && <Text variant='caption'>No tasks</Text>}
       </div>
     </Card>
   );

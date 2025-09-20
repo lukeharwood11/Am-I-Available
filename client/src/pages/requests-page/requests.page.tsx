@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store';
@@ -13,11 +13,11 @@ import styles from './requests.page.module.css';
 const RequestsPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  
+
   const eventRequestsWithApprovals = useSelector(
     (state: RootState) => state.eventRequests.eventRequestsWithApprovals
   );
-  
+
   const isLoading = useSelector(
     (state: RootState) => state.eventRequests.loading.eventRequestsWithApprovals
   );
@@ -113,24 +113,26 @@ const RequestsPage = () => {
                     )}
                   </div>
                   <div className={styles.requestActions}>
-                    <Pill 
-                      color={getStatusColor(request.status)} 
-                      size='small' 
+                    <Pill
+                      color={getStatusColor(request.status)}
+                      size='small'
                       variant='outlined'
                     >
                       {getStatusLabel(request.status)}
                     </Pill>
                   </div>
                 </div>
-                
+
                 <div className={styles.requestDetails}>
                   <div className={styles.dateTimeInfo}>
                     <Text variant='caption'>
-                      {request.start_date?.date || request.start_date?.date_time}
+                      {request.start_date?.date ||
+                        request.start_date?.date_time}
                     </Text>
                     {request.end_date && (
                       <Text variant='caption'>
-                        - {request.end_date?.date || request.end_date?.date_time}
+                        -{' '}
+                        {request.end_date?.date || request.end_date?.date_time}
                       </Text>
                     )}
                   </div>

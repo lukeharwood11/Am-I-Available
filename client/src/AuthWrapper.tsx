@@ -10,11 +10,7 @@ import { onAuthStateChange } from './redux/hubs/auth.hub';
 import { authActions } from './redux/slices/auth.slice';
 import LoadingIcon from './components/icons/LoadingIcon';
 
-const unProtectedRoutes = [
-  '/',
-  '/login',
-  '/auth/callback',
-]
+const unProtectedRoutes = ['/', '/login', '/auth/callback'];
 
 const AuthWrapper: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -56,7 +52,11 @@ const AuthWrapper: React.FC = () => {
   useEffect(() => {
     // Redirect to login if not authenticated after loading is complete
     console.log('isLoading', location);
-    if (!isLoading && !isAuthenticated && !unProtectedRoutes.includes(location.pathname)) {
+    if (
+      !isLoading &&
+      !isAuthenticated &&
+      !unProtectedRoutes.includes(location.pathname)
+    ) {
       console.log('redirecting to login...');
       navigate('/login');
     }

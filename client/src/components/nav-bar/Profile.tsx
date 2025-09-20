@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  MdPerson,
-  MdSettings,
-  MdLogout,
-  MdAccountCircle,
-} from 'react-icons/md';
+import { MdPerson, MdLogout, MdAccountCircle } from 'react-icons/md';
 import { Menu, MenuItem, MenuDivider } from '../menu';
 import styles from './Profile.module.css';
 

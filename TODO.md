@@ -2,6 +2,9 @@
 
 Am I Available?
 
+## Up Next:
+- Create / Edit / List Event Requests 
+
 ## Feature List
 
 ### QOL 

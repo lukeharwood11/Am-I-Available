@@ -47,6 +47,7 @@ export interface EventRequestWithApprovalsData {
   approval_status: string;
   requested_approvals: number;
   completed_count: number;
+  approvers?: Approver[];
 }
 
 export interface Approver {

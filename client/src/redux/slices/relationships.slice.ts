@@ -49,7 +49,6 @@ export interface RelationshipState {
   };
 }
 
-
 const initialState: RelationshipState = {
   relationships: [],
   relationshipRequests: {
@@ -81,10 +80,22 @@ const relationshipSlice = createSlice({
   name: 'relationships',
   initialState,
   reducers: {
-    setLoading: (state, action: PayloadAction<{ key: keyof RelationshipState['loading']; value: boolean }>) => {
+    setLoading: (
+      state,
+      action: PayloadAction<{
+        key: keyof RelationshipState['loading'];
+        value: boolean;
+      }>
+    ) => {
       state.loading[action.payload.key] = action.payload.value;
     },
-    setError: (state, action: PayloadAction<{ key: keyof RelationshipState['error']; value: string | null }>) => {
+    setError: (
+      state,
+      action: PayloadAction<{
+        key: keyof RelationshipState['error'];
+        value: string | null;
+      }>
+    ) => {
       state.error[action.payload.key] = action.payload.value;
     },
     setRelationships: (
@@ -123,7 +134,10 @@ const relationshipSlice = createSlice({
     ) => {
       state.currentRelationshipRequest = action.payload;
     },
-    clearError: (state, action: PayloadAction<keyof RelationshipState['error']>) => {
+    clearError: (
+      state,
+      action: PayloadAction<keyof RelationshipState['error']>
+    ) => {
       state.error[action.payload] = null;
     },
     clearAllErrors: state => {
@@ -308,7 +322,8 @@ const relationshipSlice = createSlice({
       .addCase(updateRelationshipRequestThunk.fulfilled, (state, action) => {
         state.loading.relationshipRequests = false;
         const sentIndex = state.relationshipRequests.sent.findIndex(
-          (r: RelationshipRequestData) => r.id === action.payload.relationship_request.id
+          (r: RelationshipRequestData) =>
+            r.id === action.payload.relationship_request.id
         );
         if (sentIndex !== -1) {
           state.relationshipRequests.sent[sentIndex] =
@@ -326,9 +341,13 @@ const relationshipSlice = createSlice({
         state.loading.relationshipRequests = false;
         const requestId = action.meta.arg;
         state.relationshipRequests.sent =
-          state.relationshipRequests.sent.filter((r: RelationshipRequestData) => r.id !== requestId);
+          state.relationshipRequests.sent.filter(
+            (r: RelationshipRequestData) => r.id !== requestId
+          );
         state.relationshipRequests.received =
-          state.relationshipRequests.received.filter((r: RelationshipRequestWithUserData) => r.id !== requestId);
+          state.relationshipRequests.received.filter(
+            (r: RelationshipRequestWithUserData) => r.id !== requestId
+          );
         if (state.currentRelationshipRequest?.id === requestId) {
           state.currentRelationshipRequest = null;
         }
@@ -337,14 +356,16 @@ const relationshipSlice = createSlice({
         state.loading.relationshipRequests = false;
         state.relationshipRequests.received =
           state.relationshipRequests.received.filter(
-            (r: RelationshipRequestWithUserData) => r.id !== action.payload.relationship_request.id
+            (r: RelationshipRequestWithUserData) =>
+              r.id !== action.payload.relationship_request.id
           );
       })
       .addCase(rejectRelationshipRequestThunk.fulfilled, (state, action) => {
         state.loading.relationshipRequests = false;
         state.relationshipRequests.received =
           state.relationshipRequests.received.filter(
-            (r: RelationshipRequestWithUserData) => r.id !== action.payload.relationship_request.id
+            (r: RelationshipRequestWithUserData) =>
+              r.id !== action.payload.relationship_request.id
           );
       });
   },

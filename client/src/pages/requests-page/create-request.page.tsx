@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../redux/store';
@@ -29,11 +29,7 @@ const CreateRequestPage = () => {
         <h1>Create Event Request</h1>
       </div>
       <div className={styles.pageContent}>
-        <RequestForm
-          isNew={true}
-          onSave={handleSave}
-          onCancel={handleCancel}
-        />
+        <RequestForm isNew={true} onSave={handleSave} onCancel={handleCancel} />
       </div>
     </div>
   );

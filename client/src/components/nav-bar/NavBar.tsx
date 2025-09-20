@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
-import {
-  MdLogout,
-  MdPerson,
-  MdMenu,
-  MdClose,
-} from 'react-icons/md';
+import { MdLogout, MdPerson, MdMenu, MdClose } from 'react-icons/md';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { supabase } from '../../lib/supabaseClient';
 import Button from '../button/Button';

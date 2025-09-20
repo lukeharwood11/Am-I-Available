@@ -41,9 +41,18 @@ const App: React.FC = () => {
             <Route path={''} element={<Layout />}>
               <Route path={routes.home} element={<HomePage />} />
               <Route path={routes.requests.all} element={<RequestsPage />} />
-              <Route path={routes.requests.new} element={<CreateRequestPage />} />
-              <Route path={routes.requests.by_id} element={<RequestDetailPage />} />
-              <Route path={routes.requests.edit} element={<EditRequestPage />} />
+              <Route
+                path={routes.requests.new}
+                element={<CreateRequestPage />}
+              />
+              <Route
+                path={routes.requests.by_id}
+                element={<RequestDetailPage />}
+              />
+              <Route
+                path={routes.requests.edit}
+                element={<EditRequestPage />}
+              />
               <Route path={routes.profile} element={<ProfilePage />} />
             </Route>
           </Route>

@@ -16,7 +16,7 @@ const LandingPage: React.FC = () => {
     if (user) {
       navigate('/dashboard');
     }
-  }, [user])
+  }, [user]);
   return (
     <div className={styles.landingPage}>
       <LandingNavBar />

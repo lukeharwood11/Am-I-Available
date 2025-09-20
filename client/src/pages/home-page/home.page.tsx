@@ -16,7 +16,7 @@ import {
   QuickActionsSection,
   SuggestionsSection,
   PendingDraftsSection,
-  TasksSection
+  TasksSection,
 } from './components';
 
 const HomePage = () => {
@@ -65,7 +65,7 @@ const HomePage = () => {
         <div className={styles.leftColumn}>
           <SmartCreateSection onSmartCreate={handleSmartCreate} />
           <UpcomingEventsSection events={[]} />
-          <QuickActionsSection 
+          <QuickActionsSection
             onCreateEvent={handleCreateEvent}
             onAddTask={handleAddTask}
             onManageRelationships={handleManageRelationships}

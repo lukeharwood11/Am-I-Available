@@ -1,8 +1,9 @@
-import React, { useEffect, useCallback } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store';
 import { fetchEventRequestsWithApprovalsThunk } from '../../redux/thunks/event-requests.thunk';
+import { Approver } from '../../redux/types/event-requests.types';
 import { Button, Text } from '../../components';
 import { MdEdit, MdArrowBack } from 'react-icons/md';
 import Card from '../../components/card/Card';
@@ -14,11 +15,11 @@ const RequestDetailPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const { id } = useParams<{ id: string }>();
-  
+
   const eventRequestsWithApprovals = useSelector(
     (state: RootState) => state.eventRequests.eventRequestsWithApprovals
   );
-  
+
   const isLoading = useSelector(
     (state: RootState) => state.eventRequests.loading.eventRequestsWithApprovals
   );
@@ -69,15 +70,15 @@ const RequestDetailPage = () => {
 
   const formatDateTime = (dateTime: any) => {
     if (!dateTime) return 'Not specified';
-    
+
     if (dateTime.date) {
       return new Date(dateTime.date).toLocaleDateString();
     }
-    
+
     if (dateTime.date_time) {
       return new Date(dateTime.date_time).toLocaleString();
     }
-    
+
     return 'Not specified';
   };
 
@@ -108,7 +109,7 @@ const RequestDetailPage = () => {
         </div>
         <div className={styles.pageContent}>
           <Card contentClassName={styles.notFoundCard}>
-            <Text variant='heading' size='medium'>Request not found</Text>
+            <Text variant='heading'>Request not found</Text>
             <Text variant='caption' color='secondary'>
               The request you're looking for doesn't exist or has been deleted.
             </Text>
@@ -133,9 +134,9 @@ const RequestDetailPage = () => {
             Back to Requests
           </Button>
           <div className={styles.headerActions}>
-            <Pill 
-              color={getStatusColor(request.status)} 
-              size='medium' 
+            <Pill
+              color={getStatusColor(request.status)}
+              size='medium'
               variant='outlined'
             >
               {getStatusLabel(request.status)}
@@ -155,7 +156,7 @@ const RequestDetailPage = () => {
         <div className={styles.requestDetail}>
           <Card contentClassName={styles.detailCard}>
             <div className={styles.detailHeader}>
-              <Text variant='heading' size='large'>{request.title}</Text>
+              <Text variant='heading-large'>{request.title}</Text>
               <Text variant='caption' color='secondary'>
                 Created {new Date(request.created_at).toLocaleDateString()}
               </Text>
@@ -163,27 +164,33 @@ const RequestDetailPage = () => {
 
             {request.description && (
               <div className={styles.detailSection}>
-                <Text variant='heading' size='small'>Description</Text>
+                <Text variant='heading-small'>Description</Text>
                 <Text variant='body'>{request.description}</Text>
               </div>
             )}
 
             {request.location && (
               <div className={styles.detailSection}>
-                <Text variant='heading' size='small'>Location</Text>
+                <Text variant='heading-small'>Location</Text>
                 <Text variant='body'>📍 {request.location}</Text>
               </div>
             )}
 
             <div className={styles.detailSection}>
-              <Text variant='heading' size='small'>Date & Time</Text>
+              <Text variant='heading-small'>Date & Time</Text>
               <div className={styles.dateTimeInfo}>
                 <div className={styles.dateTimeItem}>
-                  <Text variant='caption' color='secondary'>Start</Text>
-                  <Text variant='body'>{formatDateTime(request.start_date)}</Text>
+                  <Text variant='caption' color='secondary'>
+                    Start
+                  </Text>
+                  <Text variant='body'>
+                    {formatDateTime(request.start_date)}
+                  </Text>
                 </div>
                 <div className={styles.dateTimeItem}>
-                  <Text variant='caption' color='secondary'>End</Text>
+                  <Text variant='caption' color='secondary'>
+                    End
+                  </Text>
                   <Text variant='body'>{formatDateTime(request.end_date)}</Text>
                 </div>
               </div>
@@ -191,27 +198,29 @@ const RequestDetailPage = () => {
 
             {request.notes && (
               <div className={styles.detailSection}>
-                <Text variant='heading' size='small'>Notes</Text>
+                <Text variant='heading-small'>Notes</Text>
                 <Text variant='body'>{request.notes}</Text>
               </div>
             )}
 
             {request.approvers && request.approvers.length > 0 && (
               <div className={styles.detailSection}>
-                <Text variant='heading' size='small'>Approvers</Text>
+                <Text variant='heading-small'>Approvers</Text>
                 <div className={styles.approversList}>
-                  {request.approvers.map((approver, index) => (
-                    <div key={index} className={styles.approverItem}>
-                      <Text variant='body'>{approver.user_id}</Text>
-                      <Pill 
-                        size='small' 
-                        variant='outlined'
-                        color={approver.required ? 'primary' : 'secondary'}
-                      >
-                        {approver.required ? 'Required' : 'Optional'}
-                      </Pill>
-                    </div>
-                  ))}
+                  {request.approvers.map(
+                    (approver: Approver, index: number) => (
+                      <div key={index} className={styles.approverItem}>
+                        <Text variant='body'>{approver.user_id}</Text>
+                        <Pill
+                          size='small'
+                          variant='outlined'
+                          color={approver.required ? 'primary' : 'secondary'}
+                        >
+                          {approver.required ? 'Required' : 'Optional'}
+                        </Pill>
+                      </div>
+                    )
+                  )}
                 </div>
               </div>
             )}
