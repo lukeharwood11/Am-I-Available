@@ -93,7 +93,7 @@ const NavBar: React.FC<NavBarProps> = ({ name }) => {
   return (
     <header className={styles.header}>
       <div className={styles.headerContent}>
-        <AnimatedLogo onClick={() => navigate('/')} />
+        <AnimatedLogo onClick={() => navigate('/dashboard')} />
 
         <div className={styles.actions}>
           <Profile

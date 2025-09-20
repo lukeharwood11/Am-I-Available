@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from './redux/hooks';
 import { initializeAuth } from './redux/thunks/auth.thunk';
 import {
@@ -10,11 +10,24 @@ import { onAuthStateChange } from './redux/hubs/auth.hub';
 import { authActions } from './redux/slices/auth.slice';
 import LoadingIcon from './components/icons/LoadingIcon';
 
+const unProtectedRoutes = [
+  '/',
+  '/login',
+  '/auth/callback',
+]
+
 const AuthWrapper: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const locationRef = useRef(location.pathname);
   const isLoading = useAppSelector(selectAuthLoading);
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
+
+  // Keep location ref updated
+  useEffect(() => {
+    locationRef.current = location.pathname;
+  }, [location.pathname]);
 
   useEffect(() => {
     // Initialize auth state from Supabase
@@ -28,7 +41,10 @@ const AuthWrapper: React.FC = () => {
         dispatch(authActions.setSession({ session }));
       } else {
         dispatch(authActions.clearAuth());
-        navigate('/login');
+        // Only redirect to login if we're on a protected route
+        if (!unProtectedRoutes.includes(locationRef.current)) {
+          navigate('/login');
+        }
       }
     });
 
@@ -39,10 +55,12 @@ const AuthWrapper: React.FC = () => {
 
   useEffect(() => {
     // Redirect to login if not authenticated after loading is complete
-    if (!isLoading && !isAuthenticated) {
+    console.log('isLoading', location);
+    if (!isLoading && !isAuthenticated && !unProtectedRoutes.includes(location.pathname)) {
+      console.log('redirecting to login...');
       navigate('/login');
     }
-  }, [isLoading, isAuthenticated, navigate]);
+  }, [isLoading, isAuthenticated, navigate, location.pathname]);
 
   if (isLoading) {
     return (

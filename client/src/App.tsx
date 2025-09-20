@@ -34,8 +34,8 @@ const App: React.FC = () => {
         <Routes>
           <Route path={routes.login} element={<LoginPage />} />
           <Route path={routes.authCallback} element={<AuthCallbackPage />} />
-          <Route index path={routes.landing} element={<LandingPage />} />
           <Route path={''} element={<AuthWrapper />}>
+            <Route index path={routes.landing} element={<LandingPage />} />
             <Route path={''} element={<Layout />}>
               <Route path={routes.home} element={<HomePage />} />
               <Route path={routes.requests.all} element={<RequestsPage />} />
