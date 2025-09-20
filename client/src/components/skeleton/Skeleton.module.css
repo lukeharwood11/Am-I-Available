@@ -1,98 +1,98 @@
 .skeleton {
-  background: var(--grey-200);
-  border-radius: var(--border-radius-standard);
-  display: block;
+    background: var(--grey-200);
+    border-radius: var(--border-radius-standard);
+    display: block;
 }
 
 .skeleton.animate {
-  animation: skeleton-loading 1.5s ease-in-out infinite;
+    animation: skeleton-loading 1.5s ease-in-out infinite;
 }
 
 @keyframes skeleton-loading {
-  0% {
-    opacity: 0.4;
-  }
-  50% {
-    opacity: 0.8;
-  }
-  100% {
-    opacity: 0.4;
-  }
+    0% {
+        opacity: 0.4;
+    }
+    50% {
+        opacity: 0.8;
+    }
+    100% {
+        opacity: 0.4;
+    }
 }
 
 /* Variants */
 .default {
-  border-radius: var(--border-radius-standard);
+    border-radius: var(--border-radius-standard);
 }
 
 .rounded {
-  border-radius: var(--border-radius-standard);
+    border-radius: var(--border-radius-standard);
 }
 
 .circle {
-  border-radius: var(--border-radius-full);
-  aspect-ratio: 1;
+    border-radius: var(--border-radius-full);
+    aspect-ratio: 1;
 }
 
 .text {
-  border-radius: 4px;
-  height: 1em;
-  margin-bottom: 0.5em;
+    border-radius: 4px;
+    height: 1em;
+    margin-bottom: 0.5em;
 }
 
 .text:last-child {
-  margin-bottom: 0;
+    margin-bottom: 0;
 }
 
 /* Sizes */
 .small {
-  width: 64px;
-  height: 64px;
+    width: 64px;
+    height: 64px;
 }
 
 .medium {
-  width: 128px;
-  height: 128px;
+    width: 128px;
+    height: 128px;
 }
 
 .large {
-  width: 256px;
-  height: 256px;
+    width: 256px;
+    height: 256px;
 }
 
 .xlarge {
-  width: 384px;
-  height: 384px;
+    width: 384px;
+    height: 384px;
 }
 
 /* Text variant specific sizes */
 .text.small {
-  height: 12px;
-  width: 100%;
+    height: 12px;
+    width: 100%;
 }
 
 .text.medium {
-  height: 16px;
-  width: 100%;
+    height: 16px;
+    width: 100%;
 }
 
 .text.large {
-  height: 20px;
-  width: 100%;
+    height: 20px;
+    width: 100%;
 }
 
 .text.xlarge {
-  height: 24px;
-  width: 100%;
+    height: 24px;
+    width: 100%;
 }
 
 /* Text container for multiple lines */
 .textContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25em;
 }
 
 .textLine {
-  margin-bottom: 0;
+    margin-bottom: 0;
 }

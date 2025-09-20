@@ -10,24 +10,24 @@ import { RootState } from '../../redux/store';
 import { useNavigate } from 'react-router-dom';
 
 const LandingPage: React.FC = () => {
-  const user = useSelector((state: RootState) => state.auth.session?.user);
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (user) {
-      navigate('/dashboard');
-    }
-  }, [user]);
-  return (
-    <div className={styles.landingPage}>
-      <LandingNavBar />
-      <main>
-        <HeroSection />
-        <FeaturesSection />
-        <AboutSection />
-      </main>
-      <Footer />
-    </div>
-  );
+    const user = useSelector((state: RootState) => state.auth.session?.user);
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (user) {
+            navigate('/dashboard');
+        }
+    }, [user]);
+    return (
+        <div className={styles.landingPage}>
+            <LandingNavBar />
+            <main>
+                <HeroSection />
+                <FeaturesSection />
+                <AboutSection />
+            </main>
+            <Footer />
+        </div>
+    );
 };
 
 export default LandingPage;

@@ -27,6 +27,7 @@ from .services.event_requests_service import EventRequestsService
 from .services.event_request_approvals_service import EventRequestApprovalsService
 from .services.google_events_service import GoogleEventsService
 from .services.emails_service import EmailsService
+from .services.llm_service import LLMService
 
 
 # Databridge Dependencies
@@ -101,11 +102,27 @@ def get_relationship_requests_service(
     )
 
 
+def get_llm_service() -> LLMService:
+    """Dependency to get LLM service instance"""
+    return LLMService()
+
+
+def get_relationships_service() -> RelationshipsService:
+    """Dependency to get relationships service instance"""
+    return RelationshipsService()
+
+
 def get_event_requests_service(
     databridge: EventRequestsDatabridge = Depends(get_event_requests_databridge),
+    llm_service: LLMService = Depends(get_llm_service),
+    relationships_service: RelationshipsService = Depends(get_relationships_service),
 ) -> EventRequestsService:
     """Dependency to get event requests service instance"""
-    return EventRequestsService(databridge=databridge)
+    return EventRequestsService(
+        databridge=databridge,
+        llm_service=llm_service,
+        relationships_service=relationships_service,
+    )
 
 
 def get_event_request_approvals_service(

@@ -5,57 +5,59 @@ export type CardVariant = 'default' | 'elevated' | 'outlined' | 'subtle';
 export type CardPadding = 'none' | 'small' | 'medium' | 'large';
 
 interface CardProps {
-  children: React.ReactNode;
-  variant?: CardVariant;
-  padding?: CardPadding;
-  onClick?: () => void;
-  className?: string;
-  header?: React.ReactNode;
-  footer?: React.ReactNode;
-  hoverable?: boolean;
-  style?: React.CSSProperties;
-  contentClassName?: string;
+    children: React.ReactNode;
+    variant?: CardVariant;
+    padding?: CardPadding;
+    onClick?: () => void;
+    className?: string;
+    header?: React.ReactNode;
+    footer?: React.ReactNode;
+    hoverable?: boolean;
+    style?: React.CSSProperties;
+    contentClassName?: string;
 }
 
 const Card: React.FC<CardProps> = ({
-  children,
-  variant = 'default',
-  padding = 'medium',
-  onClick,
-  className,
-  header,
-  footer,
-  hoverable = false,
-  style,
-  contentClassName,
-}) => {
-  const cardClasses = [
-    styles.card,
-    styles[variant],
-    styles[`padding-${padding}`],
-    onClick || hoverable ? styles.interactive : '',
+    children,
+    variant = 'default',
+    padding = 'medium',
+    onClick,
     className,
+    header,
+    footer,
+    hoverable = false,
+    style,
     contentClassName,
-  ]
-    .filter(Boolean)
-    .join(' ');
+}) => {
+    const cardClasses = [
+        styles.card,
+        styles[variant],
+        styles[`padding-${padding}`],
+        onClick || hoverable ? styles.interactive : '',
+        className,
+        contentClassName,
+    ]
+        .filter(Boolean)
+        .join(' ');
 
-  const CardComponent = onClick ? 'button' : 'div';
+    const CardComponent = onClick ? 'button' : 'div';
 
-  return (
-    <CardComponent
-      className={cardClasses}
-      onClick={onClick}
-      type={onClick ? 'button' : undefined}
-      style={style}
-    >
-      {header && <div className={styles.header}>{header}</div>}
+    return (
+        <CardComponent
+            className={cardClasses}
+            onClick={onClick}
+            type={onClick ? 'button' : undefined}
+            style={style}
+        >
+            {header && <div className={styles.header}>{header}</div>}
 
-      <div className={`${styles.content} ${contentClassName}`}>{children}</div>
+            <div className={`${styles.content} ${contentClassName}`}>
+                {children}
+            </div>
 
-      {footer && <div className={styles.footer}>{footer}</div>}
-    </CardComponent>
-  );
+            {footer && <div className={styles.footer}>{footer}</div>}
+        </CardComponent>
+    );
 };
 
 export default Card;

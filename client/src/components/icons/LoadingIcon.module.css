@@ -1,65 +1,65 @@
 .loadingIcon {
-  display: inline-flex;
-  align-items: center;
-  position: relative;
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 600;
-  color: currentColor;
-  margin: 0;
-  line-height: 1;
-  user-select: none;
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    color: currentColor;
+    margin: 0;
+    line-height: 1;
+    user-select: none;
 }
 
 .loadingText {
-  position: relative;
-  z-index: 1;
+    position: relative;
+    z-index: 1;
 }
 
 .loadingOutline {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border: 2px solid currentColor;
-  border-radius: 4px;
-  border-top-color: transparent;
-  border-right-color: transparent;
-  animation: loadingAnimation 3s ease-in-out infinite;
-  pointer-events: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid currentColor;
+    border-radius: 4px;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    animation: loadingAnimation 3s ease-in-out infinite;
+    pointer-events: none;
 }
 
 @keyframes loadingAnimation {
-  0% {
-    transform: translate(-50%, -50%) rotate(0deg);
-    border-top-color: transparent;
-    border-right-color: transparent;
-    border-bottom-color: currentColor;
-    border-left-color: currentColor;
-  }
-  25% {
-    border-top-color: currentColor;
-    border-right-color: transparent;
-    border-bottom-color: transparent;
-    border-left-color: currentColor;
-  }
-  50% {
-    transform: translate(-50%, -50%) rotate(180deg);
-    border-top-color: currentColor;
-    border-right-color: currentColor;
-    border-bottom-color: transparent;
-    border-left-color: transparent;
-  }
-  75% {
-    border-top-color: transparent;
-    border-right-color: currentColor;
-    border-bottom-color: currentColor;
-    border-left-color: transparent;
-  }
-  100% {
-    transform: translate(-50%, -50%) rotate(360deg);
-    border-top-color: transparent;
-    border-right-color: transparent;
-    border-bottom-color: currentColor;
-    border-left-color: currentColor;
-  }
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+        border-top-color: transparent;
+        border-right-color: transparent;
+        border-bottom-color: currentColor;
+        border-left-color: currentColor;
+    }
+    25% {
+        border-top-color: currentColor;
+        border-right-color: transparent;
+        border-bottom-color: transparent;
+        border-left-color: currentColor;
+    }
+    50% {
+        transform: translate(-50%, -50%) rotate(180deg);
+        border-top-color: currentColor;
+        border-right-color: currentColor;
+        border-bottom-color: transparent;
+        border-left-color: transparent;
+    }
+    75% {
+        border-top-color: transparent;
+        border-right-color: currentColor;
+        border-bottom-color: currentColor;
+        border-left-color: transparent;
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+        border-top-color: transparent;
+        border-right-color: transparent;
+        border-bottom-color: currentColor;
+        border-left-color: currentColor;
+    }
 }

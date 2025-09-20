@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from datetime import datetime
 import api.models.v1.event_request_approvals as era_models
 
+
 class DBEventRequestApprovalResponse(BaseModel):
     id: str
     event_request_id: str
@@ -20,9 +21,12 @@ class EventRequestApprovalsDatabridge:
     def __init__(self, supabase: Client):
         self.supabase = supabase
         self.event_request_approvals = self.supabase.table("event_request_approvals")
-    
+
     async def create_event_request_approvals_batch(
-        self, *, event_request_id: str, approvals_request: list[era_models.EventRequestApprovalUser]
+        self,
+        *,
+        event_request_id: str,
+        approvals_request: list[era_models.EventRequestApprovalUser],
     ) -> list[DBEventRequestApprovalResponse]:
         """Create a batch of event request approvals"""
         try:
@@ -33,7 +37,7 @@ class EventRequestApprovalsDatabridge:
                 approval_data["event_request_id"] = event_request_id
                 approval_data["status"] = "pending"
                 data.append(approval_data)
-            
+
             response = self.event_request_approvals.insert(data).execute()
             if not response.data:
                 return []

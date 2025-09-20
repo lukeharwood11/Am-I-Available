@@ -1,54 +1,54 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap');
 :root {
-  /* theme is modern blue and purple */
-  --primary: #4a90e2;
-  --secondary: #8e44ad;
-  --primary-light: #74a9f7;
-  --secondary-light: #b47ece;
-  --primary-accent: #a8cbf0;
-  --secondary-accent: #d1a3e8;
-  --primary-dark: #2c5aa0;
-  --secondary-dark: #6a1b9a;
-  --primary-bg: #e3f2fd;
-  --secondary-bg: #f3e5f5;
+    /* theme is modern blue and purple */
+    --primary: #4a90e2;
+    --secondary: #8e44ad;
+    --primary-light: #74a9f7;
+    --secondary-light: #b47ece;
+    --primary-accent: #a8cbf0;
+    --secondary-accent: #d1a3e8;
+    --primary-dark: #2c5aa0;
+    --secondary-dark: #6a1b9a;
+    --primary-bg: #e3f2fd;
+    --secondary-bg: #f3e5f5;
 
-  /* danger colors */
-  --danger-red: #ff6b6b;
-  --danger-dark: #e74c3c;
-  --danger-light: #ffebeb;
-  --danger-accent: #ffd8d8;
+    /* danger colors */
+    --danger-red: #ff6b6b;
+    --danger-dark: #e74c3c;
+    --danger-light: #ffebeb;
+    --danger-accent: #ffd8d8;
 
-  /* grey colors */
-  --grey-100: #f5f5f5;
-  --grey-200: #e5e5e5;
-  --grey-300: #d4d4d4;
-  --grey-600: #525252;
-  --grey-800: #262626;
+    /* grey colors */
+    --grey-100: #f5f5f5;
+    --grey-200: #e5e5e5;
+    --grey-300: #d4d4d4;
+    --grey-600: #525252;
+    --grey-800: #262626;
 
-  /* subtle variants */
-  --subtle-primary: rgba(74, 144, 226, 0.1);
-  --subtle-secondary: rgba(142, 68, 173, 0.1);
-  --subtle-danger: rgba(255, 107, 107, 0.1);
-  --subtle-primary-hover: rgba(74, 144, 226, 0.15);
-  --subtle-secondary-hover: rgba(142, 68, 173, 0.15);
-  --subtle-danger-hover: rgba(255, 107, 107, 0.15);
+    /* subtle variants */
+    --subtle-primary: rgba(74, 144, 226, 0.1);
+    --subtle-secondary: rgba(142, 68, 173, 0.1);
+    --subtle-danger: rgba(255, 107, 107, 0.1);
+    --subtle-primary-hover: rgba(74, 144, 226, 0.15);
+    --subtle-secondary-hover: rgba(142, 68, 173, 0.15);
+    --subtle-danger-hover: rgba(255, 107, 107, 0.15);
 
-  /* border radius */
-  --border-radius-standard: 6px;
-  --border-radius-full: 9999px;
+    /* border radius */
+    --border-radius-standard: 6px;
+    --border-radius-full: 9999px;
 
-  font-family:
-    'Space Grotesk', Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+    font-family:
+        'Space Grotesk', Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
 }
 
 body {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 #app {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }

@@ -1,0 +1,86 @@
+.modalContent {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-width: 400px;
+    max-width: 600px;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 1rem;
+}
+
+.title {
+    margin: 0;
+}
+
+.details {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.detailRow {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.detailLabel {
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.dateTime {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.approvalInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+    background-color: var(--color-background-secondary);
+    border-radius: 0.5rem;
+    border: 1px solid var(--color-border);
+}
+
+.approvalStatus {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.approvalProgress {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.progressBar {
+    width: 100px;
+    height: 4px;
+    background-color: var(--color-border);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progressFill {
+    height: 100%;
+    background-color: var(--color-primary);
+    transition: width 0.3s ease;
+}
+
+.footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border);
+}

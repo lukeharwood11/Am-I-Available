@@ -1,77 +1,77 @@
 /* Menu Item */
 .menuItem {
-  display: flex;
-  align-items: center;
-  padding: 8px 12px;
-  cursor: pointer;
-  border-radius: var(--border-radius-standard);
-  font-size: 14px;
-  line-height: 1.4;
-  color: var(--grey-800);
-  transition:
-    background-color 0.15s ease,
-    color 0.15s ease;
-  outline: none;
-  user-select: none;
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: var(--border-radius-standard);
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--grey-800);
+    transition:
+        background-color 0.15s ease,
+        color 0.15s ease;
+    outline: none;
+    user-select: none;
 }
 
 .menuItem:hover:not(.disabled) {
-  background-color: var(--grey-100);
+    background-color: var(--grey-100);
 }
 
 .menuItem:focus {
-  background-color: var(--subtle-primary);
-  color: var(--primary);
+    background-color: var(--subtle-primary);
+    color: var(--primary);
 }
 
 .menuItem:active:not(.disabled) {
-  background-color: var(--grey-200);
+    background-color: var(--grey-200);
 }
 
 /* Disabled State */
 .menuItem.disabled {
-  color: var(--grey-300);
-  cursor: not-allowed;
-  opacity: 0.6;
+    color: var(--grey-300);
+    cursor: not-allowed;
+    opacity: 0.6;
 }
 
 /* Destructive State */
 .menuItem.destructive {
-  color: var(--danger-red);
+    color: var(--danger-red);
 }
 
 .menuItem.destructive:hover:not(.disabled) {
-  background-color: var(--danger-light);
-  color: var(--danger-dark);
+    background-color: var(--danger-light);
+    color: var(--danger-dark);
 }
 
 .menuItem.destructive:focus {
-  background-color: var(--subtle-danger);
-  color: var(--danger-dark);
+    background-color: var(--subtle-danger);
+    color: var(--danger-dark);
 }
 
 .menuItem.destructive:active:not(.disabled) {
-  background-color: var(--danger-accent);
+    background-color: var(--danger-accent);
 }
 
 /* Icons */
 .leftIcon {
-  display: flex;
-  align-items: center;
-  margin-right: 8px;
-  flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    margin-right: 8px;
+    flex-shrink: 0;
 }
 
 .rightIcon {
-  display: flex;
-  align-items: center;
-  margin-left: auto;
-  padding-left: 8px;
-  flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    padding-left: 8px;
+    flex-shrink: 0;
 }
 
 /* Content */
 .content {
-  flex: 1;
-  min-width: 0;
+    flex: 1;
+    min-width: 0;
 }

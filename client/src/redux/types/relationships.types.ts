@@ -1,72 +1,72 @@
 import {
-  UserData,
-  BaseResponse,
-  BaseListResponse,
-  BasePaginatedListResponse,
-  BaseCreateRequest,
-  BaseUpdateRequest,
-  BaseDeleteResponse,
+    UserData,
+    BaseResponse,
+    BaseListResponse,
+    BasePaginatedListResponse,
+    BaseCreateRequest,
+    BaseUpdateRequest,
+    BaseDeleteResponse,
 } from './common.types';
 
 // Relationship Data Types
 export interface RelationshipData {
-  id: string;
-  user_id_1: string;
-  user_id_2: string;
-  created_at: string;
-  updated_at: string;
+    id: string;
+    user_id_1: string;
+    user_id_2: string;
+    created_at: string;
+    updated_at: string;
 }
 
 export interface RelationshipWithUserData {
-  id: string;
-  user_id_1: string;
-  user_id_2: string;
-  created_at: string;
-  updated_at: string;
-  other_user: UserData;
+    id: string;
+    user_id_1: string;
+    user_id_2: string;
+    created_at: string;
+    updated_at: string;
+    other_user: UserData;
 }
 
 // Relationship Request Types
 export interface CreateRelationshipRequest extends BaseCreateRequest {
-  user_id_2: string;
+    user_id_2: string;
 }
 
 export interface UpdateRelationshipRequest extends BaseUpdateRequest {
-  relationship_type?: string;
-  status?: string;
+    relationship_type?: string;
+    status?: string;
 }
 
 // Relationship Response Types
 export interface RelationshipResponse extends BaseResponse {
-  relationship: RelationshipData;
+    relationship: RelationshipData;
 }
 
 export interface RelationshipWithUserResponse extends BaseResponse {
-  relationship: RelationshipWithUserData;
+    relationship: RelationshipWithUserData;
 }
 
 export interface RelationshipsListResponse
-  extends BaseListResponse<RelationshipData> {
-  relationships: RelationshipData[];
+    extends BaseListResponse<RelationshipData> {
+    relationships: RelationshipData[];
 }
 
 export interface RelationshipsWithUsersListResponse
-  extends BasePaginatedListResponse<RelationshipWithUserData> {
-  relationships: RelationshipWithUserData[];
+    extends BasePaginatedListResponse<RelationshipWithUserData> {
+    relationships: RelationshipWithUserData[];
 }
 
 export interface RelationshipDeleteResponse extends BaseDeleteResponse {}
 
 export interface RelationshipCreateResponse extends BaseResponse {
-  relationship: RelationshipData;
+    relationship: RelationshipData;
 }
 
 export interface RelationshipUpdateResponse extends BaseResponse {
-  relationship: RelationshipData;
+    relationship: RelationshipData;
 }
 
 // Re-export types that are used in the state but defined in relationship-requests.types.ts
 export type {
-  RelationshipRequestData,
-  RelationshipRequestWithUserData,
+    RelationshipRequestData,
+    RelationshipRequestWithUserData,
 } from './relationship-requests.types';

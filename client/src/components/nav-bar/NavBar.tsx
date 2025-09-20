@@ -9,144 +9,148 @@ import styles from './NavBar.module.css';
 import { useNavigate } from 'react-router-dom';
 
 interface NavBarProps {
-  name: string;
+    name: string;
 }
 
 const NavBar: React.FC<NavBarProps> = ({ name }) => {
-  const navigate = useNavigate();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const navigate = useNavigate();
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    navigate('/login');
-    setIsMobileMenuOpen(false);
-  };
+    const handleSignOut = async () => {
+        await supabase.auth.signOut();
+        navigate('/login');
+        setIsMobileMenuOpen(false);
+    };
 
-  const handleProfileClick = () => {
-    navigate('/profile');
-    setIsMobileMenuOpen(false);
-  };
+    const handleProfileClick = () => {
+        navigate('/profile');
+        setIsMobileMenuOpen(false);
+    };
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
+    const toggleMobileMenu = () => {
+        setIsMobileMenuOpen(!isMobileMenuOpen);
+    };
 
-  // Animation variants
-  const mobileMenuVariants: Variants = {
-    hidden: {
-      opacity: 0,
-      y: -10,
-      scale: 0.95,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        duration: 0.2,
-        ease: [0.4, 0, 0.2, 1],
-        staggerChildren: 0.05,
-      },
-    },
-    exit: {
-      opacity: 0,
-      y: -10,
-      scale: 0.95,
-      transition: {
-        duration: 0.15,
-        ease: [0.4, 0, 0.2, 1],
-      },
-    },
-  };
+    // Animation variants
+    const mobileMenuVariants: Variants = {
+        hidden: {
+            opacity: 0,
+            y: -10,
+            scale: 0.95,
+        },
+        visible: {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            transition: {
+                duration: 0.2,
+                ease: [0.4, 0, 0.2, 1],
+                staggerChildren: 0.05,
+            },
+        },
+        exit: {
+            opacity: 0,
+            y: -10,
+            scale: 0.95,
+            transition: {
+                duration: 0.15,
+                ease: [0.4, 0, 0.2, 1],
+            },
+        },
+    };
 
-  const menuItemVariants: Variants = {
-    hidden: {
-      opacity: 0,
-      x: -20,
-    },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        duration: 0.2,
-        ease: [0.4, 0, 0.2, 1],
-      },
-    },
-  };
+    const menuItemVariants: Variants = {
+        hidden: {
+            opacity: 0,
+            x: -20,
+        },
+        visible: {
+            opacity: 1,
+            x: 0,
+            transition: {
+                duration: 0.2,
+                ease: [0.4, 0, 0.2, 1],
+            },
+        },
+    };
 
-  const hamburgerIconVariants: Variants = {
-    menu: { rotate: 0 },
-    close: { rotate: 180 },
-  };
+    const hamburgerIconVariants: Variants = {
+        menu: { rotate: 0 },
+        close: { rotate: 180 },
+    };
 
-  return (
-    <header className={styles.header}>
-      <div className={styles.headerContent}>
-        <AnimatedLogo onClick={() => navigate('/dashboard')} />
+    return (
+        <header className={styles.header}>
+            <div className={styles.headerContent}>
+                <AnimatedLogo onClick={() => navigate('/dashboard')} />
 
-        <div className={styles.actions}>
-          <Profile
-            name={name}
-            onProfile={handleProfileClick}
-            onLogout={handleSignOut}
-          />
-        </div>
+                <div className={styles.actions}>
+                    <Profile
+                        name={name}
+                        onProfile={handleProfileClick}
+                        onLogout={handleSignOut}
+                    />
+                </div>
 
-        <motion.button
-          className={styles.hamburgerButton}
-          onClick={toggleMobileMenu}
-          aria-label='Toggle menu'
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <motion.div
-            variants={hamburgerIconVariants}
-            animate={isMobileMenuOpen ? 'close' : 'menu'}
-            transition={{ duration: 0.2, ease: 'easeInOut' }}
-          >
-            {isMobileMenuOpen ? <MdClose size={24} /> : <MdMenu size={24} />}
-          </motion.div>
-        </motion.button>
-      </div>
-
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            className={styles.mobileMenu}
-            variants={mobileMenuVariants}
-            initial='hidden'
-            animate='visible'
-            exit='exit'
-          >
-            <div className={styles.mobileMenuContent}>
-              <motion.div variants={menuItemVariants}>
-                <Button
-                  variant='primary'
-                  size='medium'
-                  onClick={handleProfileClick}
-                  leftIcon={<MdPerson size={24} />}
-                  className={styles.mobileProfileButton}
+                <motion.button
+                    className={styles.hamburgerButton}
+                    onClick={toggleMobileMenu}
+                    aria-label='Toggle menu'
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                 >
-                  Profile
-                </Button>
-              </motion.div>
-              <motion.div variants={menuItemVariants}>
-                <Button
-                  variant='secondary-subtle'
-                  size='medium'
-                  onClick={handleSignOut}
-                  className={styles.mobileSignOutButton}
-                  leftIcon={<MdLogout size={24} />}
-                >
-                  Sign Out
-                </Button>
-              </motion.div>
+                    <motion.div
+                        variants={hamburgerIconVariants}
+                        animate={isMobileMenuOpen ? 'close' : 'menu'}
+                        transition={{ duration: 0.2, ease: 'easeInOut' }}
+                    >
+                        {isMobileMenuOpen ? (
+                            <MdClose size={24} />
+                        ) : (
+                            <MdMenu size={24} />
+                        )}
+                    </motion.div>
+                </motion.button>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </header>
-  );
+
+            <AnimatePresence>
+                {isMobileMenuOpen && (
+                    <motion.div
+                        className={styles.mobileMenu}
+                        variants={mobileMenuVariants}
+                        initial='hidden'
+                        animate='visible'
+                        exit='exit'
+                    >
+                        <div className={styles.mobileMenuContent}>
+                            <motion.div variants={menuItemVariants}>
+                                <Button
+                                    variant='primary'
+                                    size='medium'
+                                    onClick={handleProfileClick}
+                                    leftIcon={<MdPerson size={24} />}
+                                    className={styles.mobileProfileButton}
+                                >
+                                    Profile
+                                </Button>
+                            </motion.div>
+                            <motion.div variants={menuItemVariants}>
+                                <Button
+                                    variant='secondary-subtle'
+                                    size='medium'
+                                    onClick={handleSignOut}
+                                    className={styles.mobileSignOutButton}
+                                    leftIcon={<MdLogout size={24} />}
+                                >
+                                    Sign Out
+                                </Button>
+                            </motion.div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </header>
+    );
 };
 
 export default NavBar;

@@ -17,10 +17,21 @@ from ..models.v1.event_requests import (
     EventDateTime,
 )
 
+import api.models.v1.event_requests as models
+from api.services.llm_service import LLMService
+from api.services.relationships_service import RelationshipsService
+
 
 class EventRequestsService:
-    def __init__(self, databridge: EventRequestsDatabridge):
-        self.databridge = databridge
+    def __init__(
+        self,
+        databridge: EventRequestsDatabridge,
+        llm_service: LLMService,
+        relationships_service: RelationshipsService,
+    ):
+        self.databridge: EventRequestsDatabridge = databridge
+        self.relationships_service: RelationshipsService = relationships_service
+        self.llm_service: LLMService = llm_service
 
     def _event_datetime_to_dict(self, event_datetime: EventDateTime) -> dict:
         """Convert EventDateTime to dict for database storage"""
@@ -88,7 +99,30 @@ class EventRequestsService:
             requested_approvals=db_request.requested_approvals,
             completed_count=db_request.completed_count,
         )
-    
+
+    async def auto_fill_event_request(
+        self,
+        *,
+        request: models.SmartParseEventRequestRequest,
+        user_id: str,
+    ) -> models.CreateEventRequestRequest:
+        """Auto-fill an event request by description/request"""
+        _relationships = (
+            await self.relationships_service.get_user_relationships_with_users(
+                user_id=user_id
+            )
+        )
+        # format the current date as long format (wednesday, september 18, 2025 - 12:00 pm)
+        _current_date = request.current_date.strftime("%A, %B %d, %Y - %I:%M %p")
+        _context = f"The current date is {_current_date}"
+        _context += f"\nThe user has the following relationships: {[
+            {
+                "id": relationship.other_user.id,
+                "name": relationship.other_user.full_name,
+            } for relationship in _relationships.relationships
+        ]}"
+        return await self.llm_service.smart_parse_event_request(request, _context)
+
     async def create_event_request_with_approvals(
         self,
         *,

@@ -1,0 +1,69 @@
+.container {
+    position: relative;
+    display: inline-block;
+}
+
+.trigger {
+    cursor: pointer;
+    display: inline-block;
+}
+
+.trigger:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+    border-radius: var(--border-radius-standard);
+}
+
+.content {
+    position: absolute;
+    z-index: 1000;
+    background: white;
+    border: 1px solid var(--grey-200);
+    border-radius: var(--border-radius-standard);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 12px;
+    min-width: 120px;
+    max-width: 300px;
+    width: max-content;
+    box-sizing: border-box;
+}
+
+/* Arrow is now handled inline by Framer Motion */
+
+/* Position classes are now handled by Framer Motion inline styles */
+
+/* Animations are now handled by Framer Motion */
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .content {
+        background: var(--grey-800);
+        border-color: var(--grey-600);
+        color: white;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .content {
+        max-width: calc(100vw - 32px);
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%) !important;
+    }
+
+    .position-left,
+    .position-left-start,
+    .position-left-end,
+    .position-right,
+    .position-right-start,
+    .position-right-end {
+        position: fixed;
+        top: 50% !important;
+        left: 50% !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: translate(-50%, -50%) !important;
+        margin: 0 !important;
+    }
+}

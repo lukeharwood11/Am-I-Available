@@ -4,11 +4,17 @@ from typing import Literal
 
 # Util models
 
+
 class EventRequestApprovalUser(BaseModel):
     """Request model for creating an event request approval for a user"""
-    user_id: str = Field(description="UUID of the user who needs to approve")
-    required: bool = Field(False, description="Whether this approval is required")
 
+    user_id: str = Field(
+        description="UUID of the user who needs to approve",
+        example="user-123e4567-e89b-12d3-a456-426614174000",
+    )
+    required: bool = Field(
+        False, description="Whether this approval is required", example=True
+    )
 
 
 # ============================================================================
@@ -19,37 +25,64 @@ class EventRequestApprovalUser(BaseModel):
 class CreateEventRequestApprovalRequest(BaseModel):
     """Request model for creating an event request approval"""
 
-    event_request_id: str = Field(description="UUID of the event request")
-    user_id: str = Field(description="UUID of the user who needs to approve")
-    required: bool = Field(False, description="Whether this approval is required")
+    event_request_id: str = Field(
+        description="UUID of the event request",
+        example="req-123e4567-e89b-12d3-a456-426614174000",
+    )
+    user_id: str = Field(
+        description="UUID of the user who needs to approve",
+        example="user-123e4567-e89b-12d3-a456-426614174000",
+    )
+    required: bool = Field(
+        False, description="Whether this approval is required", example=True
+    )
 
 
 class UpdateEventRequestApprovalRequest(BaseModel):
     """Request model for updating an event request approval"""
 
-    approval_id: str = Field(description="UUID of the approval to update")
+    approval_id: str = Field(
+        description="UUID of the approval to update",
+        example="approval-123e4567-e89b-12d3-a456-426614174000",
+    )
     status: Literal["pending", "approved", "rejected"] = Field(
-        description="Approval status"
+        description="Approval status", example="approved"
     )
     response_notes: str | None = Field(
-        None, description="Optional notes from the approver"
+        None,
+        description="Optional notes from the approver",
+        example="Looks good to me, approved!",
     )
+
 
 class GetEventRequestApprovalsRequest(BaseModel):
     """Request model for getting event request approvals"""
 
-    event_request_id: str | None = Field(None, description="Filter by event request ID")
-    user_id: str | None = Field(None, description="Filter by user ID")
-    status: Literal["pending", "approved", "rejected"] | None = Field(
-        None, description="Filter by approval status"
+    event_request_id: str | None = Field(
+        None,
+        description="Filter by event request ID",
+        example="req-123e4567-e89b-12d3-a456-426614174000",
     )
-    required: bool | None = Field(None, description="Filter by required approvals")
+    user_id: str | None = Field(
+        None,
+        description="Filter by user ID",
+        example="user-123e4567-e89b-12d3-a456-426614174000",
+    )
+    status: Literal["pending", "approved", "rejected"] | None = Field(
+        None, description="Filter by approval status", example="pending"
+    )
+    required: bool | None = Field(
+        None, description="Filter by required approvals", example=True
+    )
 
 
 class DeleteEventRequestApprovalRequest(BaseModel):
     """Request model for deleting an event request approval"""
 
-    approval_id: str = Field(description="UUID of the approval to delete")
+    approval_id: str = Field(
+        description="UUID of the approval to delete",
+        example="approval-123e4567-e89b-12d3-a456-426614174000",
+    )
 
 
 # ============================================================================

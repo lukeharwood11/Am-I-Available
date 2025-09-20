@@ -1,6 +1,7 @@
 // Button components
 export { default as Button } from './button/Button';
 export { default as ButtonLink } from './button/ButtonLink';
+export { default as Card } from './card/Card';
 
 // Input components
 export * from './input';
@@ -49,3 +50,9 @@ export * from './tabs';
 
 // Menu components
 export * from './menu';
+
+// Popover components
+export * from './popover';
+
+// Pill components
+export * from './pill';

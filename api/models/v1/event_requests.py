@@ -13,12 +13,18 @@ class EventDateTime(BaseModel):
     """Represents date/time information matching Google API format"""
 
     date: str | None = Field(
-        None, description="Date in YYYY-MM-DD format for all-day events"
+        None,
+        description="Date in YYYY-MM-DD format for all-day events",
+        example="2024-01-15",
     )
     date_time: datetime | None = Field(
-        None, description="Date and time for timed events"
+        None,
+        description="Date and time for timed events",
+        example="2024-01-15T14:30:00",
     )
-    time_zone: str | None = Field(None, description="Time zone identifier")
+    time_zone: str | None = Field(
+        None, description="Time zone identifier", example="America/New_York"
+    )
 
 
 # ============================================================================
@@ -30,77 +36,145 @@ class CreateEventRequestRequest(BaseModel):
     """Request model for creating a new event request"""
 
     google_event_id: str | None = Field(
-        None, description="Google Calendar event ID if created from Google Calendar"
+        None,
+        description="Google Calendar event ID if created from Google Calendar",
+        example="abc123def456",
     )
-    title: str | None = Field(None, description="Event title")
-    location: str | None = Field(None, description="Event location")
-    description: str | None = Field(None, description="Event description")
-    start_date: EventDateTime = Field(description="Event start date and time")
-    end_date: EventDateTime = Field(description="Event end date and time")
+    title: str | None = Field(None, description="Event title", example="Team Meeting")
+    location: str | None = Field(
+        None, description="Event location", example="Conference Room A"
+    )
+    description: str | None = Field(
+        None,
+        description="Event description",
+        example="Weekly team sync to discuss project progress",
+    )
+    start_date: EventDateTime = Field(
+        description="Event start date and time",
+        example={"date_time": "2024-01-15T14:30:00", "time_zone": "America/New_York"},
+    )
+    end_date: EventDateTime = Field(
+        description="Event end date and time",
+        example={"date_time": "2024-01-15T15:30:00", "time_zone": "America/New_York"},
+    )
     importance_level: int = Field(
-        1, ge=1, le=5, description="Importance level from 1 (low) to 5 (critical)"
+        1,
+        ge=1,
+        le=5,
+        description="Importance level from 1 (low) to 5 (critical)",
+        example=3,
     )
-    notes: str | None = Field(None, description="Additional notes for the event")
-    approvers: list[era_models.EventRequestApprovalUser] | None = Field(default_factory=list, description="List of user IDs that are approvers")
+    notes: str | None = Field(
+        None,
+        description="Additional notes for the event",
+        example="Please bring your laptops",
+    )
+    approvers: list[era_models.EventRequestApprovalUser] | None = Field(
+        default_factory=list,
+        description="List of user IDs that are approvers",
+        example=[{"user_id": "user-123", "required": True}],
+    )
+
+
+class SmartParseEventRequestRequest(CreateEventRequestRequest):
+    current_date: datetime = Field(
+        description="Current date", example="2024-01-10T10:00:00"
+    )
 
 
 class UpdateEventRequestRequest(BaseModel):
     """Request model for updating an event request"""
 
-    event_request_id: str = Field(description="UUID of the event request to update")
-    google_event_id: str | None = Field(None, description="Google Calendar event ID")
-    title: str | None = Field(None, description="Updated event title")
-    location: str | None = Field(None, description="Updated event location")
-    description: str | None = Field(None, description="Updated event description")
+    event_request_id: str = Field(
+        description="UUID of the event request to update",
+        example="req-123e4567-e89b-12d3-a456-426614174000",
+    )
+    google_event_id: str | None = Field(
+        None, description="Google Calendar event ID", example="abc123def456"
+    )
+    title: str | None = Field(
+        None, description="Updated event title", example="Updated Team Meeting"
+    )
+    location: str | None = Field(
+        None, description="Updated event location", example="Conference Room B"
+    )
+    description: str | None = Field(
+        None,
+        description="Updated event description",
+        example="Updated weekly team sync",
+    )
     start_date: EventDateTime | None = Field(
-        None, description="Updated event start date and time"
+        None,
+        description="Updated event start date and time",
+        example={"date_time": "2024-01-15T15:00:00", "time_zone": "America/New_York"},
     )
     end_date: EventDateTime | None = Field(
-        None, description="Updated event end date and time"
+        None,
+        description="Updated event end date and time",
+        example={"date_time": "2024-01-15T16:00:00", "time_zone": "America/New_York"},
     )
     importance_level: int | None = Field(
-        None, ge=1, le=5, description="Updated importance level"
+        None, ge=1, le=5, description="Updated importance level", example=4
     )
     status: Literal["pending", "approved", "rejected"] | None = Field(
-        None, description="Updated event request status"
+        None, description="Updated event request status", example="approved"
     )
-    notes: str | None = Field(None, description="Updated notes")
+    notes: str | None = Field(
+        None, description="Updated notes", example="Updated notes for the meeting"
+    )
 
 
 class GetEventRequestsRequest(BaseModel):
     """Request model for getting event requests"""
 
     status: Literal["pending", "approved", "rejected"] | None = Field(
-        None, description="Filter by event request status"
+        None, description="Filter by event request status", example="pending"
     )
     importance_level: int | None = Field(
-        None, ge=1, le=5, description="Filter by importance level"
+        None, ge=1, le=5, description="Filter by importance level", example=3
     )
     start_date_from: EventDateTime | None = Field(
-        None, description="Filter events starting from this date"
+        None,
+        description="Filter events starting from this date",
+        example={"date_time": "2024-01-01T00:00:00", "time_zone": "America/New_York"},
     )
     start_date_to: EventDateTime | None = Field(
-        None, description="Filter events starting before this date"
+        None,
+        description="Filter events starting before this date",
+        example={"date_time": "2024-12-31T23:59:59", "time_zone": "America/New_York"},
     )
-    created_by: str | None = Field(None, description="Filter by creator user ID")
+    created_by: str | None = Field(
+        None,
+        description="Filter by creator user ID",
+        example="user-123e4567-e89b-12d3-a456-426614174000",
+    )
 
 
 class ListEventRequestsWithApprovalsRequest(BaseModel):
     """Request model for listing event requests with approval status"""
 
     status: Literal["pending", "approved", "rejected"] | None = Field(
-        None, description="Filter by event request status"
+        None, description="Filter by event request status", example="pending"
     )
-    skip: int = Field(0, ge=0, description="Number of records to skip for pagination")
+    skip: int = Field(
+        0, ge=0, description="Number of records to skip for pagination", example=0
+    )
     take: int = Field(
-        50, ge=1, le=100, description="Number of records to return (max 100)"
+        50,
+        ge=1,
+        le=100,
+        description="Number of records to return (max 100)",
+        example=25,
     )
 
 
 class DeleteEventRequestRequest(BaseModel):
     """Request model for deleting an event request"""
 
-    event_request_id: str = Field(description="UUID of the event request to delete")
+    event_request_id: str = Field(
+        description="UUID of the event request to delete",
+        example="req-123e4567-e89b-12d3-a456-426614174000",
+    )
 
 
 # ============================================================================

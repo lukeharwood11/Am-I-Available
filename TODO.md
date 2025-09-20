@@ -3,7 +3,10 @@
 Am I Available?
 
 ## Up Next:
-- Create / Edit / List Event Requests 
+- Smart Fill Events
+- View Relationships & Add / Reject
+- Text Create Events with OpenAI
+- Create Drafts
 
 ## Feature List
 

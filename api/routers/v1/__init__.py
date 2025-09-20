@@ -8,7 +8,7 @@ from api.routers.v1 import (
     relationship_requests,
     event_requests,
     emails,
-    diagnostics
+    diagnostics,
 )
 
 protected_router = APIRouter(

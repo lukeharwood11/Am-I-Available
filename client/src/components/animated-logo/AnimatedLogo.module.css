@@ -1,35 +1,35 @@
 .logo {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  user-select: none;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
 }
 
 .logoText {
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--text-color);
-  display: flex;
-  align-items: center;
-  white-space: nowrap;
-  overflow: hidden;
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .word {
-  display: inline-block;
-  font-weight: inherit;
-  color: inherit;
+    display: inline-block;
+    font-weight: inherit;
+    color: inherit;
 }
 
 .space {
-  display: inline-block;
-  overflow: hidden;
+    display: inline-block;
+    overflow: hidden;
 }
 
 /* Responsive design */
 @media screen and (max-width: 360px) {
-  .logoText {
-    font-size: 1.25rem;
-  }
+    .logoText {
+        font-size: 1.25rem;
+    }
 }

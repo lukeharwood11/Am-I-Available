@@ -4,3 +4,4 @@ export { default as QuickActionsSection } from './QuickActionsSection';
 export { default as SuggestionsSection } from './SuggestionsSection';
 export { default as PendingDraftsSection } from './PendingDraftsSection';
 export { default as TasksSection } from './TasksSection';
+export { default as NotificationsSection } from './NotificationsSection';

@@ -2,7 +2,10 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from datetime import datetime
 
 from ...settings.auth import get_current_user_id, get_current_user
-from ...dependencies import get_event_requests_service, get_event_request_approvals_service
+from ...dependencies import (
+    get_event_requests_service,
+    get_event_request_approvals_service,
+)
 from ...services.event_requests_service import EventRequestsService
 from ...services.event_request_approvals_service import EventRequestApprovalsService
 from ...models.v1.event_requests import (
@@ -14,6 +17,7 @@ from ...models.v1.event_requests import (
     EventRequestCreateResponse,
     EventRequestUpdateResponse,
     EventRequestDeleteResponse,
+    SmartParseEventRequestRequest,
 )
 import logging
 
@@ -22,12 +26,29 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/event-requests", tags=["Event Requests"])
 
 
+@router.post("/commands/auto-fill")
+async def auto_fill_event_request(
+    request: SmartParseEventRequestRequest,
+    user_id: str = Depends(get_current_user_id),
+    service: EventRequestsService = Depends(get_event_requests_service),
+) -> EventRequestCreateResponse:
+    """
+    Auto-fill an event request by description
+    """
+    return await service.auto_fill_event_request(
+        request=request,
+        user_id=user_id,
+    )
+
+
 @router.post("", response_model=EventRequestCreateResponse)
 async def create_event_request(
     request: CreateEventRequestRequest,
     user_id: str = Depends(get_current_user_id),
     service: EventRequestsService = Depends(get_event_requests_service),
-    event_request_approvals_service: EventRequestApprovalsService = Depends(get_event_request_approvals_service),
+    event_request_approvals_service: EventRequestApprovalsService = Depends(
+        get_event_request_approvals_service
+    ),
 ) -> EventRequestCreateResponse:
     """
     Create a new event request
@@ -60,6 +81,7 @@ async def create_event_request(
         )
         logger.error(f"Error creating event request approvals: {e}")
     return _event_request
+
 
 @router.get("", response_model=EventRequestsListResponse)
 async def get_user_event_requests(

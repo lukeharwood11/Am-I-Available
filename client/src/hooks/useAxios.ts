@@ -5,73 +5,73 @@ import { useAuth } from './useAuth';
 // @deprecated Use Redux thunks and API hubs instead. This hook will be removed in a future version.
 
 interface UseAxiosResponse<T> {
-  data: T | null;
-  loading: boolean;
-  error: Error | null;
-  execute: (
-    url: string,
-    options?: {
-      method?: string;
-      data?: any;
-      params?: any;
-      headers?: Record<string, string>;
-    }
-  ) => Promise<T | null>;
+    data: T | null;
+    loading: boolean;
+    error: Error | null;
+    execute: (
+        url: string,
+        options?: {
+            method?: string;
+            data?: any;
+            params?: any;
+            headers?: Record<string, string>;
+        }
+    ) => Promise<T | null>;
 }
 
 function useAxios<T = any>(): UseAxiosResponse<T> {
-  const [data, setData] = useState<T | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<Error | null>(null);
-  const { accessToken } = useAuth();
+    const [data, setData] = useState<T | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState<Error | null>(null);
+    const { accessToken } = useAuth();
 
-  const execute = useCallback(
-    async (
-      url: string,
-      options?: {
-        method?: string;
-        data?: any;
-        params?: any;
-        headers?: Record<string, string>;
-      }
-    ): Promise<T | null> => {
-      try {
-        setLoading(true);
-        setError(null);
+    const execute = useCallback(
+        async (
+            url: string,
+            options?: {
+                method?: string;
+                data?: any;
+                params?: any;
+                headers?: Record<string, string>;
+            }
+        ): Promise<T | null> => {
+            try {
+                setLoading(true);
+                setError(null);
 
-        // Prepare headers with authentication
-        const headers = {
-          ...options?.headers,
-        };
+                // Prepare headers with authentication
+                const headers = {
+                    ...options?.headers,
+                };
 
-        // Add authorization header if we have an access token
-        if (accessToken) {
-          headers.Authorization = `Bearer ${accessToken}`;
-        }
+                // Add authorization header if we have an access token
+                if (accessToken) {
+                    headers.Authorization = `Bearer ${accessToken}`;
+                }
 
-        const response = await axiosInstance({
-          url,
-          method: options?.method || 'GET',
-          data: options?.data,
-          params: options?.params,
-          headers,
-        });
+                const response = await axiosInstance({
+                    url,
+                    method: options?.method || 'GET',
+                    data: options?.data,
+                    params: options?.params,
+                    headers,
+                });
 
-        const responseData = response.data as T;
-        setData(responseData);
-        return responseData;
-      } catch (err) {
-        const errorObj = err as Error;
-        setError(errorObj);
-        return null;
-      } finally {
-        setLoading(false);
-      }
-    },
-    [accessToken]
-  );
+                const responseData = response.data as T;
+                setData(responseData);
+                return responseData;
+            } catch (err) {
+                const errorObj = err as Error;
+                setError(errorObj);
+                return null;
+            } finally {
+                setLoading(false);
+            }
+        },
+        [accessToken]
+    );
 
-  return { data, loading, error, execute };
+    return { data, loading, error, execute };
 }
 
 export default useAxios;

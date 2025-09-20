@@ -1,88 +1,88 @@
 .datePickerContainer {
-  position: relative;
-  display: inline-block;
-  width: auto;
+    position: relative;
+    display: inline-block;
+    width: auto;
 }
 
 .fullWidth {
-  width: 100%;
+    width: 100%;
 }
 
 .label {
-  display: block;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--grey-800);
-  margin-bottom: 8px;
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--grey-800);
+    margin-bottom: 8px;
 }
 
 .required {
-  color: var(--danger-red);
-  margin-left: 4px;
+    color: var(--danger-red);
+    margin-left: 4px;
 }
 
 .dateInput {
-  border: 1px solid var(--grey-300);
-  border-radius: var(--border-radius-standard);
-  background-color: white;
-  font-family: inherit;
-  font-weight: 400;
-  color: var(--grey-800);
-  transition: all 0.2s ease-in-out;
-  box-sizing: border-box;
-  cursor: pointer;
-  flex: 1;
+    border: 1px solid var(--grey-300);
+    border-radius: var(--border-radius-standard);
+    background-color: white;
+    font-family: inherit;
+    font-weight: 400;
+    color: var(--grey-800);
+    transition: all 0.2s ease-in-out;
+    box-sizing: border-box;
+    cursor: pointer;
+    flex: 1;
 }
 
 .dateInput:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 2px var(--primary-bg);
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px var(--primary-bg);
 }
 
 .dateInput:hover:not(:disabled) {
-  border-color: var(--primary-light);
+    border-color: var(--primary-light);
 }
 
 .dateInput.error {
-  border-color: var(--danger-red);
+    border-color: var(--danger-red);
 }
 
 .dateInput.error:focus {
-  border-color: var(--danger-red);
-  box-shadow: 0 0 0 2px var(--danger-light);
+    border-color: var(--danger-red);
+    box-shadow: 0 0 0 2px var(--danger-light);
 }
 
 .dateInput.disabled {
-  background-color: var(--grey-100);
-  cursor: not-allowed;
-  opacity: 0.6;
-  color: var(--grey-600);
+    background-color: var(--grey-100);
+    cursor: not-allowed;
+    opacity: 0.6;
+    color: var(--grey-600);
 }
 
 .dateInput::placeholder {
-  color: var(--grey-600);
+    color: var(--grey-600);
 }
 
 .errorMessage {
-  color: var(--danger-red);
-  font-size: 12px;
-  margin-top: 4px;
-  font-weight: 500;
+    color: var(--danger-red);
+    font-size: 12px;
+    margin-top: 4px;
+    font-weight: 500;
 }
 
 /* Sizes */
 .small {
-  padding: 8px 12px;
-  font-size: 14px;
+    padding: 8px 12px;
+    font-size: 14px;
 }
 
 .medium {
-  padding: 12px 16px;
-  font-size: 16px;
+    padding: 12px 16px;
+    font-size: 16px;
 }
 
 .large {
-  padding: 16px 20px;
-  font-size: 18px;
+    padding: 16px 20px;
+    font-size: 18px;
 }

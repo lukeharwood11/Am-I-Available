@@ -5,31 +5,31 @@ import { RootState } from '../store';
 export const selectAuthState = (state: RootState) => state.auth;
 
 export const selectSession = createSelector(
-  [selectAuthState],
-  auth => auth.session
+    [selectAuthState],
+    auth => auth.session
 );
 
 export const selectIsAuthenticated = createSelector(
-  [selectAuthState],
-  auth => auth.isAuthenticated
+    [selectAuthState],
+    auth => auth.isAuthenticated
 );
 
 export const selectAuthLoading = createSelector(
-  [selectAuthState],
-  auth => auth.loading
+    [selectAuthState],
+    auth => auth.loading
 );
 
 export const selectAuthError = createSelector(
-  [selectAuthState],
-  auth => auth.error
+    [selectAuthState],
+    auth => auth.error
 );
 
 export const selectAccessToken = createSelector(
-  [selectAuthState],
-  auth => auth.accessToken
+    [selectAuthState],
+    auth => auth.accessToken
 );
 
 export const selectRefreshToken = createSelector(
-  [selectAuthState],
-  auth => auth.refreshToken
+    [selectAuthState],
+    auth => auth.refreshToken
 );
