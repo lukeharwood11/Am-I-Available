@@ -18,7 +18,6 @@ import { RootState } from '../../redux/store';
 import Select from '../../components/select';
 import {
     MdAutoAwesome,
-    MdCancel,
     MdInfo,
     MdOutlineArrowBackIosNew,
     MdSave,
@@ -343,9 +342,16 @@ export const RequestForm = ({
                     fullWidth
                     rows={2}
                 />
-                <Button leftIcon={<MdAutoAwesome />} variant='secondary-subtle' onClick={() => {
-                    handleFieldChange('description', 'This is a test description');
-                }}>
+                <Button
+                    leftIcon={<MdAutoAwesome />}
+                    variant='secondary-subtle'
+                    onClick={() => {
+                        handleFieldChange(
+                            'description',
+                            'This is a test description'
+                        );
+                    }}
+                >
                     Auto-Fill by Description
                 </Button>
             </div>

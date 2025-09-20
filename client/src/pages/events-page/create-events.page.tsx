@@ -5,7 +5,6 @@ import { AppDispatch } from '../../redux/store';
 import { CreateEventRequestRequest } from '../../redux/types/event-requests.types';
 import { createEventRequestThunk } from '../../redux/thunks/event-requests.thunk';
 import { RequestForm } from './RequestForm';
-import { Text } from '../../components';
 import styles from './create-events.page.module.css';
 
 const CreateEventsPage = () => {

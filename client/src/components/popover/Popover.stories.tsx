@@ -45,24 +45,26 @@ type Story = StoryObj<typeof meta>;
 
 const BasicContent = () => (
     <div>
-        <Text variant='body-medium'>This is a basic popover content.</Text>
-        <Text
-            variant='body-small'
-            style={{ marginTop: '8px', color: 'var(--grey-600)' }}
-        >
-            Click outside to close.
-        </Text>
+        <Text variant='body'>This is a basic popover content.</Text>
+        <div style={{ marginTop: '8px' }}>
+            <Text variant='body-small' color='grey-600'>
+                Click outside to close.
+            </Text>
+        </div>
     </div>
 );
 
 const RichContent = () => (
     <div style={{ minWidth: '200px' }}>
-        <Text variant='heading-small' style={{ marginBottom: '8px' }}>
-            Popover Title
-        </Text>
-        <Text variant='body-medium' style={{ marginBottom: '12px' }}>
-            This is a more complex popover with multiple elements and actions.
-        </Text>
+        <div style={{ marginBottom: '8px' }}>
+            <Text variant='heading-small'>Popover Title</Text>
+        </div>
+        <div style={{ marginBottom: '12px' }}>
+            <Text variant='body'>
+                This is a more complex popover with multiple elements and
+                actions.
+            </Text>
+        </div>
         <div
             style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}
         >
@@ -147,15 +149,14 @@ export const NoClickOutsideClose: Story = {
         trigger: <Button variant='primary-subtle'>No Outside Close</Button>,
         content: (
             <div>
-                <Text variant='body-medium'>
+                <Text variant='body'>
                     This popover won't close when clicking outside.
                 </Text>
-                <Text
-                    variant='body-small'
-                    style={{ marginTop: '8px', color: 'var(--grey-600)' }}
-                >
-                    Press Escape or click the trigger again to close.
-                </Text>
+                <div style={{ marginTop: '8px' }}>
+                    <Text variant='body-small' color='grey-600'>
+                        Press Escape or click the trigger again to close.
+                    </Text>
+                </div>
             </div>
         ),
         position: 'bottom',
@@ -267,18 +268,12 @@ export const SmoothAnimations: Story = {
                 trigger={<Button variant='primary'>Smooth Top</Button>}
                 content={
                     <div>
-                        <Text variant='body-medium'>
-                            Smooth animation from top!
-                        </Text>
-                        <Text
-                            variant='body-small'
-                            style={{
-                                marginTop: '8px',
-                                color: 'var(--grey-600)',
-                            }}
-                        >
-                            Powered by Framer Motion
-                        </Text>
+                        <Text variant='body'>Smooth animation from top!</Text>
+                        <div style={{ marginTop: '8px' }}>
+                            <Text variant='body-small' color='grey-600'>
+                                Powered by Framer Motion
+                            </Text>
+                        </div>
                     </div>
                 }
                 position='top'
@@ -287,18 +282,12 @@ export const SmoothAnimations: Story = {
                 trigger={<Button variant='secondary'>Smooth Right</Button>}
                 content={
                     <div>
-                        <Text variant='body-medium'>
-                            Smooth animation from right!
-                        </Text>
-                        <Text
-                            variant='body-small'
-                            style={{
-                                marginTop: '8px',
-                                color: 'var(--grey-600)',
-                            }}
-                        >
-                            No more abrupt jumps
-                        </Text>
+                        <Text variant='body'>Smooth animation from right!</Text>
+                        <div style={{ marginTop: '8px' }}>
+                            <Text variant='body-small' color='grey-600'>
+                                No more abrupt jumps
+                            </Text>
+                        </div>
                     </div>
                 }
                 position='right'
@@ -307,18 +296,12 @@ export const SmoothAnimations: Story = {
                 trigger={<Button variant='alternate'>Smooth Left</Button>}
                 content={
                     <div>
-                        <Text variant='body-medium'>
-                            Smooth animation from left!
-                        </Text>
-                        <Text
-                            variant='body-small'
-                            style={{
-                                marginTop: '8px',
-                                color: 'var(--grey-600)',
-                            }}
-                        >
-                            Fluid transitions
-                        </Text>
+                        <Text variant='body'>Smooth animation from left!</Text>
+                        <div style={{ marginTop: '8px' }}>
+                            <Text variant='body-small' color='grey-600'>
+                                Fluid transitions
+                            </Text>
+                        </div>
                     </div>
                 }
                 position='left'
@@ -348,13 +331,12 @@ export const CenteredPositioning: Story = {
                     trigger={<Button variant='primary'>Top Center</Button>}
                     content={
                         <div style={{ textAlign: 'center', minWidth: '150px' }}>
-                            <Text variant='body-medium'>Top Center Test</Text>
-                            <Text
-                                variant='body-small'
-                                style={{ marginTop: '4px' }}
-                            >
-                                Should be centered above
-                            </Text>
+                            <Text variant='body'>Top Center Test</Text>
+                            <div style={{ marginTop: '4px' }}>
+                                <Text variant='body-small'>
+                                    Should be centered above
+                                </Text>
+                            </div>
                         </div>
                     }
                     position='top'
@@ -366,13 +348,12 @@ export const CenteredPositioning: Story = {
                     trigger={<Button variant='secondary'>Right Center</Button>}
                     content={
                         <div style={{ textAlign: 'center', minWidth: '150px' }}>
-                            <Text variant='body-medium'>Right Center Test</Text>
-                            <Text
-                                variant='body-small'
-                                style={{ marginTop: '4px' }}
-                            >
-                                Should be centered to the right
-                            </Text>
+                            <Text variant='body'>Right Center Test</Text>
+                            <div style={{ marginTop: '4px' }}>
+                                <Text variant='body-small'>
+                                    Should be centered to the right
+                                </Text>
+                            </div>
                         </div>
                     }
                     position='right'
@@ -384,13 +365,12 @@ export const CenteredPositioning: Story = {
                     trigger={<Button variant='alternate'>Left Center</Button>}
                     content={
                         <div style={{ textAlign: 'center', minWidth: '150px' }}>
-                            <Text variant='body-medium'>Left Center Test</Text>
-                            <Text
-                                variant='body-small'
-                                style={{ marginTop: '4px' }}
-                            >
-                                Should be centered to the left
-                            </Text>
+                            <Text variant='body'>Left Center Test</Text>
+                            <div style={{ marginTop: '4px' }}>
+                                <Text variant='body-small'>
+                                    Should be centered to the left
+                                </Text>
+                            </div>
                         </div>
                     }
                     position='left'
@@ -402,15 +382,12 @@ export const CenteredPositioning: Story = {
                     trigger={<Button variant='danger'>Bottom Center</Button>}
                     content={
                         <div style={{ textAlign: 'center', minWidth: '150px' }}>
-                            <Text variant='body-medium'>
-                                Bottom Center Test
-                            </Text>
-                            <Text
-                                variant='body-small'
-                                style={{ marginTop: '4px' }}
-                            >
-                                Should be centered below
-                            </Text>
+                            <Text variant='body'>Bottom Center Test</Text>
+                            <div style={{ marginTop: '4px' }}>
+                                <Text variant='body-small'>
+                                    Should be centered below
+                                </Text>
+                            </div>
                         </div>
                     }
                     position='bottom'
