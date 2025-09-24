@@ -26,6 +26,15 @@ export const selectEventRequestsError = (state: RootState) =>
 export const selectEventRequestsPagination = (state: RootState) =>
     state.eventRequests.pagination;
 
+export const selectSmartParseLoading = (state: RootState) =>
+    state.eventRequests.smartParse.loading;
+
+export const selectSmartParseResult = (state: RootState) =>
+    state.eventRequests.smartParse.result;
+
+export const selectSmartParseError = (state: RootState) =>
+    state.eventRequests.error.smartParse;
+
 // Computed selectors
 export const selectEventRequestsByStatus = createSelector(
     [selectEventRequests, (_: RootState, status: string) => status],

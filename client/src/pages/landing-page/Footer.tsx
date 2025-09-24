@@ -84,7 +84,7 @@ const Footer: React.FC = () => {
 
             <div className={styles.footerBottom}>
                 <div className={styles.copyright}>
-                    <p>&copy; {currentYear} AM/A. All rights reserved.</p>
+                    <p>&copy; {currentYear} AMIA. All rights reserved.</p>
                 </div>
                 <div className={styles.socialLinks}>
                     <a

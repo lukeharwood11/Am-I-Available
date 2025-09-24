@@ -13,10 +13,10 @@ const SmartCreateSection = ({ onSmartCreate }: SmartCreateSectionProps) => {
                 <Pill color='primary' variant='outlined' size='medium'>
                     Beta
                 </Pill>
-                Smart Create with AM/A
+                Smart Create with AMIA
             </Text>
             <div className={styles.smartCreateHeader}>
-                <Input disabled placeholder='Chat with AM/A' fullWidth />
+                <Input disabled placeholder='Chat with AMIA' fullWidth />
                 <Button
                     variant='primary'
                     leftIcon={<MdAutoAwesome />}

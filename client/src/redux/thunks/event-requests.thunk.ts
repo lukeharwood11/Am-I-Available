@@ -7,12 +7,14 @@ import {
     getEventRequestWithApprovals,
     updateEventRequest,
     deleteEventRequest,
+    smartParseEventRequest,
 } from '../hubs/event-requests.hub';
 import {
     CreateEventRequestRequest,
     UpdateEventRequestRequest,
     GetEventRequestsRequest,
     ListEventRequestsWithApprovalsRequest,
+    SmartParseEventRequestRequest,
 } from '../types/event-requests.types';
 import { ERROR_MESSAGES } from '../constants';
 
@@ -142,6 +144,23 @@ export const deleteEventRequestThunk = createAsyncThunk(
                 error instanceof Error
                     ? error.message
                     : ERROR_MESSAGES.EVENT_REQUESTS.DELETE_FAILED;
+            return rejectWithValue(message);
+        }
+    }
+);
+
+// Smart parse an event request
+export const smartParseEventRequestThunk = createAsyncThunk(
+    'eventRequests/smartParse',
+    async (request: SmartParseEventRequestRequest, { rejectWithValue }) => {
+        try {
+            const response = await smartParseEventRequest(request);
+            return response;
+        } catch (error) {
+            const message =
+                error instanceof Error
+                    ? error.message
+                    : 'Failed to smart parse event request';
             return rejectWithValue(message);
         }
     }

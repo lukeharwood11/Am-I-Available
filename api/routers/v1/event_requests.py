@@ -10,6 +10,7 @@ from ...services.event_requests_service import EventRequestsService
 from ...services.event_request_approvals_service import EventRequestApprovalsService
 from ...models.v1.event_requests import (
     CreateEventRequestRequest,
+    SmartParseEventRequestRequest,
     UpdateEventRequestRequest,
     EventRequestResponse,
     EventRequestsListResponse,
@@ -17,7 +18,8 @@ from ...models.v1.event_requests import (
     EventRequestCreateResponse,
     EventRequestUpdateResponse,
     EventRequestDeleteResponse,
-    SmartParseEventRequestRequest,
+    SmartParseEventRequestResponse,
+    SmartParseEvent
 )
 import logging
 
@@ -31,14 +33,15 @@ async def auto_fill_event_request(
     request: SmartParseEventRequestRequest,
     user_id: str = Depends(get_current_user_id),
     service: EventRequestsService = Depends(get_event_requests_service),
-) -> EventRequestCreateResponse:
+) -> SmartParseEventRequestResponse:
     """
     Auto-fill an event request by description
     """
-    return await service.auto_fill_event_request(
+    _parsed = await service.auto_fill_event_request(
         request=request,
         user_id=user_id,
     )
+    return SmartParseEventRequestResponse(event_request=_parsed)
 
 
 @router.post("", response_model=EventRequestCreateResponse)

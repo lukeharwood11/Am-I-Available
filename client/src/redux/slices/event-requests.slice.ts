@@ -12,6 +12,7 @@ import {
     fetchEventRequestWithApprovalsThunk,
     updateEventRequestThunk,
     deleteEventRequestThunk,
+    smartParseEventRequestThunk,
 } from '../thunks/event-requests.thunk';
 
 const initialState: EventRequestsState = {
@@ -35,6 +36,11 @@ const initialState: EventRequestsState = {
         eventRequestsWithApprovals: null,
         currentEventRequest: null,
         currentEventRequestWithApprovals: null,
+        smartParse: null,
+    },
+    smartParse: {
+        loading: false,
+        result: null,
     },
 };
 
@@ -106,7 +112,12 @@ const eventRequestsSlice = createSlice({
                 eventRequestsWithApprovals: null,
                 currentEventRequest: null,
                 currentEventRequestWithApprovals: null,
+                smartParse: null,
             };
+        },
+        clearSmartParseResult: state => {
+            state.smartParse.result = null;
+            state.error.smartParse = null;
         },
     },
     extraReducers: builder => {
@@ -139,6 +150,10 @@ const eventRequestsSlice = createSlice({
             .addCase(deleteEventRequestThunk.pending, state => {
                 state.loading.eventRequests = true;
                 state.error.eventRequests = null;
+            })
+            .addCase(smartParseEventRequestThunk.pending, state => {
+                state.smartParse.loading = true;
+                state.error.smartParse = null;
             })
             // Generic rejected handlers
             .addCase(createEventRequestThunk.rejected, (state, action) => {
@@ -176,6 +191,10 @@ const eventRequestsSlice = createSlice({
             .addCase(deleteEventRequestThunk.rejected, (state, action) => {
                 state.loading.eventRequests = false;
                 state.error.eventRequests = action.payload as string;
+            })
+            .addCase(smartParseEventRequestThunk.rejected, (state, action) => {
+                state.smartParse.loading = false;
+                state.error.smartParse = action.payload as string;
             })
             // Fulfilled handlers with data updates
             .addCase(createEventRequestThunk.fulfilled, (state, action) => {
@@ -278,6 +297,10 @@ const eventRequestsSlice = createSlice({
                 if (state.currentEventRequestWithApprovals?.id === requestId) {
                     state.currentEventRequestWithApprovals = null;
                 }
+            })
+            .addCase(smartParseEventRequestThunk.fulfilled, (state, action) => {
+                state.smartParse.loading = false;
+                state.smartParse.result = action.payload.event_request;
             });
     },
 });

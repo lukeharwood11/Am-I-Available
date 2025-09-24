@@ -56,7 +56,7 @@ const AboutSection: React.FC = () => {
                         variants={itemVariants}
                     >
                         <MdRocket className={styles.badgeIcon} />
-                        About AM/A
+                        About AMIA
                     </motion.div>
 
                     <motion.h2 className={styles.title} variants={itemVariants}>
@@ -71,7 +71,7 @@ const AboutSection: React.FC = () => {
                         className={styles.description}
                         variants={itemVariants}
                     >
-                        AM/A is your intelligent scheduling assistant that
+                        AMIA is your intelligent scheduling assistant that
                         transforms how you manage your calendar.
                     </motion.p>
 

@@ -24,7 +24,7 @@ const LoadingIcon: React.FC<LoadingIconProps> = ({ size = 32, className }) => {
                 minHeight: `${fontSize * 1.2}px`,
             }}
         >
-            <span className={styles.loadingText}>AM/A</span>
+            <span className={styles.loadingText}>AMIA</span>
             <div
                 className={styles.loadingOutline}
                 style={{

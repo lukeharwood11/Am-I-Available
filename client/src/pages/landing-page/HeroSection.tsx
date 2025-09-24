@@ -84,7 +84,7 @@ const HeroSection: React.FC = () => {
                         className={styles.subtitle}
                         variants={itemVariants}
                     >
-                        AM/A intelligently manages your calendar, so you don't
+                        AMIA intelligently manages your calendar, so you don't
                         have to.
                     </motion.p>
 
@@ -142,7 +142,7 @@ const HeroSection: React.FC = () => {
                             </motion.div>
                             <span className={styles.statsDisclaimer}>
                                 *Based on one user's feedback, who happens to be
-                                the creator of AM/A
+                                the creator of AMIA
                             </span>
                         </>
                     )}

@@ -16,7 +16,7 @@ const Logo: React.FC<LogoProps> = ({ size = 24, className }) => {
 
     return (
         <h1 className={combinedClassName} style={{ fontSize: `${fontSize}px` }}>
-            AM/A
+            AMIA
         </h1>
     );
 };

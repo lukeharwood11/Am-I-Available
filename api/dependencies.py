@@ -107,9 +107,9 @@ def get_llm_service() -> LLMService:
     return LLMService()
 
 
-def get_relationships_service() -> RelationshipsService:
+def get_relationships_service(relationships_databridge: RelationshipsDatabridge = Depends(get_relationships_databridge)) -> RelationshipsService:
     """Dependency to get relationships service instance"""
-    return RelationshipsService()
+    return RelationshipsService(databridge=relationships_databridge)
 
 
 def get_event_requests_service(

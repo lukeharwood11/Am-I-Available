@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MdLogout, MdPerson, MdMenu, MdClose } from 'react-icons/md';
+import { MdLogout, MdPerson, MdMenu, MdClose, MdEvent } from 'react-icons/md';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { supabase } from '../../lib/supabaseClient';
 import Button from '../button/Button';
@@ -22,8 +22,8 @@ const NavBar: React.FC<NavBarProps> = ({ name }) => {
         setIsMobileMenuOpen(false);
     };
 
-    const handleProfileClick = () => {
-        navigate('/profile');
+    const handleClick = (path: string) => {
+        navigate(path);
         setIsMobileMenuOpen(false);
     };
 
@@ -87,7 +87,7 @@ const NavBar: React.FC<NavBarProps> = ({ name }) => {
                 <div className={styles.actions}>
                     <Profile
                         name={name}
-                        onProfile={handleProfileClick}
+                        onClick={handleClick}
                         onLogout={handleSignOut}
                     />
                 </div>
@@ -127,11 +127,22 @@ const NavBar: React.FC<NavBarProps> = ({ name }) => {
                                 <Button
                                     variant='primary'
                                     size='medium'
-                                    onClick={handleProfileClick}
+                                    onClick={() => handleClick('/profile')}
                                     leftIcon={<MdPerson size={24} />}
                                     className={styles.mobileProfileButton}
                                 >
                                     Profile
+                                </Button>
+                            </motion.div>
+                            <motion.div variants={menuItemVariants}>
+                                <Button
+                                    variant='primary'
+                                    size='medium'
+                                    onClick={() => handleClick('/events')}
+                                    leftIcon={<MdEvent size={24} />}
+                                    className={styles.mobileProfileButton}
+                                >
+                                    Events
                                 </Button>
                             </motion.div>
                             <motion.div variants={menuItemVariants}>

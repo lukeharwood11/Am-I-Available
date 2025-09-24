@@ -1,4 +1,4 @@
-# AM/A
+# AMIA
 
 Am I Available?
 
@@ -9,6 +9,10 @@ Am I Available?
 - Create Drafts
 
 ## Feature List
+
+### Bugs
+- [ ] Add a frame to load all relevant data on app load (relationships don't load for requestform)
+- [ ] Fix the storing of time for an event request... right now the timezones are screwed up.
 
 ### QOL 
 - [x] Fix styling of loading cards

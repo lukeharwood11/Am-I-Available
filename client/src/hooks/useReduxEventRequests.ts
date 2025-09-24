@@ -26,6 +26,9 @@ import {
     selectApprovedEventRequestsCount,
     selectRejectedEventRequestsCount,
     selectHighImportanceEventRequestsCount,
+    selectSmartParseLoading,
+    selectSmartParseResult,
+    selectSmartParseError,
 } from '../redux/selectors/event-requests.selectors';
 import {
     createEventRequestThunk,
@@ -35,12 +38,14 @@ import {
     fetchEventRequestWithApprovalsThunk,
     updateEventRequestThunk,
     deleteEventRequestThunk,
+    smartParseEventRequestThunk,
 } from '../redux/thunks/event-requests.thunk';
 import {
     CreateEventRequestRequest,
     UpdateEventRequestRequest,
     GetEventRequestsRequest,
     ListEventRequestsWithApprovalsRequest,
+    SmartParseEventRequestRequest,
 } from '../redux/types/event-requests.types';
 
 export function useReduxEventRequests() {
@@ -58,6 +63,11 @@ export function useReduxEventRequests() {
     const loading = useAppSelector(selectEventRequestsLoading);
     const error = useAppSelector(selectEventRequestsError);
     const pagination = useAppSelector(selectEventRequestsPagination);
+
+    // Smart parse selectors
+    const smartParseLoading = useAppSelector(selectSmartParseLoading);
+    const smartParseResult = useAppSelector(selectSmartParseResult);
+    const smartParseError = useAppSelector(selectSmartParseError);
 
     // Filtered selectors
     const pendingEventRequests = useAppSelector(selectPendingEventRequests);
@@ -166,6 +176,13 @@ export function useReduxEventRequests() {
         [dispatch]
     );
 
+    const smartParseEventRequest = useCallback(
+        async (request: SmartParseEventRequestRequest) => {
+            return dispatch(smartParseEventRequestThunk(request));
+        },
+        [dispatch]
+    );
+
     return {
         // State
         eventRequests,
@@ -175,6 +192,11 @@ export function useReduxEventRequests() {
         loading,
         error,
         pagination,
+
+        // Smart parse state
+        smartParseLoading,
+        smartParseResult,
+        smartParseError,
 
         // Filtered data
         pendingEventRequests,
@@ -206,5 +228,6 @@ export function useReduxEventRequests() {
         fetchEventRequestWithApprovals,
         updateEventRequest,
         deleteEventRequest,
+        smartParseEventRequest,
     };
 }

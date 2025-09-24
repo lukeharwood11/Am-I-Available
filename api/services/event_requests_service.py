@@ -105,7 +105,7 @@ class EventRequestsService:
         *,
         request: models.SmartParseEventRequestRequest,
         user_id: str,
-    ) -> models.CreateEventRequestRequest:
+    ) -> models.SmartParseEvent:
         """Auto-fill an event request by description/request"""
         _relationships = (
             await self.relationships_service.get_user_relationships_with_users(

@@ -9,7 +9,7 @@ import { FaHeart } from 'react-icons/fa';
 const Footer = () => {
     return (
         <footer className={styles.footer}>
-            Made with <FaHeart /> by AM/A's brother
+            Made with <FaHeart /> by AMIA's brother
         </footer>
     );
 };

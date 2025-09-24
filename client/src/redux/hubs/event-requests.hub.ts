@@ -4,6 +4,8 @@ import {
     UpdateEventRequestRequest,
     GetEventRequestsRequest,
     ListEventRequestsWithApprovalsRequest,
+    SmartParseEventRequestRequest,
+    SmartParseEventRequestResponse,
     EventRequestResponse,
     EventRequestWithApprovalsResponse,
     EventRequestsListResponse,
@@ -190,5 +192,23 @@ export async function deleteEventRequest(
     } catch (error) {
         console.error('Error deleting event request:', error);
         throw new Error('Failed to delete event request');
+    }
+}
+
+/**
+ * Smart parse an event request description to auto-fill fields
+ */
+export async function smartParseEventRequest(
+    request: SmartParseEventRequestRequest
+): Promise<SmartParseEventRequestResponse> {
+    try {
+        const response = await post<SmartParseEventRequestResponse>(
+            '/api/v1/event-requests/commands/auto-fill',
+            request
+        );
+        return response;
+    } catch (error) {
+        console.error('Error smart parsing event request:', error);
+        throw new Error('Failed to smart parse event request');
     }
 }

@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 from typing import Literal
 import api.models.v1.event_request_approvals as era_models
 
@@ -34,7 +34,6 @@ class EventDateTime(BaseModel):
 
 class CreateEventRequestRequest(BaseModel):
     """Request model for creating a new event request"""
-
     google_event_id: str | None = Field(
         None,
         description="Google Calendar event ID if created from Google Calendar",
@@ -50,7 +49,7 @@ class CreateEventRequestRequest(BaseModel):
         example="Weekly team sync to discuss project progress",
     )
     start_date: EventDateTime = Field(
-        description="Event start date and time",
+        description="Event start date and time, use date_time if time is given, otherwise use date (example: 2024-01-15)",
         example={"date_time": "2024-01-15T14:30:00", "time_zone": "America/New_York"},
     )
     end_date: EventDateTime = Field(
@@ -78,7 +77,7 @@ class CreateEventRequestRequest(BaseModel):
 
 class SmartParseEventRequestRequest(CreateEventRequestRequest):
     current_date: datetime = Field(
-        description="Current date", example="2024-01-10T10:00:00"
+        description="Current date with timezone", example=datetime.now(timezone(timedelta(hours=-5)))
     )
 
 
@@ -180,6 +179,49 @@ class DeleteEventRequestRequest(BaseModel):
 # ============================================================================
 # RESPONSE MODELS
 # ============================================================================
+
+class SmartParseEvent(BaseModel):
+    """Model for smart parse event"""
+    title: str | None = Field(None, description="Event title", example="Team Meeting")
+    location: str | None = Field(
+        None, description="Event location", example="Conference Room A"
+    )
+    description: str | None = Field(
+        None,
+        description="Event description",
+        example="Weekly team sync to discuss project progress",
+    )
+    start_date: EventDateTime = Field(
+        description="Event start date and time, use date_time if time is given, otherwise use date (example: 2024-01-15)",
+        example={"date_time": "2024-01-15T14:30:00", "time_zone": "America/New_York"},
+    )
+    end_date: EventDateTime = Field(
+        description="Event end date and time",
+        example={"date_time": "2024-01-15T15:30:00", "time_zone": "America/New_York"},
+    )
+    importance_level: int = Field(
+        1,
+        ge=1,
+        le=5,
+        description="Importance level from 1 (low) to 5 (critical)",
+        example=3,
+    )
+    notes: str | None = Field(
+        None,
+        description="Additional notes for the event",
+        example="Please bring your laptops",
+    )
+    approvers: list[era_models.EventRequestApprovalUser] | None = Field(
+        default_factory=list,
+        description="List of user IDs that are approvers",
+        example=[{"user_id": "user-123", "required": True}],
+    )
+
+class SmartParseEventRequestResponse(BaseModel):
+    """Response model for smart parse event request"""
+    status: str = "success"
+    event_request: SmartParseEvent
+    message: str = "Event request parsed successfully"
 
 
 class EventRequestData(BaseModel):

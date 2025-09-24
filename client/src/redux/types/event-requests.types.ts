@@ -95,6 +95,36 @@ export interface ListEventRequestsWithApprovalsRequest {
     take?: number;
 }
 
+export interface SmartParseEventRequestRequest {
+    title?: string | null;
+    google_event_id?: string | null;
+    location?: string | null;
+    description?: string | null;
+    start_date: EventDateTime;
+    end_date: EventDateTime;
+    importance_level: number;
+    notes?: string | null;
+    approvers?: Approver[];
+    current_date: string; // ISO datetime string
+}
+
+export interface SmartParseEvent {
+    title: string | null;
+    location: string | null;
+    description: string | null;
+    start_date: EventDateTime;
+    end_date: EventDateTime;
+    importance_level: number;
+    notes: string | null;
+    approvers?: Approver[];
+}
+
+export interface SmartParseEventRequestResponse {
+    status: string;
+    event_request: SmartParseEvent;
+    message: string;
+}
+
 // Event Request Response Types
 export interface EventRequestResponse extends BaseResponse {
     event_request: EventRequestData;
@@ -147,5 +177,10 @@ export interface EventRequestsState {
         eventRequestsWithApprovals: string | null;
         currentEventRequest: string | null;
         currentEventRequestWithApprovals: string | null;
+        smartParse: string | null;
+    };
+    smartParse: {
+        loading: boolean;
+        result: SmartParseEvent | null;
     };
 }

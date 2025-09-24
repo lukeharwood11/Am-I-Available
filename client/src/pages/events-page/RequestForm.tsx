@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
     Button,
     DatePicker,
@@ -22,6 +22,7 @@ import {
     MdOutlineArrowBackIosNew,
     MdSave,
 } from 'react-icons/md';
+import { useReduxEventRequests } from '../../hooks/useReduxEventRequests';
 
 export interface Approver {
     user_id: string;
@@ -79,6 +80,14 @@ export const RequestForm = ({
         approvers: [],
         ...initialData,
     });
+
+    const {
+        smartParseEventRequest,
+        smartParseLoading,
+        smartParseError,
+        smartParseResult,
+    } = useReduxEventRequests();
+
     const selectedApprover = useMemo(() => {
         return relationships.find(
             relationship =>
@@ -178,13 +187,12 @@ export const RequestForm = ({
         }
 
         const combinedDateTime = `${dateString}T${timeString}`;
-
         // get the current timezone of the user
         const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
         console.log('combinedDateTime', combinedDateTime);
         console.log('timezone', timezone);
-        if (isAllDay) {
+        if (isAllDay || !timeString) {
             return {
                 date: dateString,
                 time_zone: timezone,
@@ -202,6 +210,11 @@ export const RequestForm = ({
     const validateForm = (): boolean => {
         const newErrors: FormErrors = {};
         // TODO: Validate the form
+        // if allDay is set to false, then there must be a start_time and end_time
+        if (!allDay && (!formData.start_time || !formData.end_time)) {
+            newErrors.start_time = 'Start time is required';
+            newErrors.end_time = 'End time is required';
+        }
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -286,6 +299,69 @@ export const RequestForm = ({
         }));
     };
 
+    useEffect(() => {
+        if (!smartParseResult) return;
+        if (smartParseError) return;
+
+        // Helper function to parse EventDateTime back to date and time strings
+        const parseEventDateTime = (eventDateTime: EventDateTime) => {
+            if (!eventDateTime) return { date: '', time: '' };
+
+            // Handle all-day events (date field)
+            if (eventDateTime.date) {
+                return { date: eventDateTime.date.replace('T', ''), time: '' };
+            }
+
+            // Handle timed events (date_time field)
+            if (eventDateTime.date_time) {
+                const dateTimeString = eventDateTime.date_time;
+                const [date, time] = dateTimeString.split('T');
+                return { date: date || '', time: time || '' };
+            }
+
+            return { date: '', time: '' };
+        };
+
+        const startDateTime = parseEventDateTime(smartParseResult.start_date);
+        const endDateTime = parseEventDateTime(smartParseResult.end_date);
+
+        setFormData(prev => ({
+            ...prev,
+            title: smartParseResult.title || prev.title,
+            location: smartParseResult.location || prev.location,
+            description: smartParseResult.description || prev.description,
+            start_date: startDateTime.date || prev.start_date,
+            end_date: endDateTime.date || prev.end_date,
+            start_time: startDateTime.time || prev.start_time,
+            end_time: endDateTime.time || prev.end_time,
+            notes: smartParseResult.notes || prev.notes,
+            approvers: smartParseResult.approvers || prev.approvers,
+        }));
+    }, [smartParseResult]);
+
+    const handleAutoFill = useCallback(async () => {
+        await smartParseEventRequest({
+            description: formData.description,
+            current_date: new Date().toISOString(),
+            start_date: stringToEventDateTime(
+                formData.start_date,
+                formData.start_time,
+                allDay
+            ),
+            end_date: stringToEventDateTime(
+                formData.end_date,
+                formData.end_time,
+                allDay
+            ),
+            importance_level: 1,
+            title: formData.title,
+            google_event_id: null,
+            location: formData.location,
+            notes: formData.notes,
+            approvers: formData.approvers,
+        });
+    }, [formData.description]);
+
     return (
         <div className={styles.requestForm}>
             <div className={styles.formActions}>
@@ -294,6 +370,7 @@ export const RequestForm = ({
                     onClick={onCancel}
                     disabled={isSubmitting}
                     leftIcon={<MdOutlineArrowBackIosNew />}
+                    size='x-small'
                 >
                     Back
                 </Button>
@@ -341,16 +418,13 @@ export const RequestForm = ({
                     placeholder='Describe your event...'
                     fullWidth
                     rows={2}
+                    disabled={smartParseLoading}
                 />
                 <Button
                     leftIcon={<MdAutoAwesome />}
                     variant='secondary-subtle'
-                    onClick={() => {
-                        handleFieldChange(
-                            'description',
-                            'This is a test description'
-                        );
-                    }}
+                    onClick={handleAutoFill}
+                    isLoading={smartParseLoading}
                 >
                     Auto-Fill by Description
                 </Button>
@@ -365,6 +439,7 @@ export const RequestForm = ({
                     }
                     placeholder='Enter location'
                     fullWidth
+                    disabled={smartParseLoading}
                 />
             </div>
 
@@ -378,6 +453,7 @@ export const RequestForm = ({
                         fullWidth
                         variant={errors.start_date ? 'error' : 'default'}
                         minDate={new Date().toISOString().split('T')[0]}
+                        disabled={smartParseLoading}
                     />
                     {errors.start_date && (
                         <span className={styles.errorText}>
@@ -398,6 +474,7 @@ export const RequestForm = ({
                             formData.start_date ||
                             new Date().toISOString().split('T')[0]
                         }
+                        disabled={smartParseLoading}
                     />
                     {errors.end_date && (
                         <span className={styles.errorText}>
@@ -417,6 +494,7 @@ export const RequestForm = ({
                             placeholder='Start time'
                             fullWidth
                             variant={errors.start_time ? 'error' : 'default'}
+                            disabled={smartParseLoading}
                         />
                         {errors.start_time && (
                             <span className={styles.errorText}>
@@ -433,6 +511,7 @@ export const RequestForm = ({
                             placeholder='End time'
                             fullWidth
                             variant={errors.end_time ? 'error' : 'default'}
+                            disabled={smartParseLoading}
                         />
                         {errors.end_time && (
                             <span className={styles.errorText}>
@@ -465,6 +544,7 @@ export const RequestForm = ({
                     placeholder='Additional notes...'
                     fullWidth
                     rows={2}
+                    disabled={smartParseLoading}
                 />
             </div>
             <div className={styles.formGroup}>
@@ -496,6 +576,7 @@ export const RequestForm = ({
                             formData.approvers[0]?.required || false
                         )
                     }
+                    disabled={smartParseLoading}
                 />
                 {formData.approvers.length > 0 && selectedApprover && (
                     <>

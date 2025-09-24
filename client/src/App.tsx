@@ -13,6 +13,7 @@ import AuthWrapper from './AuthWrapper';
 import Layout from './components/layout/Layout';
 import LandingPage from './pages/landing-page/landing.page';
 import ProfilePage from './pages/profile-page/profile.page';
+import NotFoundPage from './pages/not-found-page/not-found.page';
 
 export const routes = {
     landing: '/',
@@ -70,7 +71,10 @@ const App: React.FC = () => {
                         </Route>
                     </Route>
                     <Route path={''} element={<Layout />}>
-                        {/* <Route path={routes.notFound} element={<NotFoundPage />} /> */}
+                        <Route
+                            path={routes.notFound}
+                            element={<NotFoundPage />}
+                        />
                     </Route>
                 </Routes>
             </BrowserRouter>

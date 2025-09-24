@@ -37,7 +37,7 @@ const SuggestionsSection = () => {
         <Card contentClassName={styles.card}>
             <div className={styles.sectionTitle}>
                 <MdLightbulb />
-                <Text variant='heading-small'>AM/A Suggestions</Text>
+                <Text variant='heading-small'>AMIA Suggestions</Text>
             </div>
             <div className={styles.suggestions}>
                 {suggestions.map(suggestion => (

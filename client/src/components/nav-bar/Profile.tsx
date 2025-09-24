@@ -1,19 +1,18 @@
 import React from 'react';
-import { MdPerson, MdLogout, MdAccountCircle } from 'react-icons/md';
+import { MdPerson, MdLogout, MdAccountCircle, MdEvent } from 'react-icons/md';
 import { Menu, MenuItem, MenuDivider } from '../menu';
 import styles from './Profile.module.css';
 
 interface ProfileProps {
     name: string;
-    onProfile?: () => void;
-    onSettings?: () => void;
+    onClick: (path: string) => void;
     onLogout?: () => void;
     className?: string;
 }
 
 const Profile: React.FC<ProfileProps> = ({
     name,
-    onProfile,
+    onClick,
     onLogout,
     className,
 }) => {
@@ -34,8 +33,17 @@ const Profile: React.FC<ProfileProps> = ({
                 offset={8}
                 className={styles.profileMenu}
             >
-                <MenuItem leftIcon={<MdPerson size={20} />} onClick={onProfile}>
+                <MenuItem
+                    leftIcon={<MdPerson size={20} />}
+                    onClick={() => onClick('/profile')}
+                >
                     Profile
+                </MenuItem>
+                <MenuItem
+                    leftIcon={<MdEvent size={20} />}
+                    onClick={() => onClick('/events')}
+                >
+                    Events
                 </MenuItem>
                 <MenuDivider />
 
