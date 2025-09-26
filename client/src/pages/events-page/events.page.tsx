@@ -128,7 +128,9 @@ const EventsPage = () => {
                                         </div>
                                         <div className={styles.eventActions}>
                                             <Pill
-                                                color={getStatusColor(event.status)}
+                                                color={getStatusColor(
+                                                    event.status
+                                                )}
                                                 size='small'
                                                 variant='outlined'
                                             >
@@ -140,11 +142,16 @@ const EventsPage = () => {
                                     <div className={styles.eventDetails}>
                                         <div className={styles.dateTimeInfo}>
                                             <Text variant='caption'>
-                                                {formatDateTimeShort(event.start_date)}
+                                                {formatDateTimeShort(
+                                                    event.start_date
+                                                )}
                                             </Text>
                                             {event.end_date && (
                                                 <Text variant='caption'>
-                                                    - {formatDateTimeShort(event.end_date)}
+                                                    -{' '}
+                                                    {formatDateTimeShort(
+                                                        event.end_date
+                                                    )}
                                                 </Text>
                                             )}
                                         </div>

@@ -2,7 +2,10 @@ import { useEffect, useCallback, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store';
-import { fetchEventRequestsWithApprovalsThunk, deleteEventRequestThunk } from '../../redux/thunks/event-requests.thunk';
+import {
+    fetchEventRequestsWithApprovalsThunk,
+    deleteEventRequestThunk,
+} from '../../redux/thunks/event-requests.thunk';
 import { Approver } from '../../redux/types/event-requests.types';
 import { formatDateTime } from '../../utils/dateUtils';
 import { Button, Text, Pill, ConfirmationModal } from '../../components';
@@ -70,24 +73,20 @@ const EventDetailPage = () => {
         setIsDeleteModalOpen(true);
     };
 
-    const handleDeleteConfirm = useCallback(
-        async () => {
-            if (!id) return;
-            
-            try {
-                await dispatch(deleteEventRequestThunk(id)).unwrap();
-                navigate('/events');
-            } catch (error) {
-                console.error('Failed to delete event request:', error);
-            }
-        },
-        [dispatch, navigate, id]
-    );
+    const handleDeleteConfirm = useCallback(async () => {
+        if (!id) return;
+
+        try {
+            await dispatch(deleteEventRequestThunk(id)).unwrap();
+            navigate('/events');
+        } catch (error) {
+            console.error('Failed to delete event request:', error);
+        }
+    }, [dispatch, navigate, id]);
 
     const handleBack = () => {
         navigate('/events');
     };
-
 
     if (isLoading) {
         return (
@@ -97,7 +96,11 @@ const EventDetailPage = () => {
                         <Skeleton width='200px' height='32px' />
                     </div>
                     <div className={styles.pageContent}>
-                        <Skeleton width='100%' height='400px' variant='rounded' />
+                        <Skeleton
+                            width='100%'
+                            height='400px'
+                            variant='rounded'
+                        />
                     </div>
                 </div>
             </div>
@@ -121,8 +124,8 @@ const EventDetailPage = () => {
                         <Card contentClassName={styles.notFoundCard}>
                             <Text variant='heading'>Event not found</Text>
                             <Text variant='caption' color='secondary'>
-                                The event you're looking for doesn't exist or has
-                                been deleted.
+                                The event you're looking for doesn't exist or
+                                has been deleted.
                             </Text>
                             <Button variant='primary' onClick={handleBack}>
                                 Back to Events
@@ -194,7 +197,10 @@ const EventDetailPage = () => {
                         {event.location && (
                             <div className={styles.detailSection}>
                                 <Text variant='heading-small'>Location</Text>
-                                <Text variant='body'> <MdLocationOn /> {event.location}</Text>
+                                <Text variant='body'>
+                                    {' '}
+                                    <MdLocationOn /> {event.location}
+                                </Text>
                             </div>
                         )}
 
@@ -262,17 +268,17 @@ const EventDetailPage = () => {
                     </Card>
                 </div>
             </div>
-            
+
             <ConfirmationModal
                 isOpen={isDeleteModalOpen}
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={handleDeleteConfirm}
-                title="Delete Event"
+                title='Delete Event'
                 message={`Are you sure you want to delete "${event?.title || 'this event'}"?`}
-                smallText="This action cannot be undone."
-                confirmText="Delete"
-                cancelText="Cancel"
-                variant="danger"
+                smallText='This action cannot be undone.'
+                confirmText='Delete'
+                cancelText='Cancel'
+                variant='danger'
             />
         </div>
     );

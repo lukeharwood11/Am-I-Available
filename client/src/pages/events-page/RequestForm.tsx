@@ -379,7 +379,7 @@ export const RequestForm = ({
                 >
                     Back
                 </Button>
-                {(!isNew && onDelete) ? (
+                {!isNew && onDelete ? (
                     <Button
                         leftIcon={<MdDelete />}
                         variant='danger'

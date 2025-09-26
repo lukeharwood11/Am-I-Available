@@ -169,7 +169,8 @@ const notificationsSlice = createSlice({
                     n => n.id === updatedNotification.id
                 );
                 if (notificationIndex !== -1) {
-                    state.notifications[notificationIndex] = updatedNotification;
+                    state.notifications[notificationIndex] =
+                        updatedNotification;
                 }
 
                 // Update current notification if it matches
@@ -191,7 +192,7 @@ const notificationsSlice = createSlice({
                     state.currentNotification = null;
                 }
             })
-            .addCase(markAllAsReadThunk.fulfilled, (state, action) => {
+            .addCase(markAllAsReadThunk.fulfilled, (state, _) => {
                 state.loading.markAllAsRead = false;
                 // Update all notifications to be read
                 state.notifications = state.notifications.map(notification => ({

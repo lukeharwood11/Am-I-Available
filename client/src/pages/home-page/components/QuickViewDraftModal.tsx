@@ -38,7 +38,6 @@ const QuickViewDraftModal: React.FC<QuickViewDraftModalProps> = ({
         navigate(`/events/${draft.id}`);
     };
 
-
     const getStatusPillProps = (status: string) => {
         switch (status.toLowerCase()) {
             case 'approved':

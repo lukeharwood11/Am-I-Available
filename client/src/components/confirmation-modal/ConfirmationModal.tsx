@@ -34,19 +34,28 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
     };
 
     return (
-        <Modal header={<div className={styles.header}><MdWarning /> <Text variant="heading-small">{title}</Text></div>} isOpen={isOpen} onClose={onClose} size="large">
+        <Modal
+            header={
+                <div className={styles.header}>
+                    <MdWarning /> <Text variant='heading-small'>{title}</Text>
+                </div>
+            }
+            isOpen={isOpen}
+            onClose={onClose}
+            size='large'
+        >
             <div className={styles.confirmationModal}>
                 <div className={styles.content}>
-                    <Text variant="body">{message}</Text>
+                    <Text variant='body'>{message}</Text>
                 </div>
                 {smallText && (
                     <div className={styles.content}>
-                        <Text variant="caption">{smallText}</Text>
+                        <Text variant='caption'>{smallText}</Text>
                     </div>
                 )}
                 <div className={styles.actions}>
                     <Button
-                        variant="secondary-subtle"
+                        variant='secondary-subtle'
                         onClick={onClose}
                         disabled={isLoading}
                     >

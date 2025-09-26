@@ -22,60 +22,88 @@ const ProfilePage: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const [searchParams, setSearchParams] = useSearchParams();
     const [activeTab, setActiveTab] = useState('account-information');
-    
+
     const user = useSelector((state: RootState) => state.auth.session?.user);
     const isAuthenticated = useSelector(
         (state: RootState) => state.auth.isAuthenticated
     );
-    
+
     // Relationships state
-    const relationships = useSelector((state: RootState) => state.relationships.relationships);
-    const relationshipRequests = useSelector((state: RootState) => state.relationships.relationshipRequests.received);
-    const sentRelationshipRequests = useSelector((state: RootState) => state.relationships.relationshipRequests.sent);
-    const relationshipsLoading = useSelector((state: RootState) => state.relationships.loading.relationships);
-    const relationshipRequestsLoading = useSelector((state: RootState) => state.relationships.loading.relationshipRequests);
+    const relationships = useSelector(
+        (state: RootState) => state.relationships.relationships
+    );
+    const relationshipRequests = useSelector(
+        (state: RootState) => state.relationships.relationshipRequests.received
+    );
+    const sentRelationshipRequests = useSelector(
+        (state: RootState) => state.relationships.relationshipRequests.sent
+    );
+    const relationshipsLoading = useSelector(
+        (state: RootState) => state.relationships.loading.relationships
+    );
+    const relationshipRequestsLoading = useSelector(
+        (state: RootState) => state.relationships.loading.relationshipRequests
+    );
 
     // Initialize active tab from URL params
     useEffect(() => {
         const tabFromUrl = searchParams.get('tab');
-        if (tabFromUrl && ['account-information', 'settings', 'relationships'].includes(tabFromUrl)) {
+        if (
+            tabFromUrl &&
+            ['account-information', 'settings', 'relationships'].includes(
+                tabFromUrl
+            )
+        ) {
             setActiveTab(tabFromUrl);
         }
     }, [searchParams]);
 
     // Update URL when tab changes
-    const handleTabChange = useCallback((tabId: string) => {
-        setActiveTab(tabId);
-        setSearchParams({ tab: tabId });
-    }, [setSearchParams]);
+    const handleTabChange = useCallback(
+        (tabId: string) => {
+            setActiveTab(tabId);
+            setSearchParams({ tab: tabId });
+        },
+        [setSearchParams]
+    );
 
     // Load relationships data when relationships tab is active
     useEffect(() => {
         dispatch(fetchUserRelationshipsThunk({}));
-        dispatch(fetchReceivedRelationshipRequestsThunk("pending"));
-        dispatch(fetchSentRelationshipRequestsThunk("pending"));
+        dispatch(fetchReceivedRelationshipRequestsThunk('pending'));
+        dispatch(fetchSentRelationshipRequestsThunk('pending'));
     }, [dispatch]);
 
-    const handleApproveRequest = useCallback(async (requestId: string) => {
-        try {
-            await dispatch(approveRelationshipRequestThunk(requestId)).unwrap();
-            // Refresh the data
-            dispatch(fetchReceivedRelationshipRequestsThunk(undefined));
-            dispatch(fetchUserRelationshipsThunk({}));
-        } catch (error) {
-            console.error('Failed to approve relationship request:', error);
-        }
-    }, [dispatch]);
+    const handleApproveRequest = useCallback(
+        async (requestId: string) => {
+            try {
+                await dispatch(
+                    approveRelationshipRequestThunk(requestId)
+                ).unwrap();
+                // Refresh the data
+                dispatch(fetchReceivedRelationshipRequestsThunk(undefined));
+                dispatch(fetchUserRelationshipsThunk({}));
+            } catch (error) {
+                console.error('Failed to approve relationship request:', error);
+            }
+        },
+        [dispatch]
+    );
 
-    const handleRejectRequest = useCallback(async (requestId: string) => {
-        try {
-            await dispatch(rejectRelationshipRequestThunk(requestId)).unwrap();
-            // Refresh the data
-            dispatch(fetchReceivedRelationshipRequestsThunk(undefined));
-        } catch (error) {
-            console.error('Failed to reject relationship request:', error);
-        }
-    }, [dispatch]);
+    const handleRejectRequest = useCallback(
+        async (requestId: string) => {
+            try {
+                await dispatch(
+                    rejectRelationshipRequestThunk(requestId)
+                ).unwrap();
+                // Refresh the data
+                dispatch(fetchReceivedRelationshipRequestsThunk(undefined));
+            } catch (error) {
+                console.error('Failed to reject relationship request:', error);
+            }
+        },
+        [dispatch]
+    );
 
     if (!isAuthenticated || !user) {
         return (
@@ -101,102 +129,178 @@ const ProfilePage: React.FC = () => {
     const renderRelationshipsContent = () => (
         <div className={styles.relationshipsContent}>
             {/* Active Relationships */}
-            <Card variant='default' padding='large' className={styles.relationshipsCard}>
+            <Card
+                variant='default'
+                padding='large'
+                className={styles.relationshipsCard}
+            >
                 <div className={styles.cardHeader}>
                     <Text variant='heading-small' color='grey-800'>
                         Your Relationships
                     </Text>
                 </div>
                 {relationshipsLoading ? (
-                    <Text variant='body' color='grey-600'>Loading relationships...</Text>
+                    <Text variant='body' color='grey-600'>
+                        Loading relationships...
+                    </Text>
                 ) : relationships.length === 0 ? (
-                    <Text variant='body' color='grey-600'>No relationships yet.</Text>
+                    <Text variant='body' color='grey-600'>
+                        No relationships yet.
+                    </Text>
                 ) : (
                     <div className={styles.relationshipsList}>
-                        {relationships.map((relationship: RelationshipWithUserData) => (
-                            <div key={relationship.id} className={styles.relationshipItem}>
-                                <div className={styles.relationshipInfo}>
-                                    <Text variant='body' color='grey-800' weight='medium'>
-                                        {relationship.other_user.full_name ? `${relationship.other_user.full_name} (${relationship.other_user.email})` : relationship.other_user.email}
-                                    </Text>
-                                    <Text variant='body-small' color='grey-600'>
-                                        Connected since {new Date(relationship.created_at).toLocaleDateString()}
-                                    </Text>
+                        {relationships.map(
+                            (relationship: RelationshipWithUserData) => (
+                                <div
+                                    key={relationship.id}
+                                    className={styles.relationshipItem}
+                                >
+                                    <div className={styles.relationshipInfo}>
+                                        <Text
+                                            variant='body'
+                                            color='grey-800'
+                                            weight='medium'
+                                        >
+                                            {relationship.other_user.full_name
+                                                ? `${relationship.other_user.full_name} (${relationship.other_user.email})`
+                                                : relationship.other_user.email}
+                                        </Text>
+                                        <Text
+                                            variant='body-small'
+                                            color='grey-600'
+                                        >
+                                            Connected since{' '}
+                                            {new Date(
+                                                relationship.created_at
+                                            ).toLocaleDateString()}
+                                        </Text>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            )
+                        )}
                     </div>
                 )}
             </Card>
 
             {/* Received Relationship Requests */}
-            <Card variant='default' padding='large' className={styles.requestsCard}>
+            <Card
+                variant='default'
+                padding='large'
+                className={styles.requestsCard}
+            >
                 <div className={styles.cardHeader}>
                     <Text variant='heading-small' color='grey-800'>
                         Received Requests
                     </Text>
                 </div>
                 {relationshipRequestsLoading ? (
-                    <Text variant='body' color='grey-600'>Loading requests...</Text>
+                    <Text variant='body' color='grey-600'>
+                        Loading requests...
+                    </Text>
                 ) : relationshipRequests.length === 0 ? (
-                    <Text variant='body' color='grey-600'>No pending requests.</Text>
+                    <Text variant='body' color='grey-600'>
+                        No pending requests.
+                    </Text>
                 ) : (
                     <div className={styles.requestsList}>
-                        {relationshipRequests.map((request: RelationshipRequestWithUserData) => (
-                            <div key={request.id} className={styles.requestItem}>
-                                <div className={styles.requestInfo}>
-                                    <Text variant='body' color='grey-800' weight='medium'>
-                                        {request.requester.full_name ? `${request.requester.full_name} (${request.requester.email})` : request.requester.email}
-                                    </Text>
-                                    <Text variant='body-small' color='grey-600'>
-                                        Requested on {new Date(request.created_at).toLocaleDateString()}
-                                    </Text>
+                        {relationshipRequests.map(
+                            (request: RelationshipRequestWithUserData) => (
+                                <div
+                                    key={request.id}
+                                    className={styles.requestItem}
+                                >
+                                    <div className={styles.requestInfo}>
+                                        <Text
+                                            variant='body'
+                                            color='grey-800'
+                                            weight='medium'
+                                        >
+                                            {request.requester.full_name
+                                                ? `${request.requester.full_name} (${request.requester.email})`
+                                                : request.requester.email}
+                                        </Text>
+                                        <Text
+                                            variant='body-small'
+                                            color='grey-600'
+                                        >
+                                            Requested on{' '}
+                                            {new Date(
+                                                request.created_at
+                                            ).toLocaleDateString()}
+                                        </Text>
+                                    </div>
+                                    <div className={styles.requestActions}>
+                                        <Button
+                                            variant='primary'
+                                            size='small'
+                                            onClick={() =>
+                                                handleApproveRequest(request.id)
+                                            }
+                                            disabled={
+                                                request.status === 'accepted'
+                                            }
+                                        >
+                                            Accept
+                                        </Button>
+                                        <Button
+                                            variant='secondary'
+                                            size='small'
+                                            onClick={() =>
+                                                handleRejectRequest(request.id)
+                                            }
+                                            disabled={
+                                                request.status === 'rejected'
+                                            }
+                                        >
+                                            Decline
+                                        </Button>
+                                    </div>
                                 </div>
-                                <div className={styles.requestActions}>
-                                    <Button
-                                        variant='primary'
-                                        size='small'
-                                        onClick={() => handleApproveRequest(request.id)}
-                                        disabled={request.status === 'accepted'}
-                                    >
-                                        Accept
-                                    </Button>
-                                    <Button
-                                        variant='secondary'
-                                        size='small'
-                                        onClick={() => handleRejectRequest(request.id)}
-                                        disabled={request.status === 'rejected'}
-                                    >
-                                        Decline
-                                    </Button>
-                                </div>
-                            </div>
-                        ))}
+                            )
+                        )}
                     </div>
                 )}
             </Card>
 
             {/* Sent Relationship Requests */}
-            <Card variant='default' padding='large' className={styles.requestsCard}>
+            <Card
+                variant='default'
+                padding='large'
+                className={styles.requestsCard}
+            >
                 <div className={styles.cardHeader}>
                     <Text variant='heading-small' color='grey-800'>
                         Pending Requests
                     </Text>
                 </div>
                 {relationshipRequestsLoading ? (
-                    <Text variant='body' color='grey-600'>Loading requests...</Text>
+                    <Text variant='body' color='grey-600'>
+                        Loading requests...
+                    </Text>
                 ) : sentRelationshipRequests.length === 0 ? (
-                    <Text variant='body' color='grey-600'>No pending requests.</Text>
+                    <Text variant='body' color='grey-600'>
+                        No pending requests.
+                    </Text>
                 ) : (
                     <div className={styles.requestsList}>
                         {sentRelationshipRequests.map((request: any) => (
-                            <div key={request.id} className={styles.requestItem}>
+                            <div
+                                key={request.id}
+                                className={styles.requestItem}
+                            >
                                 <div className={styles.requestInfo}>
-                                    <Text variant='body' color='grey-800' weight='medium'>
+                                    <Text
+                                        variant='body'
+                                        color='grey-800'
+                                        weight='medium'
+                                    >
                                         {request.requested_email}
                                     </Text>
                                     <Text variant='body-small' color='grey-600'>
-                                        Sent on {new Date(request.created_at).toLocaleDateString()}
+                                        Sent on{' '}
+                                        {new Date(
+                                            request.created_at
+                                        ).toLocaleDateString()}
                                     </Text>
                                 </div>
                             </div>
@@ -252,13 +356,13 @@ const ProfilePage: React.FC = () => {
                 </div>
 
                 <div className={styles.content}>
-                    <Tabs 
-                        variant='underlined' 
-                        tabs={sampleTabs} 
-                        activeTabId={activeTab} 
-                        onTabChange={handleTabChange} 
+                    <Tabs
+                        variant='underlined'
+                        tabs={sampleTabs}
+                        activeTabId={activeTab}
+                        onTabChange={handleTabChange}
                     />
-                    
+
                     {activeTab === 'account-information' && (
                         <Card
                             variant='default'

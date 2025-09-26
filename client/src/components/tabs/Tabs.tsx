@@ -100,20 +100,18 @@ const Tabs: React.FC<TabsProps> = ({
                     );
                 })}
             </div>
-            {
-                activeTab && activeTab.content && (
-                    <div className={styles.tabContent}>
-                        <div
-                            className={styles.tabPanel}
-                            role='tabpanel'
-                            id={`panel-${activeTab.id}`}
-                            aria-labelledby={activeTab.id}
-                        >
-                            {activeTab.content}
-                        </div>
+            {activeTab && activeTab.content && (
+                <div className={styles.tabContent}>
+                    <div
+                        className={styles.tabPanel}
+                        role='tabpanel'
+                        id={`panel-${activeTab.id}`}
+                        aria-labelledby={activeTab.id}
+                    >
+                        {activeTab.content}
                     </div>
-                )
-            }
+                </div>
+            )}
         </div>
     );
 };

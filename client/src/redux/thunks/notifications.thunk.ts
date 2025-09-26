@@ -26,7 +26,8 @@ export const createNotificationThunk = createAsyncThunk(
             const message =
                 error instanceof Error
                     ? error.message
-                    : ERROR_MESSAGES.NOTIFICATIONS?.CREATE_FAILED || 'Failed to create notification';
+                    : ERROR_MESSAGES.NOTIFICATIONS?.CREATE_FAILED ||
+                      'Failed to create notification';
             return rejectWithValue(message);
         }
     }
@@ -43,7 +44,8 @@ export const fetchNotificationsThunk = createAsyncThunk(
             const message =
                 error instanceof Error
                     ? error.message
-                    : ERROR_MESSAGES.NOTIFICATIONS?.FETCH_FAILED || 'Failed to fetch notifications';
+                    : ERROR_MESSAGES.NOTIFICATIONS?.FETCH_FAILED ||
+                      'Failed to fetch notifications';
             return rejectWithValue(message);
         }
     }
@@ -60,7 +62,8 @@ export const fetchNotificationThunk = createAsyncThunk(
             const message =
                 error instanceof Error
                     ? error.message
-                    : ERROR_MESSAGES.NOTIFICATIONS?.FETCH_FAILED || 'Failed to fetch notification';
+                    : ERROR_MESSAGES.NOTIFICATIONS?.FETCH_FAILED ||
+                      'Failed to fetch notification';
             return rejectWithValue(message);
         }
     }
@@ -86,7 +89,8 @@ export const updateNotificationThunk = createAsyncThunk(
             const message =
                 error instanceof Error
                     ? error.message
-                    : ERROR_MESSAGES.NOTIFICATIONS?.UPDATE_FAILED || 'Failed to update notification';
+                    : ERROR_MESSAGES.NOTIFICATIONS?.UPDATE_FAILED ||
+                      'Failed to update notification';
             return rejectWithValue(message);
         }
     }
@@ -103,7 +107,8 @@ export const deleteNotificationThunk = createAsyncThunk(
             const message =
                 error instanceof Error
                     ? error.message
-                    : ERROR_MESSAGES.NOTIFICATIONS?.DELETE_FAILED || 'Failed to delete notification';
+                    : ERROR_MESSAGES.NOTIFICATIONS?.DELETE_FAILED ||
+                      'Failed to delete notification';
             return rejectWithValue(message);
         }
     }

@@ -4,8 +4,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../redux/store';
 import { CreateEventRequestRequest } from '../../redux/types/event-requests.types';
 import { RequestForm } from './RequestForm';
-import { fetchEventRequestWithApprovalsThunk, updateEventRequestThunk, deleteEventRequestThunk } from '../../redux/thunks/event-requests.thunk';
-import { selectCurrentEventRequestWithApprovals, selectEventRequestsLoading } from '../../redux/selectors/event-requests.selectors';
+import {
+    fetchEventRequestWithApprovalsThunk,
+    updateEventRequestThunk,
+    deleteEventRequestThunk,
+} from '../../redux/thunks/event-requests.thunk';
+import {
+    selectCurrentEventRequestWithApprovals,
+    selectEventRequestsLoading,
+} from '../../redux/selectors/event-requests.selectors';
 import Skeleton from '../../components/skeleton/Skeleton';
 import { ConfirmationModal } from '../../components';
 import styles from './edit-event.page.module.css';
@@ -15,7 +22,9 @@ const EditEventPage = () => {
     const dispatch = useDispatch<AppDispatch>();
     const { id } = useParams<{ id: string }>();
 
-    const currentEventRequest = useSelector(selectCurrentEventRequestWithApprovals);
+    const currentEventRequest = useSelector(
+        selectCurrentEventRequestWithApprovals
+    );
     const loading = useSelector(selectEventRequestsLoading);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
@@ -37,12 +46,12 @@ const EditEventPage = () => {
                 const date = new Date(dateTime.date_time);
                 return {
                     date: date.toISOString().split('T')[0],
-                    time: date.toTimeString().slice(0, 5)
+                    time: date.toTimeString().slice(0, 5),
                 };
             } else if (dateTime.date) {
                 return {
                     date: dateTime.date,
-                    time: ''
+                    time: '',
                 };
             }
             return { date: '', time: '' };
@@ -60,27 +69,29 @@ const EditEventPage = () => {
             end_date: endDateTime.date,
             start_time: startDateTime.time,
             end_time: endDateTime.time,
-            approvers: currentEventRequest.approvers || []
+            approvers: currentEventRequest.approvers || [],
         };
     }, [currentEventRequest]);
 
     const handleSave = useCallback(
         async (request: CreateEventRequestRequest) => {
             if (!id) return;
-            
+
             try {
-                await dispatch(updateEventRequestThunk({
-                    eventRequestId: id,
-                    request: {
-                        title: request.title,
-                        location: request.location,
-                        description: request.description,
-                        start_date: request.start_date,
-                        end_date: request.end_date,
-                        importance_level: request.importance_level,
-                        notes: request.notes
-                    }
-                })).unwrap();
+                await dispatch(
+                    updateEventRequestThunk({
+                        eventRequestId: id,
+                        request: {
+                            title: request.title,
+                            location: request.location,
+                            description: request.description,
+                            start_date: request.start_date,
+                            end_date: request.end_date,
+                            importance_level: request.importance_level,
+                            notes: request.notes,
+                        },
+                    })
+                ).unwrap();
                 navigate('/dashboard');
             } catch (error) {
                 console.error('Failed to update event request:', error);
@@ -93,19 +104,16 @@ const EditEventPage = () => {
         setIsDeleteModalOpen(true);
     }, []);
 
-    const handleDeleteConfirm = useCallback(
-        async () => {
-            if (!id) return;
-            
-            try {
-                await dispatch(deleteEventRequestThunk(id)).unwrap();
-                navigate('/dashboard');
-            } catch (error) {
-                console.error('Failed to delete event request:', error);
-            }
-        },
-        [dispatch, navigate, id]
-    );
+    const handleDeleteConfirm = useCallback(async () => {
+        if (!id) return;
+
+        try {
+            await dispatch(deleteEventRequestThunk(id)).unwrap();
+            navigate('/dashboard');
+        } catch (error) {
+            console.error('Failed to delete event request:', error);
+        }
+    }, [dispatch, navigate, id]);
 
     const handleCancel = useCallback(() => {
         navigate('/dashboard');
@@ -116,15 +124,55 @@ const EditEventPage = () => {
             <div className={styles.editEventPage}>
                 <div className={styles.pageContent}>
                     <div className={styles.skeletonContainer}>
-                        <Skeleton variant="text" size="large" width="60%" height="2rem" />
-                        <Skeleton variant="text" size="medium" width="100%" height="3rem" />
-                        <Skeleton variant="text" size="medium" width="100%" height="3rem" />
-                        <Skeleton variant="text" size="medium" width="100%" height="3rem" />
-                        <Skeleton variant="text" size="medium" width="100%" height="3rem" />
-                        <Skeleton variant="text" size="medium" width="100%" height="6rem" />
+                        <Skeleton
+                            variant='text'
+                            size='large'
+                            width='60%'
+                            height='2rem'
+                        />
+                        <Skeleton
+                            variant='text'
+                            size='medium'
+                            width='100%'
+                            height='3rem'
+                        />
+                        <Skeleton
+                            variant='text'
+                            size='medium'
+                            width='100%'
+                            height='3rem'
+                        />
+                        <Skeleton
+                            variant='text'
+                            size='medium'
+                            width='100%'
+                            height='3rem'
+                        />
+                        <Skeleton
+                            variant='text'
+                            size='medium'
+                            width='100%'
+                            height='3rem'
+                        />
+                        <Skeleton
+                            variant='text'
+                            size='medium'
+                            width='100%'
+                            height='6rem'
+                        />
                         <div className={styles.skeletonButtons}>
-                            <Skeleton variant="rounded" size="medium" width="120px" height="2.5rem" />
-                            <Skeleton variant="rounded" size="medium" width="120px" height="2.5rem" />
+                            <Skeleton
+                                variant='rounded'
+                                size='medium'
+                                width='120px'
+                                height='2.5rem'
+                            />
+                            <Skeleton
+                                variant='rounded'
+                                size='medium'
+                                width='120px'
+                                height='2.5rem'
+                            />
                         </div>
                     </div>
                 </div>
@@ -155,17 +203,17 @@ const EditEventPage = () => {
                     />
                 </div>
             </div>
-            
+
             <ConfirmationModal
                 isOpen={isDeleteModalOpen}
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={handleDeleteConfirm}
-                title="Delete Event"
+                title='Delete Event'
                 message={`Are you sure you want to delete "${currentEventRequest?.title || 'this event'}"?`}
                 smallText={`This action cannot be undone.`}
-                confirmText="Delete"
-                cancelText="Cancel"
-                variant="danger"
+                confirmText='Delete'
+                cancelText='Cancel'
+                variant='danger'
             />
         </>
     );

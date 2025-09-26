@@ -44,10 +44,14 @@ const PendingDraftsSection = () => {
         null
     );
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const [draftToDelete, setDraftToDelete] = useState<EventRequestWithApprovalsData | null>(null);
+    const [draftToDelete, setDraftToDelete] =
+        useState<EventRequestWithApprovalsData | null>(null);
     const navigate = useNavigate();
 
-    const handleDeleteClick = (draft: EventRequestWithApprovalsData, event: React.MouseEvent) => {
+    const handleDeleteClick = (
+        draft: EventRequestWithApprovalsData,
+        event: React.MouseEvent
+    ) => {
         event.stopPropagation();
         setDraftToDelete(draft);
         setIsDeleteModalOpen(true);
@@ -55,7 +59,7 @@ const PendingDraftsSection = () => {
 
     const handleDeleteConfirm = async () => {
         if (!draftToDelete) return;
-        
+
         try {
             await dispatch(deleteEventRequestThunk(draftToDelete.id)).unwrap();
             setDraftToDelete(null);
@@ -64,7 +68,10 @@ const PendingDraftsSection = () => {
         }
     };
 
-    const handleClick = (e: React.MouseEvent, draft: EventRequestWithApprovalsData) => {
+    const handleClick = (
+        e: React.MouseEvent,
+        draft: EventRequestWithApprovalsData
+    ) => {
         e.stopPropagation();
         setDraft(draft);
         setIsQuickViewDraftModalOpen(true);
@@ -91,7 +98,11 @@ const PendingDraftsSection = () => {
                               />
                           ))
                         : drafts.slice(0, 3).map(draft => (
-                              <div onDoubleClick={() => handleDoubleClick(draft)} key={draft.id} className={styles.draftItem}>
+                              <div
+                                  onDoubleClick={() => handleDoubleClick(draft)}
+                                  key={draft.id}
+                                  className={styles.draftItem}
+                              >
                                   <div className={styles.draftColumn}>
                                       <Text variant='body'>
                                           {truncateTitle(draft.title)}
@@ -102,7 +113,9 @@ const PendingDraftsSection = () => {
                                   </div>
                                   <div className={styles.draftActions}>
                                       <Button
-                                          onClick={(e) => handleDeleteClick(draft, e)}
+                                          onClick={e =>
+                                              handleDeleteClick(draft, e)
+                                          }
                                           leftIcon={<MdDelete />}
                                           variant='danger-subtle'
                                           size='x-small'
@@ -110,8 +123,8 @@ const PendingDraftsSection = () => {
                                           Delete
                                       </Button>
                                       <Button
-                                          onClick={(e) => {
-                                            handleClick(e, draft);
+                                          onClick={e => {
+                                              handleClick(e, draft);
                                           }}
                                           leftIcon={<MdArrowForward />}
                                           variant='secondary-subtle'
@@ -145,7 +158,7 @@ const PendingDraftsSection = () => {
                     onClose={() => setIsQuickViewDraftModalOpen(false)}
                 />
             )}
-            
+
             <ConfirmationModal
                 isOpen={isDeleteModalOpen}
                 onClose={() => {
@@ -153,12 +166,12 @@ const PendingDraftsSection = () => {
                     setDraftToDelete(null);
                 }}
                 onConfirm={handleDeleteConfirm}
-                title="Delete Event"
+                title='Delete Event'
                 message={`Are you sure you want to delete "${draftToDelete?.title || 'this event'}"?`}
-                smallText="This action cannot be undone."
-                confirmText="Delete"
-                cancelText="Cancel"
-                variant="danger"
+                smallText='This action cannot be undone.'
+                confirmText='Delete'
+                cancelText='Cancel'
+                variant='danger'
             />
         </>
     );
