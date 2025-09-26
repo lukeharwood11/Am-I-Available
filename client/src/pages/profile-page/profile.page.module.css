@@ -1,11 +1,11 @@
 .profilePage {
-    min-height: 100vh;
     background: var(--grey-100);
     padding: 2rem 0;
+    flex: 1;
 }
 
 .container {
-    max-width: 800px;
+    max-width: min(800px, 100%);
     margin: 0 auto;
     padding: 0 1rem;
 }
@@ -59,6 +59,48 @@
     background: var(--grey-200);
     padding: 0.5rem;
     border-radius: var(--border-radius-standard);
+}
+
+/* Relationships content styles */
+.relationshipsContent {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.relationshipsCard,
+.requestsCard {
+    width: 100%;
+}
+
+.relationshipsList,
+.requestsList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.relationshipItem,
+.requestItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border: 1px solid var(--grey-200);
+    border-radius: var(--border-radius-standard);
+    background: var(--white);
+}
+
+.relationshipInfo,
+.requestInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.requestActions {
+    display: flex;
+    gap: 0.5rem;
 }
 
 /* Responsive design */

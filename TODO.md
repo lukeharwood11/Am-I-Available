@@ -22,7 +22,7 @@ Am I Available?
 
 ### Legal / Security / Predeployments
 - [ ] Create help center email
-- [ ] Create "Contact Us" Link
+- [ ] Create "Contact Us" Lin   k
 - [ ] Create Status / Uptime page
 - [ ] Create Privacy Policy
 - [ ] Create Terms of Service

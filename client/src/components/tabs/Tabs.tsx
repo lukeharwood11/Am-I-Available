@@ -4,8 +4,9 @@ import styles from './Tabs.module.css';
 export interface TabItem {
     id: string;
     label: string;
-    content: React.ReactNode;
+    content?: React.ReactNode;
     disabled?: boolean;
+    icon?: React.ReactNode;
 }
 
 interface TabsProps {
@@ -83,23 +84,36 @@ const Tabs: React.FC<TabsProps> = ({
                             }
                             disabled={tab.disabled}
                         >
-                            {tab.label}
+                            <div className={styles.tabTitleContent}>
+                                {tab.icon && (
+                                    <span className={styles.tabIcon}>
+                                        {tab.icon}
+                                    </span>
+                                )}
+                                {tab.label && (
+                                    <span className={styles.tabLabel}>
+                                        {tab.label}
+                                    </span>
+                                )}
+                            </div>
                         </button>
                     );
                 })}
             </div>
-            <div className={styles.tabContent}>
-                {activeTab && (
-                    <div
-                        className={styles.tabPanel}
-                        role='tabpanel'
-                        id={`panel-${activeTab.id}`}
-                        aria-labelledby={activeTab.id}
-                    >
-                        {activeTab.content}
+            {
+                activeTab && activeTab.content && (
+                    <div className={styles.tabContent}>
+                        <div
+                            className={styles.tabPanel}
+                            role='tabpanel'
+                            id={`panel-${activeTab.id}`}
+                            aria-labelledby={activeTab.id}
+                        >
+                            {activeTab.content}
+                        </div>
                     </div>
-                )}
-            </div>
+                )
+            }
         </div>
     );
 };
