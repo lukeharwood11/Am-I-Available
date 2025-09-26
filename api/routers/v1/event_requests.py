@@ -19,7 +19,6 @@ from ...models.v1.event_requests import (
     EventRequestUpdateResponse,
     EventRequestDeleteResponse,
     SmartParseEventRequestResponse,
-    SmartParseEvent
 )
 import logging
 

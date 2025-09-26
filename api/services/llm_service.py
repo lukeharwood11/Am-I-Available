@@ -77,4 +77,11 @@ Do not add ANY information that isn't in the request. If the user doesn't specif
         logger.info(f"Parsed event request in {time.time() - _time:.2f} seconds")
         cost = self._calculate_cost(response)
         logger.info(f"Cost - Input: ${cost.input_cost:.6f}, Output: ${cost.output_cost:.6f}, Total: ${cost.total_cost:.6f}")
-        return response.choices[0].message.parsed
+        _object = response.choices[0].message.parsed
+
+        # ensure that the start/end date isn't timezone aware
+        if _object.start_date and _object.start_date.date_time:
+            _object.start_date.date_time = _object.start_date.date_time.replace(tzinfo=None)
+        if _object.end_date and _object.end_date.date_time:
+            _object.end_date.date_time = _object.end_date.date_time.replace(tzinfo=None)
+        return _object

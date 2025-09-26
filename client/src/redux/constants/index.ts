@@ -49,6 +49,13 @@ export const ERROR_MESSAGES = {
         UPDATE_FAILED: 'Failed to update event request.',
         DELETE_FAILED: 'Failed to delete event request.',
     },
+    NOTIFICATIONS: {
+        CREATE_FAILED: 'Failed to create notification.',
+        FETCH_FAILED: 'Failed to fetch notifications.',
+        UPDATE_FAILED: 'Failed to update notification.',
+        DELETE_FAILED: 'Failed to delete notification.',
+        MARK_ALL_READ_FAILED: 'Failed to mark all notifications as read.',
+    },
     NETWORK: {
         CONNECTION_ERROR:
             'Network connection error. Please check your internet connection.',

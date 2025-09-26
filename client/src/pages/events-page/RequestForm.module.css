@@ -55,7 +55,7 @@
 
 .formActions {
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     gap: 0.75rem;
 }
 

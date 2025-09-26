@@ -1,11 +1,12 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store';
-import { fetchEventRequestsWithApprovalsThunk } from '../../redux/thunks/event-requests.thunk';
+import { fetchEventRequestsWithApprovalsThunk, deleteEventRequestThunk } from '../../redux/thunks/event-requests.thunk';
 import { Approver } from '../../redux/types/event-requests.types';
-import { Button, Text, Pill } from '../../components';
-import { MdEdit, MdArrowBack } from 'react-icons/md';
+import { formatDateTime } from '../../utils/dateUtils';
+import { Button, Text, Pill, ConfirmationModal } from '../../components';
+import { MdEdit, MdArrowBack, MdLocationOn, MdDelete } from 'react-icons/md';
 import Card from '../../components/card/Card';
 import Skeleton from '../../components/skeleton';
 import styles from './event-detail.page.module.css';
@@ -25,6 +26,7 @@ const EventDetailPage = () => {
     );
 
     const event = eventRequestsWithApprovals.find(req => req.id === id);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
     const handleRefresh = useCallback(() => {
         dispatch(fetchEventRequestsWithApprovalsThunk({}));
@@ -64,32 +66,39 @@ const EventDetailPage = () => {
         navigate(`/events/${id}/edit`);
     };
 
+    const handleDeleteClick = () => {
+        setIsDeleteModalOpen(true);
+    };
+
+    const handleDeleteConfirm = useCallback(
+        async () => {
+            if (!id) return;
+            
+            try {
+                await dispatch(deleteEventRequestThunk(id)).unwrap();
+                navigate('/events');
+            } catch (error) {
+                console.error('Failed to delete event request:', error);
+            }
+        },
+        [dispatch, navigate, id]
+    );
+
     const handleBack = () => {
         navigate('/events');
     };
 
-    const formatDateTime = (dateTime: any) => {
-        if (!dateTime) return 'Not specified';
-
-        if (dateTime.date) {
-            return new Date(dateTime.date).toLocaleDateString();
-        }
-
-        if (dateTime.date_time) {
-            return new Date(dateTime.date_time).toLocaleString();
-        }
-
-        return 'Not specified';
-    };
 
     if (isLoading) {
         return (
             <div className={styles.eventDetailPage}>
-                <div className={styles.pageHeader}>
-                    <Skeleton width='200px' height='32px' />
-                </div>
-                <div className={styles.pageContent}>
-                    <Skeleton width='100%' height='400px' variant='rounded' />
+                <div className={styles.container}>
+                    <div className={styles.pageHeader}>
+                        <Skeleton width='200px' height='32px' />
+                    </div>
+                    <div className={styles.pageContent}>
+                        <Skeleton width='100%' height='400px' variant='rounded' />
+                    </div>
                 </div>
             </div>
         );
@@ -98,26 +107,28 @@ const EventDetailPage = () => {
     if (!event) {
         return (
             <div className={styles.eventDetailPage}>
-                <div className={styles.pageHeader}>
-                    <Button
-                        variant='secondary-subtle'
-                        leftIcon={<MdArrowBack />}
-                        onClick={handleBack}
-                    >
-                        Back to Events
-                    </Button>
-                </div>
-                <div className={styles.pageContent}>
-                    <Card contentClassName={styles.notFoundCard}>
-                        <Text variant='heading'>Event not found</Text>
-                        <Text variant='caption' color='secondary'>
-                            The event you're looking for doesn't exist or has
-                            been deleted.
-                        </Text>
-                        <Button variant='primary' onClick={handleBack}>
+                <div className={styles.container}>
+                    <div className={styles.pageHeader}>
+                        <Button
+                            variant='secondary-subtle'
+                            leftIcon={<MdArrowBack />}
+                            onClick={handleBack}
+                        >
                             Back to Events
                         </Button>
-                    </Card>
+                    </div>
+                    <div className={styles.pageContent}>
+                        <Card contentClassName={styles.notFoundCard}>
+                            <Text variant='heading'>Event not found</Text>
+                            <Text variant='caption' color='secondary'>
+                                The event you're looking for doesn't exist or has
+                                been deleted.
+                            </Text>
+                            <Button variant='primary' onClick={handleBack}>
+                                Back to Events
+                            </Button>
+                        </Card>
+                    </div>
                 </div>
             </div>
         );
@@ -125,36 +136,43 @@ const EventDetailPage = () => {
 
     return (
         <div className={styles.eventDetailPage}>
-            <div className={styles.pageHeader}>
-                <div className={styles.headerContent}>
-                    <Button
-                        variant='secondary-subtle'
-                        leftIcon={<MdArrowBack />}
-                        onClick={handleBack}
-                    >
-                        Back to Events
-                    </Button>
-                    <div className={styles.headerActions}>
-                        <Pill
-                            color={getStatusColor(event.status)}
-                            size='medium'
-                            variant='outlined'
-                        >
-                            {getStatusLabel(event.status)}
-                        </Pill>
+            <div className={styles.container}>
+                <div className={styles.pageHeader}>
+                    <div className={styles.headerContent}>
                         <Button
-                            variant='primary'
-                            leftIcon={<MdEdit />}
-                            onClick={handleEditEvent}
+                            variant='secondary-subtle'
+                            leftIcon={<MdArrowBack />}
+                            onClick={handleBack}
                         >
-                            Edit Event
+                            Back to Events
                         </Button>
+                        <div className={styles.headerActions}>
+                            <Pill
+                                color={getStatusColor(event.status)}
+                                size='medium'
+                                variant='outlined'
+                            >
+                                {getStatusLabel(event.status)}
+                            </Pill>
+                            <Button
+                                variant='primary'
+                                leftIcon={<MdEdit />}
+                                onClick={handleEditEvent}
+                            >
+                                Edit Event
+                            </Button>
+                            <Button
+                                variant='danger'
+                                leftIcon={<MdDelete />}
+                                onClick={handleDeleteClick}
+                            >
+                                Delete Event
+                            </Button>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div className={styles.pageContent}>
-                <div className={styles.eventDetail}>
+                <div className={styles.pageContent}>
                     <Card contentClassName={styles.detailCard}>
                         <div className={styles.detailHeader}>
                             <Text variant='heading-large'>{event.title}</Text>
@@ -176,7 +194,7 @@ const EventDetailPage = () => {
                         {event.location && (
                             <div className={styles.detailSection}>
                                 <Text variant='heading-small'>Location</Text>
-                                <Text variant='body'>📍 {event.location}</Text>
+                                <Text variant='body'> <MdLocationOn /> {event.location}</Text>
                             </div>
                         )}
 
@@ -244,6 +262,18 @@ const EventDetailPage = () => {
                     </Card>
                 </div>
             </div>
+            
+            <ConfirmationModal
+                isOpen={isDeleteModalOpen}
+                onClose={() => setIsDeleteModalOpen(false)}
+                onConfirm={handleDeleteConfirm}
+                title="Delete Event"
+                message={`Are you sure you want to delete "${event?.title || 'this event'}"?`}
+                smallText="This action cannot be undone."
+                confirmText="Delete"
+                cancelText="Cancel"
+                variant="danger"
+            />
         </div>
     );
 };

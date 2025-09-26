@@ -1,13 +1,15 @@
-import { Button, Text, Pill } from '../../../components';
-import { MdArrowForward, MdDescription } from 'react-icons/md';
+import { Button, Text, Pill, ConfirmationModal } from '../../../components';
+import { MdArrowForward, MdDescription, MdDelete } from 'react-icons/md';
 import Card from '../../../components/card/Card';
 import styles from './PendingDraftsSection.module.css';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../redux/store';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState, AppDispatch } from '../../../redux/store';
 import { EventRequestWithApprovalsData } from '../../../redux/types/event-requests.types';
 import { useState } from 'react';
 import QuickViewDraftModal from './QuickViewDraftModal';
 import Skeleton from '../../../components/skeleton';
+import { deleteEventRequestThunk } from '../../../redux/thunks/event-requests.thunk';
+import { useNavigate } from 'react-router-dom';
 
 const getStatusLabel = (status: string) => {
     switch (status) {
@@ -27,6 +29,7 @@ const truncateTitle = (title: string | null) => {
 };
 
 const PendingDraftsSection = () => {
+    const dispatch = useDispatch<AppDispatch>();
     const drafts = useSelector(
         (state: RootState) => state.eventRequests.eventRequestsWithApprovals
     );
@@ -40,6 +43,37 @@ const PendingDraftsSection = () => {
     const [draft, setDraft] = useState<EventRequestWithApprovalsData | null>(
         null
     );
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [draftToDelete, setDraftToDelete] = useState<EventRequestWithApprovalsData | null>(null);
+    const navigate = useNavigate();
+
+    const handleDeleteClick = (draft: EventRequestWithApprovalsData, event: React.MouseEvent) => {
+        event.stopPropagation();
+        setDraftToDelete(draft);
+        setIsDeleteModalOpen(true);
+    };
+
+    const handleDeleteConfirm = async () => {
+        if (!draftToDelete) return;
+        
+        try {
+            await dispatch(deleteEventRequestThunk(draftToDelete.id)).unwrap();
+            setDraftToDelete(null);
+        } catch (error) {
+            console.error('Failed to delete event request:', error);
+        }
+    };
+
+    const handleClick = (e: React.MouseEvent, draft: EventRequestWithApprovalsData) => {
+        e.stopPropagation();
+        setDraft(draft);
+        setIsQuickViewDraftModalOpen(true);
+    };
+
+    const handleDoubleClick = (draft: EventRequestWithApprovalsData) => {
+        navigate(`/events/${draft.id}`);
+    };
+
     return (
         <>
             <Card contentClassName={styles.card}>
@@ -57,7 +91,7 @@ const PendingDraftsSection = () => {
                               />
                           ))
                         : drafts.slice(0, 3).map(draft => (
-                              <div key={draft.id} className={styles.draftItem}>
+                              <div onDoubleClick={() => handleDoubleClick(draft)} key={draft.id} className={styles.draftItem}>
                                   <div className={styles.draftColumn}>
                                       <Text variant='body'>
                                           {truncateTitle(draft.title)}
@@ -66,17 +100,26 @@ const PendingDraftsSection = () => {
                                           {getStatusLabel(draft.status)}
                                       </Pill>
                                   </div>
-                                  <Button
-                                      onClick={() => {
-                                          setDraft(draft);
-                                          setIsQuickViewDraftModalOpen(true);
-                                      }}
-                                      leftIcon={<MdArrowForward />}
-                                      variant='secondary-subtle'
-                                      size='x-small'
-                                  >
-                                      View
-                                  </Button>
+                                  <div className={styles.draftActions}>
+                                      <Button
+                                          onClick={(e) => handleDeleteClick(draft, e)}
+                                          leftIcon={<MdDelete />}
+                                          variant='danger-subtle'
+                                          size='x-small'
+                                      >
+                                          Delete
+                                      </Button>
+                                      <Button
+                                          onClick={(e) => {
+                                            handleClick(e, draft);
+                                          }}
+                                          leftIcon={<MdArrowForward />}
+                                          variant='secondary-subtle'
+                                          size='x-small'
+                                      >
+                                          View
+                                      </Button>
+                                  </div>
                               </div>
                           ))}
                     {!loading && drafts.length === 0 && (
@@ -102,6 +145,21 @@ const PendingDraftsSection = () => {
                     onClose={() => setIsQuickViewDraftModalOpen(false)}
                 />
             )}
+            
+            <ConfirmationModal
+                isOpen={isDeleteModalOpen}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                    setDraftToDelete(null);
+                }}
+                onConfirm={handleDeleteConfirm}
+                title="Delete Event"
+                message={`Are you sure you want to delete "${draftToDelete?.title || 'this event'}"?`}
+                smallText="This action cannot be undone."
+                confirmText="Delete"
+                cancelText="Cancel"
+                variant="danger"
+            />
         </>
     );
 };

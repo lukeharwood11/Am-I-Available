@@ -150,7 +150,7 @@ export async function getEventRequestWithApprovals(
 ): Promise<EventRequestWithApprovalsResponse> {
     try {
         const response = await get<EventRequestWithApprovalsResponse>(
-            `/api/v1/event-requests/${eventRequestId}/with-approvals`
+            `/api/v1/event-requests/${eventRequestId}`
         );
         return response;
     } catch (error) {

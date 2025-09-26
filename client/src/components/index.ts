@@ -56,3 +56,6 @@ export * from './popover';
 
 // Pill components
 export * from './pill';
+
+// Confirmation modal components
+export * from './confirmation-modal';

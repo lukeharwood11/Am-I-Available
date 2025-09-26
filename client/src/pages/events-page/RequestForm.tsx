@@ -21,6 +21,7 @@ import {
     MdInfo,
     MdOutlineArrowBackIosNew,
     MdSave,
+    MdDelete,
 } from 'react-icons/md';
 import { useReduxEventRequests } from '../../hooks/useReduxEventRequests';
 
@@ -53,14 +54,18 @@ interface RequestFormProps {
     isNew: boolean;
     onSave: (request: CreateEventRequestRequest) => void;
     onCancel: () => void;
+    onDelete?: () => void;
     initialData?: Partial<CreateRequestFormData>;
+    loading?: boolean;
 }
 
 export const RequestForm = ({
     isNew,
     onSave,
     onCancel,
+    onDelete,
     initialData = {},
+    loading = false,
 }: RequestFormProps) => {
     const [allDay, setAllDay] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -368,12 +373,25 @@ export const RequestForm = ({
                 <Button
                     variant='secondary-subtle'
                     onClick={onCancel}
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || loading}
                     leftIcon={<MdOutlineArrowBackIosNew />}
                     size='x-small'
                 >
                     Back
                 </Button>
+                {(!isNew && onDelete) ? (
+                    <Button
+                        leftIcon={<MdDelete />}
+                        variant='danger'
+                        onClick={onDelete}
+                        disabled={isSubmitting || loading}
+                        size='x-small'
+                    >
+                        Delete
+                    </Button>
+                ) : (
+                    <div />
+                )}
             </div>
             <div className={styles.formGroup}>
                 <label className={styles.label}>Title</label>
@@ -391,7 +409,7 @@ export const RequestForm = ({
                         variant='primary'
                         onClick={handleSave}
                         isLoading={isSubmitting}
-                        disabled={isSubmitting}
+                        disabled={isSubmitting || loading}
                         leftIcon={<MdSave />}
                     >
                         {isSubmitting
@@ -418,7 +436,7 @@ export const RequestForm = ({
                     placeholder='Describe your event...'
                     fullWidth
                     rows={2}
-                    disabled={smartParseLoading}
+                    disabled={smartParseLoading || loading}
                 />
                 <Button
                     leftIcon={<MdAutoAwesome />}
@@ -439,7 +457,7 @@ export const RequestForm = ({
                     }
                     placeholder='Enter location'
                     fullWidth
-                    disabled={smartParseLoading}
+                    disabled={smartParseLoading || loading}
                 />
             </div>
 
@@ -453,7 +471,7 @@ export const RequestForm = ({
                         fullWidth
                         variant={errors.start_date ? 'error' : 'default'}
                         minDate={new Date().toISOString().split('T')[0]}
-                        disabled={smartParseLoading}
+                        disabled={smartParseLoading || loading}
                     />
                     {errors.start_date && (
                         <span className={styles.errorText}>
@@ -474,7 +492,7 @@ export const RequestForm = ({
                             formData.start_date ||
                             new Date().toISOString().split('T')[0]
                         }
-                        disabled={smartParseLoading}
+                        disabled={smartParseLoading || loading}
                     />
                     {errors.end_date && (
                         <span className={styles.errorText}>
@@ -494,7 +512,7 @@ export const RequestForm = ({
                             placeholder='Start time'
                             fullWidth
                             variant={errors.start_time ? 'error' : 'default'}
-                            disabled={smartParseLoading}
+                            disabled={smartParseLoading || loading}
                         />
                         {errors.start_time && (
                             <span className={styles.errorText}>
@@ -511,7 +529,7 @@ export const RequestForm = ({
                             placeholder='End time'
                             fullWidth
                             variant={errors.end_time ? 'error' : 'default'}
-                            disabled={smartParseLoading}
+                            disabled={smartParseLoading || loading}
                         />
                         {errors.end_time && (
                             <span className={styles.errorText}>
@@ -544,7 +562,7 @@ export const RequestForm = ({
                     placeholder='Additional notes...'
                     fullWidth
                     rows={2}
-                    disabled={smartParseLoading}
+                    disabled={smartParseLoading || loading}
                 />
             </div>
             <div className={styles.formGroup}>
@@ -576,7 +594,7 @@ export const RequestForm = ({
                             formData.approvers[0]?.required || false
                         )
                     }
-                    disabled={smartParseLoading}
+                    disabled={smartParseLoading || loading}
                 />
                 {formData.approvers.length > 0 && selectedApprover && (
                     <>

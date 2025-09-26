@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Modal, Button, Text, Pill } from '../../../components';
 import { EventRequestWithApprovalsData } from '../../../redux/types/event-requests.types';
+import { formatDateTime } from '../../../utils/dateUtils';
 import styles from './QuickViewDraftModal.module.css';
 
 interface QuickViewDraftModalProps {
@@ -9,6 +10,21 @@ interface QuickViewDraftModalProps {
     isOpen: boolean;
     onClose: () => void;
 }
+
+const getReviewersStatusLabel = (status: string) => {
+    switch (status.toLowerCase()) {
+        case 'pending':
+            return 'Pending';
+        case 'approved':
+            return 'Approved';
+        case 'rejected':
+            return 'Rejected';
+        case 'no_approvals':
+            return 'No Reviewers';
+        default:
+            return 'Pending';
+    }
+};
 
 const QuickViewDraftModal: React.FC<QuickViewDraftModalProps> = ({
     draft,
@@ -22,32 +38,6 @@ const QuickViewDraftModal: React.FC<QuickViewDraftModalProps> = ({
         navigate(`/events/${draft.id}`);
     };
 
-    const formatDateTime = (dateTime: any) => {
-        if (!dateTime) return 'Not specified';
-
-        if (dateTime.date) {
-            // All-day event
-            return new Date(dateTime.date).toLocaleDateString('en-US', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-            });
-        } else if (dateTime.date_time) {
-            // Timed event
-            return new Date(dateTime.date_time).toLocaleString('en-US', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: 'numeric',
-                minute: '2-digit',
-                timeZoneName: 'short',
-            });
-        }
-
-        return 'Not specified';
-    };
 
     const getStatusPillProps = (status: string) => {
         switch (status.toLowerCase()) {
@@ -180,13 +170,13 @@ const QuickViewDraftModal: React.FC<QuickViewDraftModalProps> = ({
                                 color='grey-600'
                                 className={styles.detailLabel}
                             >
-                                Approval Status
+                                Reviewers Status
                             </Text>
                             <Pill
                                 size='small'
                                 {...getStatusPillProps(draft.approval_status)}
                             >
-                                {draft.approval_status}
+                                {getReviewersStatusLabel(draft.approval_status)}
                             </Pill>
                         </div>
 

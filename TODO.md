@@ -3,7 +3,7 @@
 Am I Available?
 
 ## Up Next:
-- Smart Fill Events
+- ~~Smart Fill Events~~
 - View Relationships & Add / Reject
 - Text Create Events with OpenAI
 - Create Drafts
@@ -12,12 +12,12 @@ Am I Available?
 
 ### Bugs
 - [ ] Add a frame to load all relevant data on app load (relationships don't load for requestform)
-- [ ] Fix the storing of time for an event request... right now the timezones are screwed up.
+- [x] Fix the storing of time for an event request... right now the timezones are screwed up.
 
 ### QOL 
 - [x] Fix styling of loading cards
 - [x] Create a Landing/Marketing page
-- [ ] Change slices to use loading state for all components
+- [x] Change slices to use loading state for all components
 - [ ] Health check while loading so you have a loading screen while the API heats up initially
 
 ### Legal / Security / Predeployments
@@ -57,6 +57,7 @@ Am I Available?
 - [ ] Ability to view upcoming events
 
 ### Creating New Events
+- [ ] Ability to parse a description into an event
 - [ ] Ability to schedule new events using natural language
 - [ ] Ability to schedule new events using natural language with voice
 - [ ] Adding travel time to new events (hooks)
