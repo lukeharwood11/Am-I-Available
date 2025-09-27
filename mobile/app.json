@@ -30,8 +30,8 @@
     },
     "scheme": "am-i-available",
     "extra": {
-      "supabaseUrl": "YOUR_SUPABASE_URL",
-      "supabaseAnonKey": "YOUR_SUPABASE_ANON_KEY"
+      "supabaseUrl": "https://cwpsafmbigglcsbpwawr.supabase.co",
+      "supabaseAnonKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3cHNhZm1iaWdnbGNzYnB3YXdyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcxNzIyMDAsImV4cCI6MjA3Mjc0ODIwMH0.8pe-ditIEk8aG9pYmknVP320Nqiwe0npYq2Ij6-lBW0"
     }
   }
 }

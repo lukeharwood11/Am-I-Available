@@ -8,4 +8,11 @@ if (!supabaseUrl || !supabaseAnonKey) {
     throw new Error('Missing Supabase environment variables');
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+    auth: {
+        // Configure auth for mobile app
+        autoRefreshToken: true,
+        persistSession: true,
+        detectSessionInUrl: false,
+    },
+});

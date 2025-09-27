@@ -18,6 +18,21 @@ const AuthCallbackScreen = () => {
     useEffect(() => {
         const handleAuthCallback = async () => {
             try {
+                // Get the current session first
+                const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+                
+                if (sessionError) {
+                    console.error('Session error:', sessionError);
+                    dispatch(authActions.setAuthError(sessionError.message));
+                    return;
+                }
+
+                if (session) {
+                    dispatch(authActions.setSession({ session }));
+                    return;
+                }
+
+                // If no session, try to get from URL
                 const url = await Linking.getInitialURL();
                 if (url) {
                     const { data, error } = await supabase.auth.getSessionFromUrl(url);
@@ -28,6 +43,9 @@ const AuthCallbackScreen = () => {
                     } else if (data.session) {
                         dispatch(authActions.setSession({ session: data.session }));
                     }
+                } else {
+                    // No URL and no session, set loading to false
+                    dispatch(authActions.setLoading(false));
                 }
             } catch (error) {
                 console.error('Auth callback error:', error);

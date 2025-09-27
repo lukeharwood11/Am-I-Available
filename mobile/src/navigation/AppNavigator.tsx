@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import { Ionicons } from '@expo/vector-icons';
+import AuthWrapper from '../components/AuthWrapper';
 
 // Import screens
 import LandingScreen from '../screens/LandingScreen';
@@ -55,30 +56,27 @@ const AppNavigator = () => {
     const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
     const loading = useSelector((state: RootState) => state.auth.loading);
 
-    if (loading) {
-        // TODO: Add loading screen
-        return null;
-    }
-
     return (
-        <NavigationContainer>
-            <Stack.Navigator screenOptions={{ headerShown: false }}>
-                {!isAuthenticated ? (
-                    <>
-                        <Stack.Screen name="Landing" component={LandingScreen} />
-                        <Stack.Screen name="Login" component={LoginScreen} />
-                        <Stack.Screen name="AuthCallback" component={AuthCallbackScreen} />
-                    </>
-                ) : (
-                    <>
-                        <Stack.Screen name="Main" component={MainTabNavigator} />
-                        <Stack.Screen name="EventDetail" component={EventDetailScreen} />
-                        <Stack.Screen name="CreateEvent" component={CreateEventScreen} />
-                        <Stack.Screen name="EditEvent" component={EditEventScreen} />
-                    </>
-                )}
-            </Stack.Navigator>
-        </NavigationContainer>
+        <AuthWrapper>
+            <NavigationContainer>
+                <Stack.Navigator screenOptions={{ headerShown: false }}>
+                    {!isAuthenticated ? (
+                        <>
+                            <Stack.Screen name="Landing" component={LandingScreen} />
+                            <Stack.Screen name="Login" component={LoginScreen} />
+                            <Stack.Screen name="AuthCallback" component={AuthCallbackScreen} />
+                        </>
+                    ) : (
+                        <>
+                            <Stack.Screen name="Main" component={MainTabNavigator} />
+                            <Stack.Screen name="EventDetail" component={EventDetailScreen} />
+                            <Stack.Screen name="CreateEvent" component={CreateEventScreen} />
+                            <Stack.Screen name="EditEvent" component={EditEventScreen} />
+                        </>
+                    )}
+                </Stack.Navigator>
+            </NavigationContainer>
+        </AuthWrapper>
     );
 };
 

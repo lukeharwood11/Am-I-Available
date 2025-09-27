@@ -40,13 +40,14 @@ A React Native mobile application built with Expo, TypeScript, and Redux Toolkit
    npm install
    ```
 
-3. Configure environment variables:
-   - Update `app.json` with your Supabase URL and anon key
-   - Or create a `.env` file with:
-     ```
-     EXPO_PUBLIC_SUPABASE_URL=your_supabase_url
-     EXPO_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-     ```
+3. **Configure Authentication (REQUIRED):**
+   - The app is pre-configured with your Supabase credentials
+   - **IMPORTANT:** Follow the [Infrastructure Setup Guide](./INFRASTRUCTURE_SETUP.md) to configure:
+     - Supabase authentication settings
+     - Google OAuth provider
+     - Redirect URLs
+     - RLS policies
+   - Without proper configuration, authentication will not work
 
 ### Running the App
 
