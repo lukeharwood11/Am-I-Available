@@ -10,7 +10,7 @@ import {
     updateNotificationThunk,
     deleteNotificationThunk,
     markAllAsReadThunk,
-    markNotificationAsReadThunk
+    markNotificationAsReadThunk,
 } from '../thunks/notifications.thunk';
 
 const initialState: NotificationsState = {
@@ -42,13 +42,17 @@ const notificationsSlice = createSlice({
             state,
             action: PayloadAction<{
                 key: keyof NotificationsState['loading'];
-                value: boolean | Record<string, "delete" | "markAsRead" | null>;
+                value: boolean | Record<string, 'delete' | 'markAsRead' | null>;
             }>
         ) => {
             if (action.payload.key === 'updateMap') {
-                state.loading.updateMap = action.payload.value as Record<string, "delete" | "markAsRead" | null>;
+                state.loading.updateMap = action.payload.value as Record<
+                    string,
+                    'delete' | 'markAsRead' | null
+                >;
             } else {
-                state.loading[action.payload.key] = action.payload.value as boolean;
+                state.loading[action.payload.key] = action.payload
+                    .value as boolean;
             }
         },
         setError: (
@@ -207,7 +211,7 @@ const notificationsSlice = createSlice({
                 }));
             })
             .addCase(markNotificationAsReadThunk.pending, (state, action) => {
-                state.loading.updateMap[action.meta.arg] = "markAsRead";
+                state.loading.updateMap[action.meta.arg] = 'markAsRead';
                 state.error.notifications = null;
             })
             .addCase(markNotificationAsReadThunk.rejected, (state, action) => {
@@ -217,9 +221,10 @@ const notificationsSlice = createSlice({
             .addCase(markNotificationAsReadThunk.fulfilled, (state, action) => {
                 delete state.loading.updateMap[action.meta.arg];
                 const updatedNotification = action.payload.notification;
-                state.notifications = state.notifications.filter(notification => notification.id !== updatedNotification.id);
+                state.notifications = state.notifications.filter(
+                    notification => notification.id !== updatedNotification.id
+                );
             });
-
     },
 });
 

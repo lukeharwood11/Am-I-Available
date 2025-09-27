@@ -84,7 +84,7 @@ export interface NotificationsState {
         notifications: boolean;
         currentNotification: boolean;
         markAllAsRead: boolean;
-        updateMap: Record<string, "delete" | "markAsRead" | null>;
+        updateMap: Record<string, 'delete' | 'markAsRead' | null>;
     };
     error: {
         notifications: string | null;

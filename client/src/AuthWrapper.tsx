@@ -10,7 +10,6 @@ import { onAuthStateChange } from './redux/hubs/auth.hub';
 import LoadingIcon from './components/icons/LoadingIcon';
 import { authActions } from './redux/slices/auth.slice';
 
-
 const unProtectedRoutes = ['/', '/login', '/auth/callback'];
 
 const AuthWrapper: React.FC = () => {

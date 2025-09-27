@@ -119,7 +119,9 @@ export const markNotificationAsReadThunk = createAsyncThunk(
     'notifications/markAsRead',
     async (notificationId: string, { rejectWithValue }) => {
         try {
-            const response = await updateNotification(notificationId, { is_read: true });
+            const response = await updateNotification(notificationId, {
+                is_read: true,
+            });
             return response;
         } catch (error) {
             const message =

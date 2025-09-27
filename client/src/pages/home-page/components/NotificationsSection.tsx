@@ -1,10 +1,13 @@
 import { Button, Text, Pill } from '../../../components';
-import { MdNotifications, MdDelete } from 'react-icons/md';
+import { MdNotifications } from 'react-icons/md';
 import Card from '../../../components/card/Card';
 import styles from './NotificationsSection.module.css';
 import { AppDispatch, RootState } from '../../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchNotificationsThunk, markNotificationAsReadThunk, deleteNotificationThunk } from '../../../redux/thunks/notifications.thunk';
+import {
+    fetchNotificationsThunk,
+    markNotificationAsReadThunk,
+} from '../../../redux/thunks/notifications.thunk';
 import { useEffect } from 'react';
 import { NotificationData } from '../../../redux/types/notifications.types';
 import Skeleton from '../../../components/skeleton';
@@ -20,44 +23,43 @@ const truncateTitle = (title: string) => {
     return title;
 };
 
-const getReadStatusLabel = (isRead: boolean) => {
-    return isRead ? 'Read' : 'Unread';
-};
-
 const NotificationsSection = ({}: NotificationsSectionProps) => {
     const dispatch = useDispatch<AppDispatch>();
-    const notifications = useSelector((state: RootState) => state.notifications.notifications);
-    const loading = useSelector((state: RootState) => state.notifications.loading.notifications);
-    const updateMap = useSelector((state: RootState) => state.notifications.loading.updateMap);
-
+    const notifications = useSelector(
+        (state: RootState) => state.notifications.notifications
+    );
+    const loading = useSelector(
+        (state: RootState) => state.notifications.loading.notifications
+    );
+    const updateMap = useSelector(
+        (state: RootState) => state.notifications.loading.updateMap
+    );
 
     // Calculate unread notifications count
-    const unreadCount = notifications.filter(notification => !notification.is_read).length;
+    const unreadCount = notifications.filter(
+        notification => !notification.is_read
+    ).length;
     console.log('unreadCount', unreadCount);
 
     useEffect(() => {
-        dispatch(fetchNotificationsThunk({
-            is_deleted: false,
-            is_read: false,
-            take: MAX_NOTIFICATIONS
-        }));
+        dispatch(
+            fetchNotificationsThunk({
+                is_deleted: false,
+                is_read: false,
+                take: MAX_NOTIFICATIONS,
+            })
+        );
     }, [dispatch]);
 
     const handleMarkAsRead = async (notification: NotificationData) => {
         if (!notification.is_read) {
             try {
-                await dispatch(markNotificationAsReadThunk(notification.id)).unwrap();
+                await dispatch(
+                    markNotificationAsReadThunk(notification.id)
+                ).unwrap();
             } catch (error) {
                 console.error('Failed to mark notification as read:', error);
             }
-        }
-    };
-
-    const handleDelete = async (notification: NotificationData) => {
-        try {
-            await dispatch(deleteNotificationThunk(notification.id)).unwrap();
-        } catch (error) {
-            console.error('Failed to delete notification:', error);
         }
     };
 
@@ -91,29 +93,41 @@ const NotificationsSection = ({}: NotificationsSectionProps) => {
                               className={styles.notificationItem}
                           >
                               <div className={styles.notificationColumn}>
-                                  <Text color={notification.is_read ? 'grey-500' : undefined} variant='body'>
+                                  <Text
+                                      color={
+                                          notification.is_read
+                                              ? 'grey-500'
+                                              : undefined
+                                      }
+                                      variant='body'
+                                  >
                                       {truncateTitle(notification.title)}
                                   </Text>
-                                  {
-                                    !notification.is_read && (
-                                        <Pill 
-                                            size='x-small' 
-                                            variant='outlined'
-                                            color='primary'
-                                        >
-                                            Unread
-                                        </Pill>
-                                    )
-                                  }
+                                  {!notification.is_read && (
+                                      <Pill
+                                          size='x-small'
+                                          variant='outlined'
+                                          color='primary'
+                                      >
+                                          Unread
+                                      </Pill>
+                                  )}
                               </div>
                               <div className={styles.notificationActions}>
                                   {!notification.is_read && (
                                       <Button
-                                          onClick={() => handleMarkAsRead(notification)}
+                                          onClick={() =>
+                                              handleMarkAsRead(notification)
+                                          }
                                           variant='secondary-subtle'
                                           size='x-small'
-                                          disabled={Boolean(updateMap[notification.id])}
-                                          isLoading={updateMap[notification.id] === "markAsRead"}
+                                          disabled={Boolean(
+                                              updateMap[notification.id]
+                                          )}
+                                          isLoading={
+                                              updateMap[notification.id] ===
+                                              'markAsRead'
+                                          }
                                       >
                                           Mark Read
                                       </Button>
@@ -137,11 +151,7 @@ const NotificationsSection = ({}: NotificationsSectionProps) => {
             </div>
             {notifications.length > 3 && (
                 <div className={styles.notificationActions}>
-                    <Button
-                        disabled
-                        variant='secondary-subtle'
-                        size='small'
-                    >
+                    <Button disabled variant='secondary-subtle' size='small'>
                         View All
                     </Button>
                 </div>

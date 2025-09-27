@@ -21,7 +21,8 @@ const EventDetailPage = () => {
     const { id } = useParams<{ id: string }>();
 
     const event = useSelector(
-        (state: RootState) => state.eventRequests.currentEventRequestWithApprovals
+        (state: RootState) =>
+            state.eventRequests.currentEventRequestWithApprovals
     );
 
     const relationships = useSelector(
@@ -36,7 +37,9 @@ const EventDetailPage = () => {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
     const getApprover = (approverId: string) => {
-        return relationships.find(relationship => relationship.other_user.id === approverId);
+        return relationships.find(
+            relationship => relationship.other_user.id === approverId
+        );
     };
 
     const handleRefresh = useCallback(() => {
@@ -181,7 +184,9 @@ const EventDetailPage = () => {
                     <div className={styles.leftColumn}>
                         <Card contentClassName={styles.detailCard}>
                             <div className={styles.detailHeader}>
-                                <Text variant='heading-large'>{event.title}</Text>
+                                <Text variant='heading-large'>
+                                    {event.title}
+                                </Text>
                                 <Text variant='caption' color='secondary'>
                                     Created{' '}
                                     {new Date(
@@ -192,14 +197,20 @@ const EventDetailPage = () => {
 
                             {event.description && (
                                 <div className={styles.detailSection}>
-                                    <Text variant='heading-small'>Description</Text>
-                                    <Text variant='body'>{event.description}</Text>
+                                    <Text variant='heading-small'>
+                                        Description
+                                    </Text>
+                                    <Text variant='body'>
+                                        {event.description}
+                                    </Text>
                                 </div>
                             )}
 
                             {event.location && (
                                 <div className={styles.detailSection}>
-                                    <Text variant='heading-small'>Location</Text>
+                                    <Text variant='heading-small'>
+                                        Location
+                                    </Text>
                                     <Text variant='body'>
                                         {' '}
                                         <MdLocationOn /> {event.location}
@@ -211,7 +222,10 @@ const EventDetailPage = () => {
                                 <Text variant='heading-small'>Date & Time</Text>
                                 <div className={styles.dateTimeInfo}>
                                     <div className={styles.dateTimeItem}>
-                                        <Text variant='caption' color='secondary'>
+                                        <Text
+                                            variant='caption'
+                                            color='secondary'
+                                        >
                                             Start
                                         </Text>
                                         <Text variant='body'>
@@ -219,7 +233,10 @@ const EventDetailPage = () => {
                                         </Text>
                                     </div>
                                     <div className={styles.dateTimeItem}>
-                                        <Text variant='caption' color='secondary'>
+                                        <Text
+                                            variant='caption'
+                                            color='secondary'
+                                        >
                                             End
                                         </Text>
                                         <Text variant='body'>
@@ -239,65 +256,111 @@ const EventDetailPage = () => {
                     </div>
 
                     <div className={styles.rightColumn}>
-                        {relationships.length > 0 && event.approvers && event.approvers.length > 0 && (
-                            <Card contentClassName={styles.detailCard}>
-                                <div className={styles.detailSection}>
-                                    <Text variant='heading-small'>Approvers</Text>
-                                    <div className={styles.approversList}>
-                                        {event.approvers.map(
-                                            (approver: EventRequestApprovalData) => (
-                                                <div
-                                                    key={approver.id}
-                                                    className={styles.approverItem}
-                                                >
-                                                    <div className={styles.approverInfo}>
-                                                        <Text variant='body'>
-                                                            {getApprover(approver.user_id)?.other_user.full_name}
-                                                        </Text>
-                                                        <div className={styles.approverStatus}>
-                                                            <Pill
-                                                                size='small'
-                                                                variant='outlined'
-                                                                color={
-                                                                    approver.required
-                                                                        ? 'primary'
-                                                                        : 'secondary'
+                        {relationships.length > 0 &&
+                            event.approvers &&
+                            event.approvers.length > 0 && (
+                                <Card contentClassName={styles.detailCard}>
+                                    <div className={styles.detailSection}>
+                                        <Text variant='heading-small'>
+                                            Approvers
+                                        </Text>
+                                        <div className={styles.approversList}>
+                                            {event.approvers.map(
+                                                (
+                                                    approver: EventRequestApprovalData
+                                                ) => (
+                                                    <div
+                                                        key={approver.id}
+                                                        className={
+                                                            styles.approverItem
+                                                        }
+                                                    >
+                                                        <div
+                                                            className={
+                                                                styles.approverInfo
+                                                            }
+                                                        >
+                                                            <Text variant='body'>
+                                                                {
+                                                                    getApprover(
+                                                                        approver.user_id
+                                                                    )
+                                                                        ?.other_user
+                                                                        .full_name
+                                                                }
+                                                            </Text>
+                                                            <div
+                                                                className={
+                                                                    styles.approverStatus
                                                                 }
                                                             >
-                                                                {approver.required
-                                                                    ? 'Required'
-                                                                    : 'Optional'}
-                                                            </Pill>
-                                                            <Pill
-                                                                size='small'
-                                                                variant='filled'
-                                                                color={getStatusColor(approver.status)}
+                                                                <Pill
+                                                                    size='small'
+                                                                    variant='outlined'
+                                                                    color={
+                                                                        approver.required
+                                                                            ? 'primary'
+                                                                            : 'secondary'
+                                                                    }
+                                                                >
+                                                                    {approver.required
+                                                                        ? 'Required'
+                                                                        : 'Optional'}
+                                                                </Pill>
+                                                                <Pill
+                                                                    size='small'
+                                                                    variant='filled'
+                                                                    color={getStatusColor(
+                                                                        approver.status
+                                                                    )}
+                                                                >
+                                                                    {getStatusLabel(
+                                                                        approver.status
+                                                                    )}
+                                                                </Pill>
+                                                            </div>
+                                                        </div>
+                                                        {approver.response_notes && (
+                                                            <div
+                                                                className={
+                                                                    styles.approverNotes
+                                                                }
                                                             >
-                                                                {getStatusLabel(approver.status)}
-                                                            </Pill>
-                                                        </div>
+                                                                <Text
+                                                                    variant='caption'
+                                                                    color='secondary'
+                                                                >
+                                                                    Notes:{' '}
+                                                                    {
+                                                                        approver.response_notes
+                                                                    }
+                                                                </Text>
+                                                            </div>
+                                                        )}
+                                                        {approver.responded_at && (
+                                                            <div
+                                                                className={
+                                                                    styles.approverTimestamp
+                                                                }
+                                                            >
+                                                                <Text
+                                                                    variant='caption'
+                                                                    color='secondary'
+                                                                >
+                                                                    Responded:{' '}
+                                                                    {new Date(
+                                                                        approver.responded_at
+                                                                    ).toLocaleString()}
+                                                                </Text>
+                                                            </div>
+                                                        )}
                                                     </div>
-                                                    {approver.response_notes && (
-                                                        <div className={styles.approverNotes}>
-                                                            <Text variant='caption' color='secondary'>
-                                                                Notes: {approver.response_notes}
-                                                            </Text>
-                                                        </div>
-                                                    )}
-                                                    {approver.responded_at && (
-                                                        <div className={styles.approverTimestamp}>
-                                                            <Text variant='caption' color='secondary'>
-                                                                Responded: {new Date(approver.responded_at).toLocaleString()}
-                                                            </Text>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            )
-                                        )}
+                                                )
+                                            )}
+                                        </div>
                                     </div>
-                                </div>
-                            </Card>
-                        )}
+                                </Card>
+                            )}
                     </div>
                 </div>
             </div>
