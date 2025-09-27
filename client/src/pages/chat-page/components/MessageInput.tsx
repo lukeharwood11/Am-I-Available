@@ -17,8 +17,8 @@ const MessageInput: React.FC<MessageInputProps> = ({
     onChange,
     onSend,
     onKeyPress,
-    placeholder = "Type a message...",
-    disabled = false
+    placeholder = 'Type a message...',
+    disabled = false,
 }) => {
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const [isFocused, setIsFocused] = useState(false);
@@ -31,9 +31,12 @@ const MessageInput: React.FC<MessageInputProps> = ({
         if (textarea) {
             // Reset height to auto to get the correct scrollHeight
             textarea.style.height = 'auto';
-            
+
             // Calculate the new height
-            const newHeight = Math.min(Math.max(textarea.scrollHeight, MIN_HEIGHT), MAX_HEIGHT);
+            const newHeight = Math.min(
+                Math.max(textarea.scrollHeight, MIN_HEIGHT),
+                MAX_HEIGHT
+            );
             textarea.style.height = `${newHeight}px`;
         }
     }, [value]);
@@ -58,7 +61,9 @@ const MessageInput: React.FC<MessageInputProps> = ({
     };
 
     return (
-        <div className={`${styles.inputContainer} ${isFocused ? styles.focused : ''}`}>
+        <div
+            className={`${styles.inputContainer} ${isFocused ? styles.focused : ''}`}
+        >
             <div className={styles.inputWrapper}>
                 <textarea
                     ref={textareaRef}
@@ -75,8 +80,8 @@ const MessageInput: React.FC<MessageInputProps> = ({
                 <Button
                     onClick={handleSend}
                     disabled={!value.trim() || disabled}
-                    variant="primary"
-                    size="small"
+                    variant='primary'
+                    size='small'
                     className={styles.sendButton}
                     rightIcon={<MdSend />}
                 >

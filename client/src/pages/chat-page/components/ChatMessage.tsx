@@ -28,31 +28,33 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
     }, []);
 
     const formatTime = (date: Date) => {
-        return date.toLocaleTimeString([], { 
-            hour: '2-digit', 
-            minute: '2-digit' 
+        return date.toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
         });
     };
 
     const isUser = message.sender === 'user';
 
     return (
-        <div 
+        <div
             className={`${styles.messageContainer} ${isUser ? styles.userMessage : styles.otherMessage}`}
         >
-            <div 
+            <div
                 className={`${styles.messageBubble} ${isUser ? styles.userBubble : styles.otherBubble} ${
                     isVisible ? styles.visible : ''
                 } ${isAnimating ? styles.animating : ''}`}
             >
-                <Text 
-                    variant="body" 
+                <Text
+                    variant='body'
                     className={isUser ? styles.userText : styles.otherText}
                 >
                     {message.text}
                 </Text>
-                <div className={`${styles.timestamp} ${isUser ? styles.userTimestamp : styles.otherTimestamp}`}>
-                    <Text variant="caption" className={styles.timestampText}>
+                <div
+                    className={`${styles.timestamp} ${isUser ? styles.userTimestamp : styles.otherTimestamp}`}
+                >
+                    <Text variant='caption' className={styles.timestampText}>
                         {formatTime(message.timestamp)}
                     </Text>
                 </div>

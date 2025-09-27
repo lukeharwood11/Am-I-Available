@@ -70,10 +70,7 @@ const App: React.FC = () => {
                                 path={routes.profile}
                                 element={<ProfilePage />}
                             />
-                            <Route
-                                path={routes.chat}
-                                element={<ChatPage />}
-                            />
+                            <Route path={routes.chat} element={<ChatPage />} />
                         </Route>
                     </Route>
                     <Route path={''} element={<Layout />}>

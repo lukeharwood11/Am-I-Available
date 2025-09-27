@@ -8,7 +8,7 @@ interface SmartCreateSectionProps {
     onSmartCreate: () => void;
 }
 
-const SmartCreateSection = ({ onSmartCreate }: SmartCreateSectionProps) => {
+const SmartCreateSection = (_: SmartCreateSectionProps) => {
     const navigate = useNavigate();
     const [inputValue, setInputValue] = useState('');
 
@@ -16,7 +16,7 @@ const SmartCreateSection = ({ onSmartCreate }: SmartCreateSectionProps) => {
         const queryParams = new URLSearchParams();
         queryParams.set('message', input);
         navigate(`/chat?${queryParams.toString()}`);
-    }
+    };
     return (
         <Card contentClassName={styles.smartCreate}>
             <Text className={styles.title} variant='heading-small'>
@@ -24,14 +24,24 @@ const SmartCreateSection = ({ onSmartCreate }: SmartCreateSectionProps) => {
                     Beta
                 </Pill>
                 Smart Create with AMIA
-                <Button rightIcon={<MdArrowForward />} variant='secondary-subtle' size='x-small' onClick={() => {
-                    navigate('/chat');
-                }}>
+                <Button
+                    rightIcon={<MdArrowForward />}
+                    variant='secondary-subtle'
+                    size='x-small'
+                    onClick={() => {
+                        navigate('/chat');
+                    }}
+                >
                     Go!
                 </Button>
             </Text>
             <div className={styles.smartCreateHeader}>
-                <Input value={inputValue} onChange={e => setInputValue(e.target.value)} placeholder='Chat with AMIA' fullWidth />
+                <Input
+                    value={inputValue}
+                    onChange={e => setInputValue(e.target.value)}
+                    placeholder='Chat with AMIA'
+                    fullWidth
+                />
                 <Button
                     variant='primary'
                     leftIcon={<MdAutoAwesome />}

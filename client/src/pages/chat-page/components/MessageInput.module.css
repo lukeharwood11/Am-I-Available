@@ -100,18 +100,18 @@
     .inputContainer {
         border-radius: var(--border-radius-standard);
     }
-    
+
     .inputWrapper {
         padding: 6px;
         gap: 6px;
     }
-    
+
     .textarea {
         font-size: 16px; /* Prevents zoom on iOS */
         padding: 6px 10px;
         border-radius: var(--border-radius-standard);
     }
-    
+
     .sendButton {
         padding: 6px 12px;
         height: 36px;

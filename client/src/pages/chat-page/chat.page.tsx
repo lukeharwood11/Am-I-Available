@@ -68,16 +68,13 @@ const ChatPage: React.FC = () => {
         <div className={styles.chatPage}>
             <div className={styles.chatPageMainContent}>
                 <div className={styles.chatHeader}>
-                    <Text variant="heading">Chat</Text>
+                    <Text variant='heading'>Chat</Text>
                 </div>
-                
+
                 <div className={styles.messagesContainer}>
                     <div className={styles.messagesList}>
-                        {messages.map((message) => (
-                            <ChatMessage
-                                key={message.id}
-                                message={message}
-                            />
+                        {messages.map(message => (
+                            <ChatMessage key={message.id} message={message} />
                         ))}
                         <div ref={messagesEndRef} />
                     </div>
