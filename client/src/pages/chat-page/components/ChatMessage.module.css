@@ -1,0 +1,178 @@
+.messageContainer {
+    display: flex;
+    margin-bottom: 8px;
+    animation: slideInUp 0.3s ease-out;
+}
+
+.userMessage {
+    justify-content: flex-end;
+}
+
+.otherMessage {
+    justify-content: flex-start;
+}
+
+.messageBubble {
+    max-width: 70%;
+    padding: 12px 16px;
+    border-radius: 18px;
+    position: relative;
+    word-wrap: break-word;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease-out;
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+}
+
+.messageBubble.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.messageBubble.animating {
+    animation: messagePop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.userBubble {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+
+.otherBubble {
+    background: white;
+    color: var(--grey-800);
+    border: 1px solid var(--grey-200);
+    border-bottom-left-radius: 4px;
+}
+
+.userBubble:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(74, 144, 226, 0.3);
+}
+
+.otherBubble:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.userText {
+    color: white;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.otherText {
+    color: var(--grey-800);
+    margin: 0;
+    line-height: 1.4;
+}
+
+.timestamp {
+    margin-top: 4px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.userTimestamp {
+    justify-content: flex-end;
+}
+
+.otherTimestamp {
+    justify-content: flex-start;
+}
+
+.timestampText {
+    opacity: 0.7;
+    font-size: 11px;
+}
+
+.userTimestamp .timestampText {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.otherTimestamp .timestampText {
+    color: var(--grey-500);
+}
+
+/* Animations */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes messagePop {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.8);
+    }
+    50% {
+        transform: translateY(-2px) scale(1.02);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .messageBubble {
+        max-width: 85%;
+        padding: 10px 14px;
+    }
+    
+    .userBubble {
+        border-bottom-right-radius: 6px;
+    }
+    
+    .otherBubble {
+        border-bottom-left-radius: 6px;
+    }
+}
+
+/* Long message handling */
+.messageBubble {
+    min-width: 60px;
+}
+
+/* Typing indicator styles (for future use) */
+.typingIndicator {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 12px;
+}
+
+.typingDot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--grey-400);
+    animation: typing 1.4s infinite ease-in-out;
+}
+
+.typingDot:nth-child(1) {
+    animation-delay: -0.32s;
+}
+
+.typingDot:nth-child(2) {
+    animation-delay: -0.16s;
+}
+
+@keyframes typing {
+    0%, 80%, 100% {
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+    40% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}

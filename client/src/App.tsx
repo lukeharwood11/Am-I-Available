@@ -13,12 +13,14 @@ import AuthWrapper from './AuthWrapper';
 import Layout from './components/layout/Layout';
 import LandingPage from './pages/landing-page/landing.page';
 import ProfilePage from './pages/profile-page/profile.page';
+import ChatPage from './pages/chat-page/chat.page';
 import NotFoundPage from './pages/not-found-page/not-found.page';
 
 export const routes = {
     landing: '/',
     home: '/dashboard',
     profile: '/profile',
+    chat: '/chat',
     events: {
         all: '/events',
         new: '/events/new',
@@ -67,6 +69,10 @@ const App: React.FC = () => {
                             <Route
                                 path={routes.profile}
                                 element={<ProfilePage />}
+                            />
+                            <Route
+                                path={routes.chat}
+                                element={<ChatPage />}
                             />
                         </Route>
                     </Route>

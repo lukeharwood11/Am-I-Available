@@ -1,5 +1,5 @@
 import React from 'react';
-import { MdPerson, MdLogout, MdAccountCircle, MdEvent } from 'react-icons/md';
+import { MdPerson, MdLogout, MdAccountCircle, MdEvent, MdChat } from 'react-icons/md';
 import { Menu, MenuItem, MenuDivider } from '../menu';
 import styles from './Profile.module.css';
 
@@ -44,6 +44,12 @@ const Profile: React.FC<ProfileProps> = ({
                     onClick={() => onClick('/events')}
                 >
                     Events
+                </MenuItem>
+                <MenuItem
+                    leftIcon={<MdChat size={20} />}
+                    onClick={() => onClick('/chat')}
+                >
+                    Chat
                 </MenuItem>
                 <MenuDivider />
 
