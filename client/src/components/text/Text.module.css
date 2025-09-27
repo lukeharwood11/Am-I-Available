@@ -102,6 +102,14 @@
     color: var(--grey-300);
 }
 
+.color-grey-400 {
+    color: var(--grey-400);
+}
+
+.color-grey-500 {
+    color: var(--grey-500);
+}
+
 .color-grey-600 {
     color: var(--grey-600);
 }

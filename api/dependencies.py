@@ -75,13 +75,6 @@ def get_user_token_databridge(
     return UserTokenDatabridge(supabase=supabase)
 
 
-def get_notifications_databridge(
-    supabase: Client = Depends(get_supabase_admin_client),
-) -> NotificationsDatabridge:
-    """Dependency to get notifications databridge instance"""
-    return NotificationsDatabridge(supabase=supabase)
-
-
 # Service Dependencies
 def get_relationships_service(
     databridge: RelationshipsDatabridge = Depends(get_relationships_databridge),
@@ -109,17 +102,17 @@ def get_relationship_requests_service(
     return RelationshipRequestsService(
         databridge=databridge, relationships_service=relationships_service
     )
-
+    
 
 def get_llm_service() -> LLMService:
     """Dependency to get LLM service instance"""
     return LLMService()
 
-
-def get_relationships_service(relationships_databridge: RelationshipsDatabridge = Depends(get_relationships_databridge)) -> RelationshipsService:
+def get_relationships_service(
+    databridge: RelationshipsDatabridge = Depends(get_relationships_databridge),
+) -> RelationshipsService:
     """Dependency to get relationships service instance"""
-    return RelationshipsService(databridge=relationships_databridge)
-
+    return RelationshipsService(databridge=databridge)
 
 def get_event_requests_service(
     databridge: EventRequestsDatabridge = Depends(get_event_requests_databridge),
@@ -127,20 +120,31 @@ def get_event_requests_service(
     relationships_service: RelationshipsService = Depends(get_relationships_service),
 ) -> EventRequestsService:
     """Dependency to get event requests service instance"""
-    return EventRequestsService(
-        databridge=databridge,
-        llm_service=llm_service,
-        relationships_service=relationships_service,
-    )
+    return EventRequestsService(databridge=databridge, llm_service=llm_service, relationships_service=relationships_service)
+
+
+def get_notifications_databridge(
+    supabase: Client = Depends(get_supabase_admin_client),
+) -> NotificationsDatabridge:
+    """Dependency to get notifications databridge instance"""
+    return NotificationsDatabridge(supabase=supabase)
+
+
+def get_notifications_service(
+    databridge: NotificationsDatabridge = Depends(get_notifications_databridge),
+) -> NotificationsService:
+    """Dependency to get notifications service instance"""
+    return NotificationsService(databridge=databridge)
 
 
 def get_event_request_approvals_service(
     databridge: EventRequestApprovalsDatabridge = Depends(
         get_event_request_approvals_databridge
     ),
+    notification_service: NotificationsService = Depends(get_notifications_service),
 ) -> EventRequestApprovalsService:
     """Dependency to get event request approvals service instance"""
-    return EventRequestApprovalsService(databridge=databridge)
+    return EventRequestApprovalsService(databridge=databridge, notification_service=notification_service)
 
 
 def get_google_events_service(
@@ -153,10 +157,3 @@ def get_google_events_service(
 def get_emails_service() -> EmailsService:
     """Dependency to get emails service instance"""
     return EmailsService()
-
-
-def get_notifications_service(
-    databridge: NotificationsDatabridge = Depends(get_notifications_databridge),
-) -> NotificationsService:
-    """Dependency to get notifications service instance"""
-    return NotificationsService(databridge=databridge)

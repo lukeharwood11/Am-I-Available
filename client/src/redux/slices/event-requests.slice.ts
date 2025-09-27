@@ -3,6 +3,7 @@ import {
     EventRequestsState,
     EventRequestData,
     EventRequestWithApprovalsData,
+    EventRequestWithApproversData,
 } from '../types/event-requests.types';
 import {
     createEventRequestThunk,
@@ -96,7 +97,7 @@ const eventRequestsSlice = createSlice({
         },
         setCurrentEventRequestWithApprovals: (
             state,
-            action: PayloadAction<EventRequestWithApprovalsData | null>
+            action: PayloadAction<EventRequestWithApproversData | null>
         ) => {
             state.currentEventRequestWithApprovals = action.payload;
         },

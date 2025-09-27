@@ -1,9 +1,9 @@
 from fastapi import HTTPException
-from ..databridge.event_request_approvals_databridge import (
+from api.databridge.event_request_approvals_databridge import (
     EventRequestApprovalsDatabridge,
     DBEventRequestApprovalResponse,
 )
-from ..models.v1.event_request_approvals import (
+from api.models.v1.event_request_approvals import (
     EventRequestApprovalData,
     EventRequestApprovalCreateResponse,
     EventRequestApprovalsBatchCreateResponse,

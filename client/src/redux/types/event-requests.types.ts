@@ -55,6 +55,35 @@ export interface Approver {
     required: boolean;
 }
 
+export interface EventRequestApprovalData {
+    id: string;
+    event_request_id: string;
+    user_id: string;
+    required: boolean;
+    status: string;
+    response_notes: string | null;
+    responded_at: string | null;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface EventRequestWithApproversData {
+    id: string;
+    google_event_id: string | null;
+    title: string | null;
+    location: string | null;
+    description: string | null;
+    start_date: EventDateTime;
+    end_date: EventDateTime;
+    importance_level: number;
+    status: string;
+    notes: string | null;
+    created_by: string;
+    created_at: string;
+    updated_at: string;
+    approvers: EventRequestApprovalData[];
+}
+
 // Event Request Request Types
 export interface CreateEventRequestRequest extends BaseCreateRequest {
     title?: string | null;
@@ -134,6 +163,10 @@ export interface EventRequestWithApprovalsResponse extends BaseResponse {
     event_request: EventRequestWithApprovalsData;
 }
 
+export interface EventRequestWithApproversResponse extends BaseResponse {
+    event_request: EventRequestWithApproversData;
+}
+
 export interface EventRequestsListResponse extends BaseResponse {
     event_requests: EventRequestData[];
     count: number;
@@ -164,7 +197,7 @@ export interface EventRequestsState {
     eventRequests: EventRequestData[];
     eventRequestsWithApprovals: EventRequestWithApprovalsData[];
     currentEventRequest: EventRequestData | null;
-    currentEventRequestWithApprovals: EventRequestWithApprovalsData | null;
+    currentEventRequestWithApprovals: EventRequestWithApproversData | null;
     pagination: PaginationData;
     loading: {
         eventRequests: boolean;

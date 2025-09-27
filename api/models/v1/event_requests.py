@@ -267,6 +267,41 @@ class EventRequestWithApprovalsData(BaseModel):
     )
 
 
+class EventRequestApprovalData(BaseModel):
+    """Event request approval data model"""
+
+    id: str = Field(description="Approval UUID")
+    event_request_id: str = Field(description="UUID of the event request")
+    user_id: str = Field(description="UUID of the user who needs to approve")
+    required: bool = Field(description="Whether this approval is required")
+    status: str = Field(description="Approval status")
+    response_notes: str | None = Field(description="Notes from the approver")
+    responded_at: datetime | None = Field(description="When the user responded")
+    created_at: datetime = Field(description="When the approval was created")
+    updated_at: datetime = Field(description="When the approval was last updated")
+
+
+class EventRequestWithApproversData(BaseModel):
+    """Event request data model with detailed approvers information"""
+
+    id: str = Field(description="Event request UUID")
+    google_event_id: str | None = Field(description="Google Calendar event ID")
+    title: str | None = Field(description="Event title")
+    location: str | None = Field(description="Event location")
+    description: str | None = Field(description="Event description")
+    start_date: EventDateTime = Field(description="Event start date and time")
+    end_date: EventDateTime = Field(description="Event end date and time")
+    importance_level: int = Field(description="Importance level from 1 to 5")
+    status: str = Field(description="Event request status")
+    notes: str | None = Field(description="Additional notes")
+    created_by: str = Field(description="UUID of the user who created the request")
+    created_at: datetime = Field(description="When the request was created")
+    updated_at: datetime = Field(description="When the request was last updated")
+    approvers: list[EventRequestApprovalData] = Field(
+        description="List of all approvers and their approval data"
+    )
+
+
 class EventRequestResponse(BaseModel):
     """Response model for single event request operations"""
 
@@ -317,3 +352,11 @@ class EventRequestUpdateResponse(BaseModel):
     status: str = "success"
     event_request: EventRequestData
     message: str = "Event request updated successfully"
+
+
+class EventRequestWithApproversResponse(BaseModel):
+    """Response model for event request with approvers"""
+
+    status: str = "success"
+    event_request: EventRequestWithApproversData
+    message: str | None = None

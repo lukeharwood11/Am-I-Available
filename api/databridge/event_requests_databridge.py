@@ -44,6 +44,35 @@ class DBEventRequestWithApprovalsResponse(BaseModel):
     total_count: int
 
 
+class DBEventRequestApprovalResponse(BaseModel):
+    id: str
+    event_request_id: str
+    user_id: str
+    required: bool
+    status: str
+    response_notes: str | None
+    responded_at: datetime | None
+    created_at: datetime
+    updated_at: datetime
+
+
+class DBEventRequestWithApproversResponse(BaseModel):
+    id: str
+    google_event_id: str | None
+    title: str | None
+    location: str | None
+    description: str | None
+    start_date: dict  # JSONB field
+    end_date: dict  # JSONB field
+    importance_level: int
+    status: str
+    notes: str | None
+    created_by: str
+    created_at: datetime
+    updated_at: datetime
+    approvers: list[DBEventRequestApprovalResponse]
+
+
 class EventRequestsDatabridge:
     def __init__(self, supabase: Client):
         self.supabase = supabase
@@ -273,3 +302,43 @@ class EventRequestsDatabridge:
         except Exception as e:
             logger.info(f"Error listing event requests with approvals: {e}")
             return []
+
+    async def get_event_request_with_approvers(
+        self, *, event_request_id: str
+    ) -> DBEventRequestWithApproversResponse | None:
+        """Get a specific event request with all its approvers and approval data"""
+        try:
+            # Get the event request
+            event_response = (
+                self.event_requests.select("*")
+                .eq("id", event_request_id)
+                .single()
+                .execute()
+            )
+            
+            if not event_response.data:
+                return None
+
+            # Get all approvals for this event request
+            approvals_response = (
+                self.supabase.table("event_request_approvals")
+                .select("*")
+                .eq("event_request_id", event_request_id)
+                .execute()
+            )
+
+            approvers = []
+            if approvals_response.data:
+                approvers = [
+                    DBEventRequestApprovalResponse(**approval) 
+                    for approval in approvals_response.data
+                ]
+
+            # Combine event request with approvers
+            event_data = event_response.data
+            event_data["approvers"] = approvers
+
+            return DBEventRequestWithApproversResponse(**event_data)
+        except Exception as e:
+            logger.info(f"Error fetching event request with approvers: {e}")
+            return None

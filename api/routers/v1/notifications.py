@@ -110,7 +110,7 @@ async def delete_notification(
     )
 
 
-@router.post("/mark-all-read", response_model=models.MarkAllAsReadResponse)
+@router.post("/commands/mark-all-read", response_model=models.MarkAllAsReadResponse)
 async def mark_all_as_read(
     user_id: str = Depends(get_current_user_id),
     service: NotificationsService = Depends(get_notifications_service),

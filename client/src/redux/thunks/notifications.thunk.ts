@@ -114,6 +114,23 @@ export const deleteNotificationThunk = createAsyncThunk(
     }
 );
 
+// Mark a notification as read
+export const markNotificationAsReadThunk = createAsyncThunk(
+    'notifications/markAsRead',
+    async (notificationId: string, { rejectWithValue }) => {
+        try {
+            const response = await updateNotification(notificationId, { is_read: true });
+            return response;
+        } catch (error) {
+            const message =
+                error instanceof Error
+                    ? error.message
+                    : 'Failed to mark notification as read';
+            return rejectWithValue(message);
+        }
+    }
+);
+
 // Mark all notifications as read
 export const markAllAsReadThunk = createAsyncThunk(
     'notifications/markAllAsRead',

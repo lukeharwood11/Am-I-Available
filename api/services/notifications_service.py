@@ -1,11 +1,37 @@
 from fastapi import HTTPException
+from pydantic import BaseModel
+from typing import Literal
 from api.databridge.notifications_databridge import (
     NotificationsDatabridge,
     DBNotificationResponse,
     DBNotificationsListResponse,
 )
 import api.models.v1.notifications as models
+from enum import Enum
 
+# Types
+class NotificationType(Enum):
+    EVENT_REQUEST = "event_request"
+    RELATIONSHIP = "relationship"
+
+# ============================================================================
+# Notification payloads
+# ============================================================================
+
+class User(BaseModel):
+    id: str
+    name: str | None = None
+    email: str
+
+class EventRequestNotificationPayload(BaseModel):
+    event_request_id: str
+    update: Literal["created", "updated", "deleted"] = "created"
+    user: User | None = None
+
+class RelationshipNotificationPayload(BaseModel):
+    id: str # relationship_request_id or relationship_id
+    update: Literal["created", "accepted"] = "created"
+    user: User | None = None
 
 class NotificationsService:
     def __init__(self, databridge: NotificationsDatabridge):
@@ -25,6 +51,45 @@ class NotificationsService:
             is_deleted=db_notification.is_deleted,
             created_at=db_notification.created_at,
             updated_at=db_notification.updated_at,
+        )
+
+    async def create_event_request_notification(self, to_user_id: str, payload: EventRequestNotificationPayload) -> models.NotificationCreateResponse:
+        """Create a new event request notification"""
+        _user_name = f"{payload.user.name} ({payload.user.email})" if payload.user.name else payload.user.email
+        if payload.update == "created":
+            title = f"New Event Request"
+            message = f"{_user_name} has created a new event request."
+        elif payload.update == "updated":
+            title = f"Event Request Updated"
+            message = f"{_user_name} has updated their event request."
+        elif payload.update == "deleted":
+            title = f"Event Request Deleted"
+            message = f"{_user_name} has deleted their event request."
+        else:
+            raise ValueError("Invalid update type")
+        return await self.create_notification(
+            user_id=to_user_id,
+            title=title,
+            message=message,
+            payload=payload.model_dump(),
+        )
+    
+    async def create_relationship_notification(self, to_user_id: str, payload: RelationshipNotificationPayload) -> models.NotificationCreateResponse:
+        """Create a new relationship notification"""
+        _user_name = f"{payload.user.name} ({payload.user.email})" if payload.user.name else payload.user.email
+        if payload.update == "created":
+            title = f"New Relationship Request"
+            message = f"{_user_name} would like to add you as a connection."
+        elif payload.update == "accepted":
+            title = f"Relationship Request Accepted"
+            message = f"{_user_name} has accepted your connection request."
+        else:
+            raise ValueError("Invalid update type")
+        return await self.create_notification(
+            user_id=to_user_id,
+            title=title,
+            message=message,
+            payload=payload.model_dump(),
         )
 
     async def create_notification(

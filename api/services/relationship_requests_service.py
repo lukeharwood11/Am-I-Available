@@ -1,10 +1,10 @@
 from fastapi import HTTPException
-from ..databridge.relationship_requests_databridge import (
+from api.databridge.relationship_requests_databridge import (
     RelationshipRequestsDatabridge,
     DBRelationshipRequestResponse,
     DBRelationshipRequestResponseWithUser,
 )
-from ..models.v1.relationship_requests import (
+from api.models.v1.relationship_requests import (
     RelationshipRequestData,
     RelationshipRequestCreateResponse,
     RelationshipRequestUpdateResponse,
@@ -72,11 +72,14 @@ class RelationshipRequestsService:
             requester_id=requester_id, requested_email=requested_email
         )
 
-        if existing and existing.status == "pending":
+        if existing:
             raise HTTPException(
-                status_code=400,
-                detail="A pending relationship request already exists for this email",
+                status_code=409,
+                detail="A relationship request already exists for this email",
             )
+        
+        # check to see if you're already connected to this user
+        # TODO: implement this check
 
         # Create the relationship request
         db_request = await self.databridge.create_relationship_request(

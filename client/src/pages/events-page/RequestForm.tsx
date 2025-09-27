@@ -470,7 +470,6 @@ export const RequestForm = ({
                         placeholder='Start date'
                         fullWidth
                         variant={errors.start_date ? 'error' : 'default'}
-                        minDate={new Date().toISOString().split('T')[0]}
                         disabled={smartParseLoading || loading}
                     />
                     {errors.start_date && (
@@ -488,10 +487,6 @@ export const RequestForm = ({
                         placeholder='End date'
                         fullWidth
                         variant={errors.end_date ? 'error' : 'default'}
-                        minDate={
-                            formData.start_date ||
-                            new Date().toISOString().split('T')[0]
-                        }
                         disabled={smartParseLoading || loading}
                     />
                     {errors.end_date && (

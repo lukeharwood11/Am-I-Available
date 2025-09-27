@@ -1,21 +1,22 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from typing import Dict, Any
+import asyncio 
 
-from ...settings.auth import get_current_user_id, get_current_user
-from ...dependencies import get_relationship_requests_service
-from ...services.relationship_requests_service import RelationshipRequestsService
-from ...models.v1.relationship_requests import (
+from api.settings.auth import get_current_user_id, get_current_user
+from api.dependencies import get_relationship_requests_service
+from api.services.relationship_requests_service import RelationshipRequestsService
+from api.models.v1.relationship_requests import (
     CreateRelationshipRequestRequest,
     RelationshipRequestWithUserListResponse,
     UpdateRelationshipRequestRequest,
-    GetRelationshipRequestsRequest,
-    DeleteRelationshipRequestRequest,
     RelationshipRequestResponse,
     RelationshipRequestsListResponse,
     RelationshipRequestCreateResponse,
     RelationshipRequestUpdateResponse,
     RelationshipRequestDeleteResponse,
 )
+from api.services.notifications_service import RelationshipNotificationPayload, User, NotificationsService
+from api.dependencies import get_notifications_service
 
 
 router = APIRouter(prefix="/relationship-requests", tags=["Relationship Requests"])
@@ -24,8 +25,9 @@ router = APIRouter(prefix="/relationship-requests", tags=["Relationship Requests
 @router.post("", response_model=RelationshipRequestCreateResponse)
 async def create_relationship_request(
     request: CreateRelationshipRequestRequest,
-    user: str = Depends(get_current_user),
+    user: dict[str, Any] = Depends(get_current_user),
     service: RelationshipRequestsService = Depends(get_relationship_requests_service),
+    notification_service: NotificationsService = Depends(get_notifications_service),
 ) -> RelationshipRequestCreateResponse:
     """
     Create a new relationship request by email
@@ -33,11 +35,25 @@ async def create_relationship_request(
     Returns:
         Created relationship request data
     """
-    return await service.create_relationship_request(
+    _relationship_request = await service.create_relationship_request(
         requester_id=user["user_id"],
         requester_email=str(user["email"]),
         requested_email=str(request.requested_email),
     )
+    # TODO: Luke, you're dumb, either make the notifications able to be created from emails as well
+    # or create the notifications when they create an account...
+    #
+    # _ = asyncio.create_task(
+    #     notification_service.create_relationship_notification(
+    #         to_user_id=request.requested_email,
+    #         payload=RelationshipNotificationPayload(
+    #             id=_relationship_request.relationship_request.id,
+    #             update="created",
+    #             user=User(id=user["user_id"], email=user["email"], name=user["user"].user_metadata.get("full_name"))
+    #         )
+    #     )
+    # )
+    return _relationship_request
 
 
 @router.get("/sent", response_model=RelationshipRequestsListResponse)

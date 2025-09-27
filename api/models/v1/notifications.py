@@ -32,11 +32,6 @@ class CreateNotificationRequest(BaseModel):
 
 class UpdateNotificationRequest(BaseModel):
     """Request model for updating a notification"""
-
-    notification_id: str = Field(
-        description="UUID of the notification to update",
-        example="notif-123e4567-e89b-12d3-a456-426614174000",
-    )
     is_read: bool | None = Field(
         None, description="Mark notification as read/unread", example=True
     )

@@ -7,7 +7,7 @@ import {
     SmartParseEventRequestRequest,
     SmartParseEventRequestResponse,
     EventRequestResponse,
-    EventRequestWithApprovalsResponse,
+    EventRequestWithApproversResponse,
     EventRequestsListResponse,
     EventRequestsWithApprovalsListResponse,
     EventRequestDeleteResponse,
@@ -147,10 +147,10 @@ export async function getEventRequest(
  */
 export async function getEventRequestWithApprovals(
     eventRequestId: string
-): Promise<EventRequestWithApprovalsResponse> {
+): Promise<EventRequestWithApproversResponse> {
     try {
-        const response = await get<EventRequestWithApprovalsResponse>(
-            `/api/v1/event-requests/${eventRequestId}`
+        const response = await get<EventRequestWithApproversResponse>(
+            `/api/v1/event-requests/${eventRequestId}/with-approvers`
         );
         return response;
     } catch (error) {

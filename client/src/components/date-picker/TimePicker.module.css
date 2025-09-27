@@ -2,10 +2,12 @@
     position: relative;
     display: inline-block;
     width: auto;
+    box-sizing: border-box;
 }
 
 .fullWidth {
     width: 100%;
+    display: block;
 }
 
 .label {
@@ -32,6 +34,8 @@
     box-sizing: border-box;
     cursor: pointer;
     min-width: 120px;
+    width: 100%;
+    max-width: 100%;
 }
 
 .timeInput:focus {
@@ -85,4 +89,58 @@
 .large {
     padding: 16px 20px;
     font-size: 18px;
+}
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+    .timePickerContainer {
+        width: 100%;
+        display: block;
+    }
+    
+    .timeInput {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        font-size: 16px; /* Prevents zoom on iOS */
+        padding: 12px 16px;
+    }
+    
+    .small {
+        padding: 8px 12px;
+        font-size: 16px;
+    }
+    
+    .medium {
+        padding: 12px 16px;
+        font-size: 16px;
+    }
+    
+    .large {
+        padding: 16px 20px;
+        font-size: 16px;
+    }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+    .timeInput {
+        padding: 10px 12px;
+        font-size: 16px;
+    }
+    
+    .small {
+        padding: 8px 10px;
+        font-size: 16px;
+    }
+    
+    .medium {
+        padding: 10px 12px;
+        font-size: 16px;
+    }
+    
+    .large {
+        padding: 12px 16px;
+        font-size: 16px;
+    }
 }

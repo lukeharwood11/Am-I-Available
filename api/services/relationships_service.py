@@ -3,9 +3,8 @@ from ..databridge.relationships_databridge import (
     RelationshipsDatabridge,
     DBRelationshipResponse,
     DBRelationshipWithUserResponse,
-    DBRelationshipsListResponse,
 )
-from ..models.v1.relationships import (
+from api.models.v1.relationships import (
     RelationshipData,
     RelationshipCreateResponse,
     RelationshipUpdateResponse,

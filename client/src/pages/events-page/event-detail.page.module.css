@@ -1,18 +1,21 @@
+.eventDetailPage {
+    padding: 20px;
+    background: linear-gradient(
+        135deg,
+        var(--primary-bg) 0%,
+        var(--secondary-bg) 100%
+    );
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex: 1;
+}
+
 .container {
     width: min(100%, 1200px);
     margin: 0 auto;
     padding: 0 1rem;
     box-sizing: border-box;
-}
-
-.eventDetailPage {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 2rem;
-    width: 100%;
-    box-sizing: border-box;
-    flex: 1;
 }
 
 .pageHeader {
@@ -27,13 +30,6 @@
     gap: 1rem;
 }
 
-.headerContent h1 {
-    font-size: 2rem;
-    font-weight: 600;
-    color: var(--grey-900);
-    margin: 0;
-}
-
 .headerActions {
     display: flex;
     align-items: center;
@@ -42,21 +38,30 @@
 }
 
 .pageContent {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+    display: grid;
+    width: min(1200px, 100%);
+    grid-template-columns: 1fr 400px;
+    gap: 24px;
+    height: 100%;
+    align-content: start;
 }
 
-.eventDetail {
+.leftColumn {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 24px;
+}
+
+.rightColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 }
 
 .detailCard {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
 }
 
 .detailHeader {
@@ -88,16 +93,42 @@
 .approversList {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.5rem;
 }
 
 .approverItem {
     display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+    padding: 0.75rem;
+    border-radius: var(--border-radius-standard);
+    outline: 1px solid var(--grey-200);
+    background: var(--grey-100);
+}
+
+.approverInfo {
+    display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.75rem;
-    background: var(--grey-50);
-    border-radius: 0.375rem;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.approverStatus {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.approverNotes {
+    margin-top: 0.25rem;
+    width: 100%;
+}
+
+.approverTimestamp {
+    margin-top: 0.25rem;
+    width: 100%;
 }
 
 .notFoundCard {
@@ -109,11 +140,17 @@
     text-align: center;
 }
 
-@media (max-width: 768px) {
-    .eventDetailPage {
-        padding: 1rem;
+@media (max-width: 1200px) {
+    .pageContent {
+        grid-template-columns: 1fr;
     }
 
+    .eventDetailPage {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 768px) {
     .headerContent {
         flex-direction: column;
         align-items: stretch;
@@ -127,9 +164,13 @@
         grid-template-columns: 1fr;
     }
 
-    .approverItem {
+    .approverInfo {
         flex-direction: column;
         align-items: stretch;
         gap: 0.5rem;
+    }
+
+    .approverStatus {
+        justify-content: stretch;
     }
 }

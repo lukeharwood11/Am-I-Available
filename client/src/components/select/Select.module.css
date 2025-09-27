@@ -45,6 +45,10 @@
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
 }
 
 .select:disabled {

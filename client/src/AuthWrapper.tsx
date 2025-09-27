@@ -7,8 +7,9 @@ import {
     selectIsAuthenticated,
 } from './redux/selectors/auth.selectors';
 import { onAuthStateChange } from './redux/hubs/auth.hub';
-import { authActions } from './redux/slices/auth.slice';
 import LoadingIcon from './components/icons/LoadingIcon';
+import { authActions } from './redux/slices/auth.slice';
+
 
 const unProtectedRoutes = ['/', '/login', '/auth/callback'];
 

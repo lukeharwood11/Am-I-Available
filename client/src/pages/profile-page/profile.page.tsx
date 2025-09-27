@@ -17,11 +17,13 @@ import {
 import { RelationshipWithUserData } from '../../redux/types/relationships.types';
 import { RelationshipRequestWithUserData } from '../../redux/types/relationship-requests.types';
 import { MdAccountCircle, MdPerson, MdSettings } from 'react-icons/md';
+import { useMediaQuery } from 'react-responsive';
 
 const ProfilePage: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const [searchParams, setSearchParams] = useSearchParams();
     const [activeTab, setActiveTab] = useState('account-information');
+    const smallDevice = useMediaQuery({ query: '(max-width: 768px)' });
 
     const user = useSelector((state: RootState) => state.auth.session?.user);
     const isAuthenticated = useSelector(
@@ -326,19 +328,19 @@ const ProfilePage: React.FC = () => {
     const sampleTabs: TabItem[] = [
         {
             id: 'account-information',
-            label: 'Account Information',
-            icon: <MdAccountCircle size={20} />,
+            label: 'Account',
+            icon: smallDevice ? undefined : <MdAccountCircle size={20} />,
         },
         {
             id: 'settings',
             label: 'Settings',
-            icon: <MdSettings size={20} />,
+            icon: smallDevice ? undefined : <MdSettings size={20} />,
             content: renderSettingsContent(),
         },
         {
             id: 'relationships',
             label: 'Relationships',
-            icon: <MdPerson size={20} />,
+            icon: smallDevice ? undefined : <MdPerson size={20} />,
             content: renderRelationshipsContent(),
         },
     ];

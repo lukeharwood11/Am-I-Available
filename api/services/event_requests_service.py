@@ -4,16 +4,21 @@ from ..databridge.event_requests_databridge import (
     EventRequestsDatabridge,
     DBEventRequestResponse,
     DBEventRequestWithApprovalsResponse,
+    DBEventRequestWithApproversResponse,
+    DBEventRequestApprovalResponse,
 )
 from ..models.v1.event_requests import (
     EventRequestData,
     EventRequestWithApprovalsData,
+    EventRequestWithApproversData,
+    EventRequestApprovalData,
     EventRequestCreateResponse,
     EventRequestUpdateResponse,
     EventRequestDeleteResponse,
     EventRequestsListResponse,
     EventRequestsWithApprovalsListResponse,
     EventRequestResponse,
+    EventRequestWithApproversResponse,
     EventDateTime,
 )
 
@@ -100,6 +105,46 @@ class EventRequestsService:
             completed_count=db_request.completed_count,
         )
 
+    def _convert_db_approval_to_model(
+        self, db_approval: DBEventRequestApprovalResponse
+    ) -> EventRequestApprovalData:
+        """Convert database approval response to API model"""
+        return EventRequestApprovalData(
+            id=db_approval.id,
+            event_request_id=db_approval.event_request_id,
+            user_id=db_approval.user_id,
+            required=db_approval.required,
+            status=db_approval.status,
+            response_notes=db_approval.response_notes,
+            responded_at=db_approval.responded_at,
+            created_at=db_approval.created_at,
+            updated_at=db_approval.updated_at,
+        )
+
+    def _convert_db_with_approvers_to_model(
+        self, db_request: DBEventRequestWithApproversResponse
+    ) -> EventRequestWithApproversData:
+        """Convert database response with approvers to API model"""
+        return EventRequestWithApproversData(
+            id=db_request.id,
+            google_event_id=db_request.google_event_id,
+            title=db_request.title,
+            location=db_request.location,
+            description=db_request.description,
+            start_date=self._dict_to_event_datetime(db_request.start_date),
+            end_date=self._dict_to_event_datetime(db_request.end_date),
+            importance_level=db_request.importance_level,
+            status=db_request.status,
+            notes=db_request.notes,
+            created_by=db_request.created_by,
+            created_at=db_request.created_at,
+            updated_at=db_request.updated_at,
+            approvers=[
+                self._convert_db_approval_to_model(approver) 
+                for approver in db_request.approvers
+            ],
+        )
+
     async def auto_fill_event_request(
         self,
         *,
@@ -122,34 +167,6 @@ class EventRequestsService:
             } for relationship in _relationships.relationships
         ]}"
         return await self.llm_service.smart_parse_event_request(request, _context)
-
-    async def create_event_request_with_approvals(
-        self,
-        *,
-        google_event_id: str | None,
-        title: str | None,
-        location: str | None,
-        description: str | None,
-        start_date: EventDateTime,
-        end_date: EventDateTime,
-        importance_level: int,
-        notes: str | None,
-        created_by: str,
-        approvers: list[str],
-    ) -> EventRequestCreateResponse:
-        """Create a new event request with approvals"""
-        # Create the event request
-        db_request = await self.databridge.create_event_request(
-            google_event_id=google_event_id,
-            title=title,
-            location=location,
-            description=description,
-            start_date=self._event_datetime_to_dict(start_date),
-            end_date=self._event_datetime_to_dict(end_date),
-            importance_level=importance_level,
-            notes=notes,
-            created_by=created_by,
-        )
 
     async def create_event_request(
         self,
@@ -214,6 +231,20 @@ class EventRequestsService:
 
         request_data = self._convert_db_to_model(db_request)
         return EventRequestResponse(event_request=request_data)
+
+    async def get_event_request_with_approvers(
+        self, *, event_request_id: str
+    ) -> EventRequestWithApproversResponse:
+        """Get a specific event request with all its approvers and approval data"""
+        db_request = await self.databridge.get_event_request_with_approvers(
+            event_request_id=event_request_id
+        )
+
+        if not db_request:
+            raise HTTPException(status_code=404, detail="Event request not found")
+
+        request_data = self._convert_db_with_approvers_to_model(db_request)
+        return EventRequestWithApproversResponse(event_request=request_data)
 
     async def get_user_event_requests(
         self,

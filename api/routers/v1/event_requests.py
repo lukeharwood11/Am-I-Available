@@ -13,6 +13,7 @@ from ...models.v1.event_requests import (
     SmartParseEventRequestRequest,
     UpdateEventRequestRequest,
     EventRequestResponse,
+    EventRequestWithApproversResponse,
     EventRequestsListResponse,
     EventRequestsWithApprovalsListResponse,
     EventRequestCreateResponse,
@@ -191,6 +192,25 @@ async def get_event_request(
         Event request data
     """
     return await service.get_event_request(event_request_id=event_request_id)
+
+
+@router.get("/{event_request_id}/with-approvers", response_model=EventRequestWithApproversResponse)
+async def get_event_request_with_approvers(
+    event_request_id: str,
+    user_id: str = Depends(get_current_user_id),
+    service: EventRequestsService = Depends(get_event_requests_service),
+) -> EventRequestWithApproversResponse:
+    """
+    Get a specific event request with all its approvers and approval data
+
+    Returns:
+        Event request data with detailed approvers information including:
+        - All approvers assigned to this event request
+        - Approval status for each approver (pending, approved, rejected)
+        - Response notes from approvers
+        - Timestamps for when approvals were created and responded to
+    """
+    return await service.get_event_request_with_approvers(event_request_id=event_request_id)
 
 
 @router.get("/google/{google_event_id}", response_model=EventRequestResponse)

@@ -10,6 +10,9 @@ Am I Available?
 
 ## Feature List
 
+### Safty / Robustness
+- [ ] Don't allow a user to create a relationship request if the user is already in a relationship with them
+
 ### Bugs
 - [ ] Add a frame to load all relevant data on app load (relationships don't load for requestform)
 - [x] Fix the storing of time for an event request... right now the timezones are screwed up.
@@ -18,6 +21,7 @@ Am I Available?
 - [x] Fix styling of loading cards
 - [x] Create a Landing/Marketing page
 - [x] Change slices to use loading state for all components
+- [ ] Update slices to hold a "loaded" flag that can be reset, but will hide loading state.
 - [ ] Health check while loading so you have a loading screen while the API heats up initially
 
 ### Legal / Security / Predeployments

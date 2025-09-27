@@ -3,40 +3,49 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store';
 import {
-    fetchEventRequestsWithApprovalsThunk,
     deleteEventRequestThunk,
+    fetchEventRequestWithApprovalsThunk,
 } from '../../redux/thunks/event-requests.thunk';
-import { Approver } from '../../redux/types/event-requests.types';
+import { EventRequestApprovalData } from '../../redux/types/event-requests.types';
 import { formatDateTime } from '../../utils/dateUtils';
 import { Button, Text, Pill, ConfirmationModal } from '../../components';
 import { MdEdit, MdArrowBack, MdLocationOn, MdDelete } from 'react-icons/md';
 import Card from '../../components/card/Card';
 import Skeleton from '../../components/skeleton';
 import styles from './event-detail.page.module.css';
+import { fetchUserRelationshipsThunk } from '../../redux/thunks/relationships.thunk';
 
 const EventDetailPage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
     const { id } = useParams<{ id: string }>();
 
-    const eventRequestsWithApprovals = useSelector(
-        (state: RootState) => state.eventRequests.eventRequestsWithApprovals
+    const event = useSelector(
+        (state: RootState) => state.eventRequests.currentEventRequestWithApprovals
+    );
+
+    const relationships = useSelector(
+        (state: RootState) => state.relationships.relationships
     );
 
     const isLoading = useSelector(
         (state: RootState) =>
-            state.eventRequests.loading.eventRequestsWithApprovals
+            state.eventRequests.loading.currentEventRequestWithApprovals
     );
 
-    const event = eventRequestsWithApprovals.find(req => req.id === id);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
+    const getApprover = (approverId: string) => {
+        return relationships.find(relationship => relationship.other_user.id === approverId);
+    };
+
     const handleRefresh = useCallback(() => {
-        dispatch(fetchEventRequestsWithApprovalsThunk({}));
+        dispatch(fetchEventRequestWithApprovalsThunk(id as string));
     }, [dispatch]);
 
     useEffect(() => {
         handleRefresh();
+        dispatch(fetchUserRelationshipsThunk({}));
     }, [handleRefresh]);
 
     const getStatusLabel = (status: string) => {
@@ -150,13 +159,6 @@ const EventDetailPage = () => {
                             Back to Events
                         </Button>
                         <div className={styles.headerActions}>
-                            <Pill
-                                color={getStatusColor(event.status)}
-                                size='medium'
-                                variant='outlined'
-                            >
-                                {getStatusLabel(event.status)}
-                            </Pill>
                             <Button
                                 variant='primary'
                                 leftIcon={<MdEdit />}
@@ -176,96 +178,127 @@ const EventDetailPage = () => {
                 </div>
 
                 <div className={styles.pageContent}>
-                    <Card contentClassName={styles.detailCard}>
-                        <div className={styles.detailHeader}>
-                            <Text variant='heading-large'>{event.title}</Text>
-                            <Text variant='caption' color='secondary'>
-                                Created{' '}
-                                {new Date(
-                                    event.created_at
-                                ).toLocaleDateString()}
-                            </Text>
-                        </div>
-
-                        {event.description && (
-                            <div className={styles.detailSection}>
-                                <Text variant='heading-small'>Description</Text>
-                                <Text variant='body'>{event.description}</Text>
-                            </div>
-                        )}
-
-                        {event.location && (
-                            <div className={styles.detailSection}>
-                                <Text variant='heading-small'>Location</Text>
-                                <Text variant='body'>
-                                    {' '}
-                                    <MdLocationOn /> {event.location}
+                    <div className={styles.leftColumn}>
+                        <Card contentClassName={styles.detailCard}>
+                            <div className={styles.detailHeader}>
+                                <Text variant='heading-large'>{event.title}</Text>
+                                <Text variant='caption' color='secondary'>
+                                    Created{' '}
+                                    {new Date(
+                                        event.created_at
+                                    ).toLocaleDateString()}
                                 </Text>
                             </div>
-                        )}
 
-                        <div className={styles.detailSection}>
-                            <Text variant='heading-small'>Date & Time</Text>
-                            <div className={styles.dateTimeInfo}>
-                                <div className={styles.dateTimeItem}>
-                                    <Text variant='caption' color='secondary'>
-                                        Start
-                                    </Text>
+                            {event.description && (
+                                <div className={styles.detailSection}>
+                                    <Text variant='heading-small'>Description</Text>
+                                    <Text variant='body'>{event.description}</Text>
+                                </div>
+                            )}
+
+                            {event.location && (
+                                <div className={styles.detailSection}>
+                                    <Text variant='heading-small'>Location</Text>
                                     <Text variant='body'>
-                                        {formatDateTime(event.start_date)}
+                                        {' '}
+                                        <MdLocationOn /> {event.location}
                                     </Text>
                                 </div>
-                                <div className={styles.dateTimeItem}>
-                                    <Text variant='caption' color='secondary'>
-                                        End
-                                    </Text>
-                                    <Text variant='body'>
-                                        {formatDateTime(event.end_date)}
-                                    </Text>
+                            )}
+
+                            <div className={styles.detailSection}>
+                                <Text variant='heading-small'>Date & Time</Text>
+                                <div className={styles.dateTimeInfo}>
+                                    <div className={styles.dateTimeItem}>
+                                        <Text variant='caption' color='secondary'>
+                                            Start
+                                        </Text>
+                                        <Text variant='body'>
+                                            {formatDateTime(event.start_date)}
+                                        </Text>
+                                    </div>
+                                    <div className={styles.dateTimeItem}>
+                                        <Text variant='caption' color='secondary'>
+                                            End
+                                        </Text>
+                                        <Text variant='body'>
+                                            {formatDateTime(event.end_date)}
+                                        </Text>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        {event.notes && (
-                            <div className={styles.detailSection}>
-                                <Text variant='heading-small'>Notes</Text>
-                                <Text variant='body'>{event.notes}</Text>
-                            </div>
-                        )}
+                            {event.notes && (
+                                <div className={styles.detailSection}>
+                                    <Text variant='heading-small'>Notes</Text>
+                                    <Text variant='body'>{event.notes}</Text>
+                                </div>
+                            )}
+                        </Card>
+                    </div>
 
-                        {event.approvers && event.approvers.length > 0 && (
-                            <div className={styles.detailSection}>
-                                <Text variant='heading-small'>Approvers</Text>
-                                <div className={styles.approversList}>
-                                    {event.approvers.map(
-                                        (approver: Approver, index: number) => (
-                                            <div
-                                                key={index}
-                                                className={styles.approverItem}
-                                            >
-                                                <Text variant='body'>
-                                                    {approver.user_id}
-                                                </Text>
-                                                <Pill
-                                                    size='small'
-                                                    variant='outlined'
-                                                    color={
-                                                        approver.required
-                                                            ? 'primary'
-                                                            : 'secondary'
-                                                    }
+                    <div className={styles.rightColumn}>
+                        {relationships.length > 0 && event.approvers && event.approvers.length > 0 && (
+                            <Card contentClassName={styles.detailCard}>
+                                <div className={styles.detailSection}>
+                                    <Text variant='heading-small'>Approvers</Text>
+                                    <div className={styles.approversList}>
+                                        {event.approvers.map(
+                                            (approver: EventRequestApprovalData) => (
+                                                <div
+                                                    key={approver.id}
+                                                    className={styles.approverItem}
                                                 >
-                                                    {approver.required
-                                                        ? 'Required'
-                                                        : 'Optional'}
-                                                </Pill>
-                                            </div>
-                                        )
-                                    )}
+                                                    <div className={styles.approverInfo}>
+                                                        <Text variant='body'>
+                                                            {getApprover(approver.user_id)?.other_user.full_name}
+                                                        </Text>
+                                                        <div className={styles.approverStatus}>
+                                                            <Pill
+                                                                size='small'
+                                                                variant='outlined'
+                                                                color={
+                                                                    approver.required
+                                                                        ? 'primary'
+                                                                        : 'secondary'
+                                                                }
+                                                            >
+                                                                {approver.required
+                                                                    ? 'Required'
+                                                                    : 'Optional'}
+                                                            </Pill>
+                                                            <Pill
+                                                                size='small'
+                                                                variant='filled'
+                                                                color={getStatusColor(approver.status)}
+                                                            >
+                                                                {getStatusLabel(approver.status)}
+                                                            </Pill>
+                                                        </div>
+                                                    </div>
+                                                    {approver.response_notes && (
+                                                        <div className={styles.approverNotes}>
+                                                            <Text variant='caption' color='secondary'>
+                                                                Notes: {approver.response_notes}
+                                                            </Text>
+                                                        </div>
+                                                    )}
+                                                    {approver.responded_at && (
+                                                        <div className={styles.approverTimestamp}>
+                                                            <Text variant='caption' color='secondary'>
+                                                                Responded: {new Date(approver.responded_at).toLocaleString()}
+                                                            </Text>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            )
+                                        )}
+                                    </div>
                                 </div>
-                            </div>
+                            </Card>
                         )}
-                    </Card>
+                    </div>
                 </div>
             </div>
 

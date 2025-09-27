@@ -65,13 +65,13 @@ class NotificationsDatabridge:
             response = (
                 self.notifications.select("*")
                 .eq("id", notification_id)
-                .single()
                 .execute()
             )
-            if not response.data:
+            if not response.data or len(response.data) == 0:
                 return None
 
-            return DBNotificationResponse(**response.data)
+            # Return the first (and should be only) result
+            return DBNotificationResponse(**response.data[0])
         except Exception as e:
             logger.error(f"Error fetching notification: {e}")
             return None
