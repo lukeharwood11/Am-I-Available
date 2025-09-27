@@ -33,7 +33,7 @@ variable "supabase_service_role_key" {
   description = "The Supabase service role key"
 }
 
-variable "database_username" {  
+variable "database_username" {
   type        = string
   description = "The database username"
 }
