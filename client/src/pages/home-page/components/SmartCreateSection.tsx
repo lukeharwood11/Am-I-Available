@@ -17,6 +17,14 @@ const SmartCreateSection = (_: SmartCreateSectionProps) => {
         queryParams.set('message', input);
         navigate(`/chat?${queryParams.toString()}`);
     };
+
+    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleSmartCreate(inputValue);
+        }
+    };
+
     return (
         <Card contentClassName={styles.smartCreate}>
             <Text className={styles.title} variant='heading-small'>
@@ -39,6 +47,7 @@ const SmartCreateSection = (_: SmartCreateSectionProps) => {
                 <Input
                     value={inputValue}
                     onChange={e => setInputValue(e.target.value)}
+                    onKeyDown={handleKeyPress}
                     placeholder='Chat with AMIA'
                     fullWidth
                 />
@@ -46,6 +55,7 @@ const SmartCreateSection = (_: SmartCreateSectionProps) => {
                     variant='primary'
                     leftIcon={<MdAutoAwesome />}
                     onClick={() => handleSmartCreate(inputValue)}
+                    disabled={inputValue.trim() === ''}
                 >
                     Create
                 </Button>
