@@ -83,5 +83,3 @@ class AppConfig(BaseSettings):
 
 
 config = AppConfig()
-
-print(config.model_dump_json(indent=2))

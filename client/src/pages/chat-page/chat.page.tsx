@@ -13,14 +13,7 @@ interface Message {
 }
 
 const ChatPage: React.FC = () => {
-    const [messages, setMessages] = useState<Message[]>([
-        {
-            id: '1',
-            text: 'Hello! How can I help you today?',
-            sender: 'other',
-            timestamp: new Date(Date.now() - 1000 * 60 * 5), // 5 minutes ago
-        },
-    ]);
+    const [messages, setMessages] = useState<Message[]>([]);
 
     const [searchParams, setSearchParams] = useSearchParams();
     const [inputValue, setInputValue] = useState('');
