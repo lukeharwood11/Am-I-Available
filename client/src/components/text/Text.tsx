@@ -18,6 +18,7 @@ export type TextColor =
     | 'grey-400'
     | 'grey-500'
     | 'grey-600'
+    | 'grey-700'
     | 'grey-800'
     | 'inherit';
 

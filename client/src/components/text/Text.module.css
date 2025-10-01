@@ -114,6 +114,10 @@
     color: var(--grey-600);
 }
 
+.color-grey-700 {
+    color: var(--grey-700);
+}
+
 .color-grey-800 {
     color: var(--grey-800);
 }

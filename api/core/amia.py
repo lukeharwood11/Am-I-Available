@@ -20,6 +20,7 @@ agent = AssistantAgent(
     system_message="You are a helpful assistant.",
     reflect_on_tool_use=True,
     model_client_stream=True,  # Enable streaming tokens from the model client.
+    max_tool_iterations=5
 )
 
 # async def main() -> None:

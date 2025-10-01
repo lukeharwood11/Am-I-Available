@@ -1,7 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Logo from '../../components/icons/Logo';
 import styles from './Footer.module.css';
-import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
 
 const Footer: React.FC = () => {
     const currentYear = new Date().getFullYear();
@@ -22,19 +22,19 @@ const Footer: React.FC = () => {
                     <h4 className={styles.sectionTitle}>Product</h4>
                     <ul className={styles.linkList}>
                         <li>
-                            <a href='#features' className={styles.footerLink}>
+                            <a href='/#features' className={styles.footerLink}>
                                 Features
                             </a>
                         </li>
                         <li>
-                            <a href='#about' className={styles.footerLink}>
+                            <a href='/#about' className={styles.footerLink}>
                                 About
                             </a>
                         </li>
                         <li>
-                            <a href='#pricing' className={styles.footerLink}>
+                            <Link to='/pricing' className={styles.footerLink}>
                                 Pricing
-                            </a>
+                            </Link>
                         </li>
                     </ul>
                 </div>
@@ -43,17 +43,17 @@ const Footer: React.FC = () => {
                     <h4 className={styles.sectionTitle}>Support</h4>
                     <ul className={styles.linkList}>
                         <li>
-                            <a href='#help' className={styles.footerLink}>
+                            <a href='/#help' className={styles.footerLink}>
                                 Help Center
                             </a>
                         </li>
                         <li>
-                            <a href='#contact' className={styles.footerLink}>
+                            <a href='/#contact' className={styles.footerLink}>
                                 Contact Us
                             </a>
                         </li>
                         <li>
-                            <a href='#status' className={styles.footerLink}>
+                            <a href='/#status' className={styles.footerLink}>
                                 Status
                             </a>
                         </li>
@@ -64,19 +64,24 @@ const Footer: React.FC = () => {
                     <h4 className={styles.sectionTitle}>Legal</h4>
                     <ul className={styles.linkList}>
                         <li>
-                            <a href='#privacy' className={styles.footerLink}>
+                            <Link to='/legal/privacy' className={styles.footerLink}>
                                 Privacy Policy
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a href='#terms' className={styles.footerLink}>
+                            <Link to='/legal/terms' className={styles.footerLink}>
                                 Terms of Service
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a href='#cookies' className={styles.footerLink}>
+                            <Link to='/legal/cookies' className={styles.footerLink}>
                                 Cookie Policy
-                            </a>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to='/security' className={styles.footerLink}>
+                                Security
+                            </Link>
                         </li>
                     </ul>
                 </div>
@@ -87,7 +92,7 @@ const Footer: React.FC = () => {
                     <p>&copy; {currentYear} AMIA. All rights reserved.</p>
                 </div>
                 <div className={styles.socialLinks}>
-                    <a
+                    {/* <a
                         href='#twitter'
                         className={styles.socialLink}
                         aria-label='Twitter'
@@ -107,7 +112,7 @@ const Footer: React.FC = () => {
                         aria-label='GitHub'
                     >
                         <FaGithub size={20} />
-                    </a>
+                    </a> */}
                 </div>
             </div>
         </footer>

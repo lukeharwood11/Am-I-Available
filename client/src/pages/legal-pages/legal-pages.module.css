@@ -1,0 +1,149 @@
+.legalPage {
+    min-height: 100vh;
+    background: var(--grey-100);
+    padding: 2rem 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.contentCard {
+    background: white;
+    border-radius: var(--border-radius-standard);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+    border-bottom: 2px solid var(--primary-accent);
+    padding-bottom: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--grey-800);
+    margin: 0 0 0.5rem 0;
+    line-height: 1.2;
+}
+
+.lastUpdated {
+    color: var(--grey-600);
+    font-size: 1rem;
+    margin: 0;
+    font-style: italic;
+}
+
+.content {
+    line-height: 1.7;
+    color: var(--grey-700);
+}
+
+.section {
+    margin-bottom: 2.5rem;
+}
+
+.section:last-child {
+    margin-bottom: 0;
+}
+
+.sectionTitle {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--grey-800);
+    margin: 0 0 1rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--grey-200);
+}
+
+.subsectionTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--primary);
+    margin: 1.5rem 0 0.75rem 0;
+}
+
+.list {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+    color: var(--grey-700);
+}
+
+.list li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+}
+
+.contactInfo {
+    background: var(--subtle-primary);
+    padding: 1.5rem;
+    border-radius: var(--border-radius-standard);
+    margin-top: 1rem;
+}
+
+.contactInfo p {
+    margin: 0.5rem 0;
+    font-weight: 500;
+}
+
+.contactInfo strong {
+    color: var(--grey-800);
+    font-weight: 600;
+}
+
+/* Mobile responsiveness */
+@media screen and (max-width: 768px) {
+    .legalPage {
+        padding: 1rem 0;
+    }
+
+    .container {
+        padding: 0 0.75rem;
+    }
+
+    .title {
+        font-size: 2rem;
+    }
+
+    .sectionTitle {
+        font-size: 1.25rem;
+    }
+
+    .subsectionTitle {
+        font-size: 1.125rem;
+    }
+
+    .content {
+        font-size: 0.95rem;
+    line-height: 1.6;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .legalPage {
+        padding: 0.5rem 0;
+    }
+
+    .container {
+        padding: 0 0.5rem;
+    }
+
+    .title {
+        font-size: 1.75rem;
+    }
+
+    .sectionTitle {
+        font-size: 1.125rem;
+    }
+
+    .content {
+        font-size: 0.9rem;
+    }
+
+    .contactInfo {
+        padding: 1rem;
+    }
+}

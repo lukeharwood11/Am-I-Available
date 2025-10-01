@@ -13,11 +13,8 @@ const HeroSection: React.FC = () => {
         navigate('/login');
     };
 
-    const handleLearnMoreClick = () => {
-        const featuresSection = document.getElementById('features');
-        if (featuresSection) {
-            featuresSection.scrollIntoView({ behavior: 'smooth' });
-        }
+    const handlePricingClick = () => {
+        navigate('/pricing');
     };
 
     const containerVariants: Variants = {
@@ -103,10 +100,10 @@ const HeroSection: React.FC = () => {
                         <Button
                             variant='secondary-subtle'
                             size='large'
-                            onClick={handleLearnMoreClick}
+                            onClick={handlePricingClick}
                             className={styles.secondaryButton}
                         >
-                            Learn More
+                            Pricing
                         </Button>
                     </motion.div>
                     {!mediaQuery && (

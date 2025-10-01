@@ -70,3 +70,10 @@ Am I Available?
 - [ ] Ability to ask questions about availability on a specific date
 - [ ] Ability to create an event on a specific date / time
 - [ ] Ability to create a draft
+
+
+### Upgrades
+- [ ] Supabase custom domain
+```bash
+supabase domains create --project-ref cwpsafmbigglcsbpwawr --custom-hostname db.amiavailable.com
+```
