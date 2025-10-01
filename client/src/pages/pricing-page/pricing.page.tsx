@@ -3,6 +3,7 @@ import { Button, Card, Text } from '../../components';
 import styles from './pricing.page.module.css';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { MdAutoAwesome } from 'react-icons/md';
 
 const PricingPage: React.FC = () => {
     const navigate = useNavigate();
@@ -122,8 +123,9 @@ const PricingPage: React.FC = () => {
                         className={styles.featured}
                     >
                         <div className={styles.badge}>
+                            <MdAutoAwesome />
                             <Text variant='caption' weight='bold'>
-                                POPULAR
+                                BEST VALUE
                             </Text>
                         </div>
                         <div className={styles.cardHeader}>
@@ -135,7 +137,7 @@ const PricingPage: React.FC = () => {
                                     variant='heading-large'
                                     className={styles.priceAmount}
                                 >
-                                    $12
+                                    $9
                                 </Text>
                                 <Text variant='body-small' color='grey-600'>
                                     /month
@@ -153,7 +155,7 @@ const PricingPage: React.FC = () => {
                         <div className={styles.features}>
                             <div className={styles.feature}>
                                 <Text variant='body-small'>
-                                    ✓ 50 AI credits / month
+                                    ✓ 100 AI credits / month
                                 </Text>
                             </div>
                             <div className={styles.feature}>
@@ -164,11 +166,6 @@ const PricingPage: React.FC = () => {
                             <div className={styles.feature}>
                                 <Text variant='body-small'>
                                     ✓ Unlimited smart reoccurring events
-                                </Text>
-                            </div>
-                            <div className={styles.feature}>
-                                <Text variant='body-small'>
-                                    ✓ Team collaboration tools
                                 </Text>
                             </div>
                             <div className={styles.feature}>

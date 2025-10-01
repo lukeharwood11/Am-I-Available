@@ -29,7 +29,7 @@ const CollapsibleSidebar: React.FC<CollapsibleSidebarProps> = ({
 }) => {
     return (
         <motion.div
-            className={`${styles.sidebar} ${className}`}
+            className={`${styles.sidebar} ${!isCollapsed ? styles.expanded : ''} ${className}`}
             initial={false}
             animate={{
                 width: isCollapsed ? 60 : 280,

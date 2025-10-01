@@ -10,6 +10,7 @@ import { ChatMessage as AgentChatMessage } from '../../redux/types/agent.types';
 import { SidebarAction } from '../../components/CollapsibleSidebar';
 import { ChatHistoryItem } from './components/ChatHistory';
 import { MdAdd } from 'react-icons/md';
+import { useMediaQuery } from 'react-responsive';
 
 interface Message {
     id: string;
@@ -21,7 +22,11 @@ interface Message {
 const ChatPage: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [inputValue, setInputValue] = useState('');
-    const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+    const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
+    const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
+    useEffect(() => {
+        setIsSidebarCollapsed(isMobile);
+    }, [isMobile]);
     const [chatHistory, setChatHistory] = useState<ChatHistoryItem[]>([
         {
             id: '1',
@@ -104,7 +109,7 @@ const ChatPage: React.FC = () => {
     const sidebarActions: SidebarAction[] = [
         {
             id: 'new-chat',
-            icon: <MdAdd />,
+            icon: <MdAdd size={16} />,
             label: 'New Chat',
             onClick: () => {
                 setSelectedHistoryId(undefined);
@@ -132,7 +137,7 @@ const ChatPage: React.FC = () => {
     };
 
     return (
-        <div className={styles.chatPage}>
+        <div className={`${styles.chatPage} ${isSidebarCollapsed ? styles.sidebarCollapsed : ''}`}>
             <CollapsibleSidebar
                 isCollapsed={isSidebarCollapsed}
                 onToggle={toggleSidebar}
@@ -146,7 +151,7 @@ const ChatPage: React.FC = () => {
                 />
             </CollapsibleSidebar>
 
-            <div className={styles.chatPageMainContent}>
+            <div className={`${styles.chatPageMainContent} ${isSidebarCollapsed ? styles.sidebarCollapsed : ''}`}>
                 <div className={styles.chatHeader}></div>
 
                 <div className={styles.messagesContainer}>
@@ -173,7 +178,7 @@ const ChatPage: React.FC = () => {
                             }
                         )}
                         <div ref={messagesEndRef} />
-                        {(loading || isStreaming) && (
+                        {(loading || isStreaming) && (agentMessages[agentMessages.length - 1]?.role === 'user'  || (agentMessages[agentMessages.length - 1]?.role === 'assistant' && !agentMessages[agentMessages.length - 1]?.content.trim())) && (
                             <div className={styles.loadingContainer}>
                                 <LoadingIcon size={30} />
                             </div>

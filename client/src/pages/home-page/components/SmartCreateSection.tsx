@@ -1,5 +1,5 @@
-import { Card, Pill, Button, Input, Text } from '../../../components';
-import { MdArrowForward, MdAutoAwesome } from 'react-icons/md';
+import { Card, Button, Input } from '../../../components';
+import { MdSend } from 'react-icons/md';
 import styles from './SmartCreateSection.module.css';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -27,22 +27,6 @@ const SmartCreateSection = (_: SmartCreateSectionProps) => {
 
     return (
         <Card contentClassName={styles.smartCreate}>
-            <Text className={styles.title} variant='heading-small'>
-                <Pill color='primary' variant='outlined' size='medium'>
-                    Beta
-                </Pill>
-                Smart Create with AMIA
-                <Button
-                    rightIcon={<MdArrowForward />}
-                    variant='secondary-subtle'
-                    size='x-small'
-                    onClick={() => {
-                        navigate('/chat');
-                    }}
-                >
-                    Go!
-                </Button>
-            </Text>
             <div className={styles.smartCreateHeader}>
                 <Input
                     value={inputValue}
@@ -53,12 +37,10 @@ const SmartCreateSection = (_: SmartCreateSectionProps) => {
                 />
                 <Button
                     variant='primary'
-                    leftIcon={<MdAutoAwesome />}
+                    leftIcon={<MdSend />}
                     onClick={() => handleSmartCreate(inputValue)}
                     disabled={inputValue.trim() === ''}
-                >
-                    Create
-                </Button>
+                />
             </div>
             {/* <Button
                 variant='primary'

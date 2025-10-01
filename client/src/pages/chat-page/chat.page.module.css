@@ -3,7 +3,10 @@
     flex-direction: row;
     height: 80dvh;
     overflow: hidden;
+    box-sizing: border-box;
 }
+
+/* .chatPage.sidebarCollapsed - no special styling needed when collapsed */
 
 .chatPageMainContent {
     display: grid;
@@ -12,11 +15,22 @@
     height: 100%;
     overflow: hidden;
     background-color: white;
+    padding: 0 20px;
+    transition: all 0.3s ease-in-out;
+    box-sizing: border-box;
+    min-width: 0; /* Allow flex item to shrink below content size */
 }
+
+.chatPageMainContent.sidebarCollapsed {
+    padding: 0;
+    min-width: 0; /* Ensure it can shrink properly */
+}
+
+/* On mobile, when sidebar is expanded (fixed), it will overlay the content naturally */
 
 .chatHeader {
     background-color: white;
-    padding: 16px 20px;
+    padding: 16px 0;
     position: sticky;
     top: 0;
     z-index: 10;
@@ -57,9 +71,11 @@
 .inputContainer {
     background-color: white;
     border-top: 1px solid var(--grey-200);
-    padding: 16px 20px;
+    padding: 16px 0;
     position: sticky;
     bottom: 0;
+    min-width: 0; /* Allow container to shrink */
+    overflow: hidden; /* Prevent content from overflowing */
 }
 
 .loadingContainer {
@@ -102,15 +118,58 @@
         border-right: none;
     }
 
+    /* Mobile-specific styles for sidebar behavior */
+
+    .chatPageMainContent {
+        padding: 0 16px;
+    }
+
+    .chatPageMainContent.sidebarCollapsed {
+        padding: 0;
+    }
+
     .chatHeader {
-        padding: 12px 16px;
+        padding: 12px 0;
     }
 
     .messagesList {
-        padding: 16px;
+        padding: 16px 0;
     }
 
     .inputContainer {
-        padding: 12px 16px;
+        padding: 12px 0;
     }
+
+    .chatPageMainContent.sidebarCollapsed .inputContainer {
+        padding: 16px 8px !important;
+    }
+
+    .chatPageMainContent.sidebarCollapsed .chatHeader {
+        padding: 12px 8px !important;
+    }
+
+    .chatPageMainContent.sidebarCollapsed .messagesList {
+        padding: 16px 8px !important;
+    }
+}
+
+/* Ensure collapsed sidebar always has proper padding - placed after mobile styles for higher specificity */
+.chatPage .chatPageMainContent.sidebarCollapsed .inputContainer {
+    padding: 16px 12px !important;
+}
+
+.chatPage .chatPageMainContent.sidebarCollapsed .chatHeader {
+    padding: 16px 12px !important;
+}
+
+.chatPage .chatPageMainContent.sidebarCollapsed .messagesList {
+    padding: 20px 12px !important;
+}
+
+/* Additional fallback rule with maximum specificity */
+.chatPageMainContent.sidebarCollapsed .inputContainer {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    padding-top: 16px !important;
+    padding-bottom: 16px !important;
 }

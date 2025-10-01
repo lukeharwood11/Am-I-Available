@@ -67,6 +67,7 @@ Am I Available?
 - [ ] Adding travel time to new events (hooks)
   
 ### Agent
+- [x] Basic chat functionality (streaming / setup)
 - [ ] Ability to ask questions about availability on a specific date
 - [ ] Ability to create an event on a specific date / time
 - [ ] Ability to create a draft
@@ -77,3 +78,9 @@ Am I Available?
 ```bash
 supabase domains create --project-ref cwpsafmbigglcsbpwawr --custom-hostname db.amiavailable.com
 ```
+- [ ] Setup PostHog
+
+
+## Ideas
+
+Showing the user when Amia will go through and schedule events... Maybe ask if the calendar isn't looking as full.

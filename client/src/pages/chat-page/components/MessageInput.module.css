@@ -19,6 +19,8 @@
     width: 100%;
     padding: 8px;
     gap: 8px;
+    min-width: 0; /* Allow flex container to shrink */
+    box-sizing: border-box;
 }
 
 .textarea {
@@ -37,6 +39,8 @@
     padding: 8px 12px;
     border-radius: var(--border-radius-standard);
     transition: background-color 0.2s ease-in-out;
+    min-width: 0; /* Allow textarea to shrink */
+    box-sizing: border-box;
 }
 
 .textarea::placeholder {
