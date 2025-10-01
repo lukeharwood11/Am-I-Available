@@ -112,7 +112,10 @@ const App: React.FC = () => {
                         </Route>
                     </Route>
                     <Route path='' element={<LandingLayout />}>
-                        <Route path={routes.notFound} element={<NotFoundPage />} />
+                        <Route
+                            path={routes.notFound}
+                            element={<NotFoundPage />}
+                        />
                     </Route>
                 </Routes>
             </BrowserRouter>

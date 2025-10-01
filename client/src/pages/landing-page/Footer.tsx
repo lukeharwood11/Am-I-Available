@@ -64,17 +64,26 @@ const Footer: React.FC = () => {
                     <h4 className={styles.sectionTitle}>Legal</h4>
                     <ul className={styles.linkList}>
                         <li>
-                            <Link to='/legal/privacy' className={styles.footerLink}>
+                            <Link
+                                to='/legal/privacy'
+                                className={styles.footerLink}
+                            >
                                 Privacy Policy
                             </Link>
                         </li>
                         <li>
-                            <Link to='/legal/terms' className={styles.footerLink}>
+                            <Link
+                                to='/legal/terms'
+                                className={styles.footerLink}
+                            >
                                 Terms of Service
                             </Link>
                         </li>
                         <li>
-                            <Link to='/legal/cookies' className={styles.footerLink}>
+                            <Link
+                                to='/legal/cookies'
+                                className={styles.footerLink}
+                            >
                                 Cookie Policy
                             </Link>
                         </li>

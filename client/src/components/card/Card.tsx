@@ -39,7 +39,7 @@ const Card: React.FC<CardProps> = ({
     ]
         .filter(Boolean)
         .join(' ');
-    
+
     const CardComponent = onClick ? 'button' : 'div';
 
     return (
