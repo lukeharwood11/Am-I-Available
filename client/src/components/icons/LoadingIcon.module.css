@@ -1,6 +1,7 @@
 .loadingIcon {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     position: relative;
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 600;
@@ -8,58 +9,93 @@
     margin: 0;
     line-height: 1;
     user-select: none;
+    padding: 8px;
 }
 
 .loadingText {
     position: relative;
-    z-index: 1;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .loadingOutline {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     border: 2px solid currentColor;
     border-radius: 4px;
     border-top-color: transparent;
     border-right-color: transparent;
-    animation: loadingAnimation 3s ease-in-out infinite;
+    animation: flipAnimation 2s ease-in-out infinite;
     pointer-events: none;
 }
 
-@keyframes loadingAnimation {
+@keyframes flipAnimation {
     0% {
-        transform: translate(-50%, -50%) rotate(0deg);
+        transform: rotate(0deg);
         border-top-color: transparent;
         border-right-color: transparent;
         border-bottom-color: currentColor;
+        border-left-color: currentColor;
+        border-radius: 50%;
+    }
+    12.5% {
+        border-top-color: currentColor;
+        border-right-color: transparent;
+        border-bottom-color: transparent;
         border-left-color: currentColor;
     }
     25% {
+        transform: rotate(-90deg);
         border-top-color: currentColor;
-        border-right-color: transparent;
+        border-right-color: currentColor;
         border-bottom-color: transparent;
-        border-left-color: currentColor;
+        border-left-color: transparent;
+    }
+    37.5% {
+        border-top-color: transparent;
+        border-right-color: currentColor;
+        border-bottom-color: currentColor;
+        border-left-color: transparent;
+        border-radius: 4px;
     }
     50% {
-        transform: translate(-50%, -50%) rotate(180deg);
+        transform: rotate(-180deg);
+        border-top-color: transparent;
+        border-right-color: transparent;
+        border-bottom-color: currentColor;
+        border-left-color: currentColor;
+    }
+    62.5% {
+        border-top-color: currentColor;
+        border-right-color: transparent;
+        border-bottom-color: transparent;
+        border-left-color: currentColor;
+    }
+    75% {
+        transform: rotate(-270deg);
         border-top-color: currentColor;
         border-right-color: currentColor;
         border-bottom-color: transparent;
         border-left-color: transparent;
     }
-    75% {
+    87.5% {
         border-top-color: transparent;
         border-right-color: currentColor;
         border-bottom-color: currentColor;
         border-left-color: transparent;
+        border-radius: 4px;
     }
     100% {
-        transform: translate(-50%, -50%) rotate(360deg);
+        transform: rotate(-360deg);
         border-top-color: transparent;
         border-right-color: transparent;
         border-bottom-color: currentColor;
         border-left-color: currentColor;
+        border-radius: 50%;
     }
 }

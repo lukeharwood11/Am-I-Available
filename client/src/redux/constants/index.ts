@@ -56,6 +56,10 @@ export const ERROR_MESSAGES = {
         DELETE_FAILED: 'Failed to delete notification.',
         MARK_ALL_READ_FAILED: 'Failed to mark all notifications as read.',
     },
+    AGENT: {
+        CHAT_FAILED: 'Failed to chat with Amia. Please try again.',
+        STREAMING_FAILED: 'Failed to stream response from Amia.',
+    },
     NETWORK: {
         CONNECTION_ERROR:
             'Network connection error. Please check your internet connection.',

@@ -12,6 +12,9 @@ export const API_ENDPOINTS = {
 
     // Auth endpoints
     AUTH_TOKENS: '/api/v1/auth/tokens',
+
+    // Agent endpoints
+    AGENT_CHAT: '/api/v1/agent/commands/chat',
 } as const;
 
 // HTTP Methods

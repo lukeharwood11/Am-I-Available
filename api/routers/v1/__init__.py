@@ -10,6 +10,7 @@ from api.routers.v1 import (
     emails,
     notifications,
     diagnostics,
+    agent,
 )
 
 protected_router = APIRouter(
@@ -23,7 +24,7 @@ protected_router.include_router(relationship_requests.router)
 protected_router.include_router(event_requests.router)
 protected_router.include_router(emails.router)
 protected_router.include_router(notifications.router)
-
+protected_router.include_router(agent.router)
 unprotected_router = APIRouter()
 unprotected_router.include_router(diagnostics.router)
 

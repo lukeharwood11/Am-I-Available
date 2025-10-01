@@ -19,6 +19,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     isLoading?: boolean;
     leftIcon?: React.ReactNode;
     rightIcon?: React.ReactNode;
+    contentClassName?: string;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -30,6 +31,7 @@ const Button: React.FC<ButtonProps> = ({
     leftIcon,
     rightIcon,
     className,
+    contentClassName,
     disabled,
     ...props
 }) => {
@@ -58,7 +60,11 @@ const Button: React.FC<ButtonProps> = ({
             {!isLoading && leftIcon && (
                 <span className={styles.leftIcon}>{leftIcon}</span>
             )}
-            {hasChildren && <span className={styles.content}>{children}</span>}
+            {hasChildren && (
+                <span className={`${styles.content} ${contentClassName}`}>
+                    {children}
+                </span>
+            )}
             {!isLoading && rightIcon && (
                 <span className={styles.rightIcon}>{rightIcon}</span>
             )}

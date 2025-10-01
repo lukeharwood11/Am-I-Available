@@ -1,0 +1,89 @@
+.sidebar {
+    background-color: white;
+    border-right: 1px solid var(--grey-200);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    z-index: 10;
+}
+
+.header {
+    padding: 16px;
+    border-bottom: 1px solid var(--grey-200);
+    display: flex;
+    justify-content: flex-end;
+}
+
+.toggleButton {
+    padding: 8px !important;
+    min-width: auto !important;
+    width: auto !important;
+}
+
+.actionsSection {
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.actionButton {
+    padding: 12px !important;
+    width: 100% !important;
+    text-align: left !important;
+    justify-content: flex-start !important;
+    gap: 12px !important;
+}
+
+.actionIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    flex-shrink: 0;
+}
+
+.actionLabel {
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.contentSection {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    border-top: 1px solid var(--grey-200);
+}
+
+.contentSection::-webkit-scrollbar {
+    width: 4px;
+}
+
+.contentSection::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.contentSection::-webkit-scrollbar-thumb {
+    background: var(--grey-300);
+    border-radius: 2px;
+}
+
+.contentSection::-webkit-scrollbar-thumb:hover {
+    background: var(--grey-400);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        z-index: 1000;
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    }
+}

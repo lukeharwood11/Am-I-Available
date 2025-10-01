@@ -1,0 +1,85 @@
+.historyContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.historyHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--grey-200);
+    margin-bottom: 12px;
+}
+
+.clearButton {
+    padding: 4px !important;
+    min-width: auto !important;
+    width: auto !important;
+}
+
+.emptyState {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 32px 16px;
+    text-align: center;
+}
+
+.historyList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.historyList::-webkit-scrollbar {
+    width: 4px;
+}
+
+.historyList::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.historyList::-webkit-scrollbar-thumb {
+    background: var(--grey-300);
+    border-radius: 2px;
+}
+
+.historyList::-webkit-scrollbar-thumb:hover {
+    background: var(--grey-400);
+}
+
+.historyItem {
+    padding: 12px !important;
+    text-align: left !important;
+    justify-content: flex-start !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+}
+
+.historyItemHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 4px;
+}
+
+.historyTitle {
+    flex: 1;
+    margin-right: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.historyPreview {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.4;
+}

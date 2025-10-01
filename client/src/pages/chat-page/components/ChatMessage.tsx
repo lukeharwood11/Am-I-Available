@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Text } from '../../../components';
 import styles from './ChatMessage.module.css';
+import Markdown from 'react-markdown';
 
 interface Message {
     id: string;
@@ -49,7 +50,11 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
                     variant='body'
                     className={isUser ? styles.userText : styles.otherText}
                 >
-                    {message.text}
+                    {isUser ? (
+                        message.text
+                    ) : (
+                        <Markdown>{message.text}</Markdown>
+                    )}
                 </Text>
                 <div
                     className={`${styles.timestamp} ${isUser ? styles.userTimestamp : styles.otherTimestamp}`}

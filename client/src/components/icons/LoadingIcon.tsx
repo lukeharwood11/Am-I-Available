@@ -11,27 +11,17 @@ const LoadingIcon: React.FC<LoadingIconProps> = ({ size = 32, className }) => {
         .filter(Boolean)
         .join(' ');
 
-    // Calculate font size and outline size based on size prop
-    const fontSize = size * 0.5625; // 18px when size is 32px
-    const outlineSize = size * 1.2; // Slightly larger than the text
-
     return (
         <div
             className={combinedClassName}
             style={{
-                fontSize: `${fontSize}px`,
-                minWidth: `${outlineSize}px`,
-                minHeight: `${fontSize * 1.2}px`,
+                fontSize: `${size * 0.5}px`,
+                width: `${size}px`,
+                height: `${size}px`,
             }}
         >
             <span className={styles.loadingText}>AMIA</span>
-            <div
-                className={styles.loadingOutline}
-                style={{
-                    width: `${outlineSize}px`,
-                    height: `${fontSize * 1.5}px`,
-                }}
-            />
+            <div className={styles.loadingOutline} />
         </div>
     );
 };

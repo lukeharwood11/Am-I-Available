@@ -4,6 +4,7 @@ import {
     relationshipsReducer,
     eventRequestsReducer,
     notificationsReducer,
+    agentReducer,
 } from './slices';
 import calendarSlice from './slices/calendar.slice';
 
@@ -14,6 +15,7 @@ export const store = configureStore({
         relationships: relationshipsReducer,
         eventRequests: eventRequestsReducer,
         notifications: notificationsReducer,
+        agent: agentReducer,
     },
     middleware: getDefaultMiddleware =>
         getDefaultMiddleware({
