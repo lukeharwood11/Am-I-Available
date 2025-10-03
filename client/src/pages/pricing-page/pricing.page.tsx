@@ -148,7 +148,7 @@ const PricingPage: React.FC = () => {
                                 color='grey-600'
                                 className={styles.description}
                             >
-                                Advanced features productive individuals
+                                Advanced features for productive individuals
                             </Text>
                         </div>
 
