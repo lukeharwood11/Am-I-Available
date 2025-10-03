@@ -68,12 +68,16 @@ class DatabaseConfig(BaseSettings):
             name="DATABASE__PASSWORD", default=self.password
         )
 
+class GroqConfig(BaseSettings):
+    api_key: str = Field(default="")
+
 
 class AppConfig(BaseSettings):
     model_config = SettingsConfigDict(env_nested_delimiter="__", extra="allow")
 
     # API Keys
     openai: OpenAIConfig = Field(default_factory=OpenAIConfig)
+    groq: GroqConfig = Field(default_factory=GroqConfig)
 
     # Auth Configuration
     supabase: SupabaseConfig = Field(default_factory=SupabaseConfig)
